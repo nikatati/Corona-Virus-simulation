@@ -1,8 +1,10 @@
 package Simulation;
 
-public final class Clock {
-
+public final class Clock
+{
     private static long time;
+    private static long tick_per_day;
+
 
     private Clock ()
     { // private constructor
@@ -20,9 +22,14 @@ public final class Clock {
     }
 
     @Override
-    public String toString() {
-        return "Clock{" +
-                "time=" + time +
-                '}';
+    public String toString()
+    {
+        return "Clock{" + "time=" + time + '}';
     }
+
+    public static long Num_of_days(int start)
+    {
+        return Math.round((Clock.now()-start)/tick_per_day);
+    }
+
 }
