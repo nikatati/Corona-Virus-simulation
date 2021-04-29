@@ -20,7 +20,7 @@ import javax.swing.*;
 public class SimulationFile
 {
 
-    private final static double x=1.3;
+    private final static double x = 1.3;
 
     public static Map SimulationFile()
     {
@@ -33,8 +33,7 @@ public class SimulationFile
         boolean flag1 = true; //no file selected
         String file_path = null;
 
-        while (flag1)
-        {
+        while (flag1) {
             file_path = chooseFile();
             if (!Objects.equals("No file selected", file_path)) // File chosen
                 flag1 = false; // while loop over
@@ -43,26 +42,28 @@ public class SimulationFile
         {
             File myObj = new File(file_path);
             Scanner myReader = new Scanner(myObj);
+            String str = myReader.nextLine();
             while (myReader.hasNextLine())
             {
-
-                String str = myReader.nextLine();                        // read one line from file
+                // read one line from file
                 str = str.replaceAll("\\s", "");        //remove all " " from string
                 String[] words = str.split(";");                  // split the string to words by ; מערך של שורה אחת
 
-              /*  if (words[0]=="#")
+                if (words[0] == "#")
                 {
-
+                    str = myReader.nextLine();
                 }
                 else
-                    {
+                {
                     simulation_map.addSettelmentToMap(createNewSettlementByType
-                                       (words[0],
-                                        words[1],
-                                        new Location(new Point(Integer.parseInt(words[2]), Integer.parseInt(words[3])),
-                                        new Size(Integer.parseInt(words[4]),Integer.parseInt(words[5]))),
-                                        Integer.parseInt(words[6])));
-                }*/
+                            (words[0],
+                                    words[1],
+                                    new Location(new Point(Integer.parseInt(words[2]), Integer.parseInt(words[3])),
+                                            new Size(Integer.parseInt(words[4]), Integer.parseInt(words[5]))),
+                                    Integer.parseInt(words[6])));
+                    str = myReader.nextLine();
+                }
+
 
             }
 
@@ -74,8 +75,61 @@ public class SimulationFile
             e.printStackTrace();
         }
 
+
+        // split the string to words by ; מערך של שורה אחת
+
+        int size = simulation_map.getMapSize();
+        for (int i = 0; i < size; i++)
+        {
+            try
+            {
+                File myObj = new File(file_path);
+                Scanner myReader1 = new Scanner(myObj);
+                String str = myReader1.nextLine();
+                while (myReader1.hasNextLine())
+                {
+                    // read one line from file
+                    str = str.replaceAll("\\s", "");        //remove all " " from string
+                    String[] words = str.split(";");
+
+
+                    if (words[0] == "#")
+                    {
+                        if (simulation_map.getSettelmentFromMapByIndex(i).getName() == words[1])
+                        {
+                            for (int j = i + 1; j < size; j++)
+                            {
+                                if (simulation_map.getSettelmentFromMapByIndex(j).getName() == words[2])
+                                {
+                                    simulation_map.getSettelmentFromMapByIndex(i).addNeighbor(simulation_map.getSettelmentFromMapByIndex(j));            //add neighbor B to A
+                                    simulation_map.getSettelmentFromMapByIndex(j).addNeighbor(simulation_map.getSettelmentFromMapByIndex(i));            //add neighbor A to B
+                                }
+
+                            }
+
+                        }
+                        str = myReader1.nextLine();
+
+                    } else
+                        str = myReader1.nextLine();
+                }
+
+
+            }
+            catch (FileNotFoundException e)
+            {
+                System.out.println("An error occurred.");
+                e.printStackTrace();
+            }
+
+
+        }
         return simulation_map;
     }
+
+
+
+
 
     /*private static void ceateNeighbors()
     {

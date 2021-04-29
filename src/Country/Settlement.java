@@ -37,6 +37,7 @@ public abstract class Settlement {
     //default constructor
     public Settlement ()
     {
+
         this.name = "Noname";
         Point p = new Point();
         Size s = new Size();
@@ -52,6 +53,7 @@ public abstract class Settlement {
     //constructor get 4 variables
     public Settlement (String name,Location location,int currentPopulation,int maxPopulation)
     {
+
         this.name = name;
         this.location = new Location(location);
         sickPeople = new ArrayList<Person>();
@@ -188,6 +190,8 @@ public abstract class Settlement {
     public int getCurrentPopulation() { return currentPopulation; }
 
     public int getVaccineDoses() { return vaccineDoses; }
+
+    public String getName(){return name;}
 
     public List<Settlement> getNeighbors() { return neighbors; }
 

@@ -12,13 +12,12 @@ import Country.*;
 public class StatisticsFile
 {
 
-    public static void csv(Map map,File file) throws IOException
+    public static void csv(Map map) throws IOException
     {
+        int size = map.getMapSize();
 
-        BufferedReader reader = null;
         try {
-            reader = new BufferedReader(new FileReader(file));
-            String line = reader.readLine();
+
             PrintWriter writer = new PrintWriter(new File("test.csv"));
 
                 StringBuilder sb = new StringBuilder();
@@ -37,18 +36,20 @@ public class StatisticsFile
                 sb.append("Healthy people");
                 sb.append('\n');
 
-                int i=0;
-            while (line != null)
+
+            for(int i=0;i<size;i++)
             {
-                // System.out.println(line);
-                // read next line
-                line = reader.readLine();
-                String[] words = line.split(";");
-                sb.append(words[0]);   // writes type
+
+                if(map.getSettelmentFromMapByIndex(i) instanceof Kibbutz)// writes type
+                    sb.append("Kibbutz");
+                else if(map.getSettelmentFromMapByIndex(i) instanceof City)// writes type
+                    sb.append("City");
+                else if(map.getSettelmentFromMapByIndex(i) instanceof Moshav)// writes type
+                    sb.append("Moshav");
                 sb.append(',');
-                sb.append(words[1]);     //writes name
+                sb.append(map.getSettelmentFromMapByIndex(i).getName());     //writes name
                 sb.append(',');
-                sb.append(words[6]);       // writes popu
+                sb.append(map.getSettelmentFromMapByIndex(i).getCurrentPopulation());       // writes popu
                 sb.append(',');
                 sb.append(map.getSettelmentFromMapByIndex(i).getRamzorColor());
                 sb.append(',');
@@ -59,20 +60,18 @@ public class StatisticsFile
                 sb.append(map.getSettelmentFromMapByIndex(i).getHealthyPeople().size());
                 sb.append('\n');
 
-                i=i+1;
                 writer.write(sb.toString());
                 }
 
             } catch (FileNotFoundException fileNotFoundException) {
             fileNotFoundException.printStackTrace();
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
         }
-
         }
-
 
 }
+
+
+
 
 
 

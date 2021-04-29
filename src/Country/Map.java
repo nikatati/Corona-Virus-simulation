@@ -29,7 +29,7 @@ public class Map
         return settlements.get(i);
     }
 
-    public int getSettlementAmount (){
+    public int getMapSize (){
         return settlements.size();
     }
 
