@@ -34,9 +34,7 @@ public class Map
     }
 
     @Override
-    public String toString() {
-        return "Map{" +
-                "settlements=" + settlements +
-                '}';
-    }
+    public String toString() { return "Map{" + "settlements=" + settlements + '}'; }
+
+
 }

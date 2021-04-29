@@ -21,6 +21,7 @@ public final class Clock
         time += 1;
     }
 
+
     @Override
     public String toString()
     {
@@ -32,4 +33,11 @@ public final class Clock
         return Math.round((Clock.now()-start)/tick_per_day);
     }
 
+    public static long getTime() { return time; }
+
+    public static void setTime(long time) { Clock.time = time; }
+
+    public static long getTick_per_day() { return tick_per_day; }
+
+    public static void setTick_per_day(long tick_per_day) { Clock.tick_per_day = tick_per_day; }
 }

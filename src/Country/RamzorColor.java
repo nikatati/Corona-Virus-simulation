@@ -29,9 +29,10 @@ public enum RamzorColor
         return this.factor;
     }
 
-    public Color getColor() { return color; }
+    public Color getRamzorColor() { return color; }
 
     public double getPassOption() { return passOption; }
+
 
     @Override
     public String toString() { return "RamzorColor{" + "factor=" + factor + "} " + super.toString(); }

@@ -4,6 +4,9 @@ import Population.Sick;
 import Location.Location;
 import Simulation.Clock;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class BritishVariant implements IVirus{
 
     private static double p_d_18 = 0.01;
@@ -13,7 +16,14 @@ public class BritishVariant implements IVirus{
     private static double p_c_18_55 = 0.7;
     private static double p_c_55= 0.7;
 
-    public  double contagionProbability(Person p){
+    private static int minContageTime=5;
+    private List<IVirus> variant = new ArrayList<IVirus>();
+
+    //CONT
+    public BritishVariant(){}
+
+    public  double contagionProbability(Person p)
+    {
 
         // Find the probability of a person contagion by his age
 
@@ -29,7 +39,8 @@ public class BritishVariant implements IVirus{
 
     }
 
-    public boolean tryToContagion(Person p, Person p_unknown) {
+    public boolean tryToContagion(Person p, Person p_unknown)
+    {
 
         //check if the unknown is sick
         if (p_unknown instanceof Sick)
@@ -46,7 +57,8 @@ public class BritishVariant implements IVirus{
         }
     }
 
-    public boolean tryToKill(Sick p) {
+    public boolean tryToKill(Sick p)
+    {
 
         // Find the probability of a person die by his age
 
@@ -70,7 +82,8 @@ public class BritishVariant implements IVirus{
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "BritishVariant{" +
                 "p_d_18=" + p_d_18 +
                 ", p_d_18_55=" + p_d_18_55 +

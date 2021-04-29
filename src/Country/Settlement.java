@@ -191,6 +191,10 @@ public abstract class Settlement {
 
     public List<Settlement> getNeighbors() { return neighbors; }
 
+    public void setNeighbors(List<Settlement> neighbors) { this.neighbors = neighbors; }
+
+    public void addNeighbor(Settlement s) { this.neighbors.add(s); }
+
     public Person getSickPeronByIndex (int i){ return sickPeople.get(i); }
 
     public Person getHealthyPeronByIndex (int i){ return healthyPeople.get(i); }

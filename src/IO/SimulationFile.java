@@ -20,10 +20,14 @@ import javax.swing.*;
 public class SimulationFile
 {
 
+    private final static double x=1.3;
+
     public static Map SimulationFile()
     {
+        ArrayList<Settlement> tempStel = new ArrayList<>();
+        ArrayList<String> gonnaBeNeighbor = new ArrayList<String>();
 
-        Map simulation_map = new Map();
+        Map simulation_map = new Map();            //מערך של יישובים
 
         //choose a file from documents
         boolean flag1 = true; //no file selected
@@ -35,8 +39,6 @@ public class SimulationFile
             if (!Objects.equals("No file selected", file_path)) // File chosen
                 flag1 = false; // while loop over
         }
-
-
         try
         {
             File myObj = new File(file_path);
@@ -46,12 +48,21 @@ public class SimulationFile
 
                 String str = myReader.nextLine();                        // read one line from file
                 str = str.replaceAll("\\s", "");        //remove all " " from string
-                String[] words = str.split(";");                  // split the string to words by ;
-                simulation_map.addSettelmentToMap(createNewSettlementByType(words[0], words[1],
-                        new Location(new Point(Integer.parseInt(words[2]), Integer.parseInt(words[3])),
-                                new Size(Integer.parseInt(words[4]),Integer.parseInt(words[5]))),
-                                Integer.parseInt(words[6]),
-                                Integer.parseInt(words[7])));
+                String[] words = str.split(";");                  // split the string to words by ; מערך של שורה אחת
+
+              /*  if (words[0]=="#")
+                {
+
+                }
+                else
+                    {
+                    simulation_map.addSettelmentToMap(createNewSettlementByType
+                                       (words[0],
+                                        words[1],
+                                        new Location(new Point(Integer.parseInt(words[2]), Integer.parseInt(words[3])),
+                                        new Size(Integer.parseInt(words[4]),Integer.parseInt(words[5]))),
+                                        Integer.parseInt(words[6])));
+                }*/
 
             }
 
@@ -66,45 +77,51 @@ public class SimulationFile
         return simulation_map;
     }
 
+    /*private static void ceateNeighbors()
+    {
 
-    private static Settlement createNewSettlementByType (String type, String name, Location l, int currentPopulation,int maxPopulation)
+    }*/
+
+    private static Settlement createNewSettlementByType (String type, String name, Location l, int currentPopulation)
     {
 
         if (Objects.equals("City", type))
         {
-            City c = new City(name, l,currentPopulation, maxPopulation);
+            City c = new City(name, l,currentPopulation, (int)(currentPopulation*x));
             //addPeopleToSettlementByAmount(c, people_amount);
             return c;
         }
 
         else if (Objects.equals("Moshav", type))
         {
-            Moshav m = new Moshav(name, l, currentPopulation, maxPopulation);
+            Moshav m = new Moshav(name, l, currentPopulation, (int)(currentPopulation*x));
             //addPeopleToSettlementByAmount(m, people_amount);
             return m;
         }
 
         else if (Objects.equals("Kibbutz", type))
         {
-            Kibbutz k = new Kibbutz (name,l,currentPopulation, maxPopulation);
+            Kibbutz k = new Kibbutz (name,l,currentPopulation, (int)(currentPopulation*x));
             //addPeopleToSettlementByAmount(k,people_amount);
             return k;
         }
         return null;
     }
 
-    private static void addPeopleToSettlementByAmount (Settlement s, int people_amount)
-    {
 
+
+   /* private static void addPeopleToSettlementByAmount (Settlement s, int people_amount)
+    {
         for (int i = 0; i < people_amount; i++)
             s.addPerson(new Healthy(determiningAge(),s.randomLocation(),s));
-    }
+    }*/
+
+
 
     public static int determiningAge()
     {
-        //הגיל של כל אדם נקבע על ידי הנוסחא y+5*x
-
-        //y-> ערך אקראי בין 0 עד 4
+        //the age of every person calculate Formula: y+5*x
+        //y-> random value between 0-4
         //x->  SIGMA=6 וסטיית תקן  𝜇=9  משתנה מקרי המתפלג לפי התפלגות נומלית עם תוחלת
         int x;
         int y;
@@ -112,30 +129,34 @@ public class SimulationFile
         Random randomX = new Random();
         Random randomY = new Random();
         x=(int)(randomX.nextGaussian()*6+9);  //nextGaussian-> method to get the next pseudorandom
-        //casting to int b/c nextGaussian is flout
-        y= randomY.nextInt(5);          //nextInt-> Generate random integers in range 0 to 4
+                                              //casting to int b/c nextGaussian is flout
+        y= randomY.nextInt(5);         //nextInt-> Generate random integers in range 0 to 4
 
-        int DA=5*x+y;               //הגיל של כל אדם נקבע לפי נוסחה זו
+        int DA=5*x+y;                         //the age of every person calculate Formula
 
-        return DA;
+        return Math.abs(DA);
     }
 
-    private static String chooseFile (){
+
+
+    private static String chooseFile ()
+    {
         JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-        int result = fileChooser.showOpenDialog( fileChooser);
-        if (result == JFileChooser.APPROVE_OPTION) {
-            File selectedFile = fileChooser.getSelectedFile();
-            return (selectedFile.getAbsolutePath());
+        fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));  //this is the user's profile directory-> sends me to c:/home/user
+        int result = fileChooser.showOpenDialog( fileChooser);   //Pops up an "Open File" file chooser dialog.
+        if (result == JFileChooser.APPROVE_OPTION)     //Return value if approve (yes, ok) is chosen.
+        {
+            File selectedFile = fileChooser.getSelectedFile();      //Returns the selected file.
+            return (selectedFile.getAbsolutePath());   //returns the absolute pathname of the given file object
         }
         else
             return "No file selected";
     }
 
+
+
     @Override
-    public String toString() {
-        return "SimulationFile{}";
-    }
+    public String toString() { return "SimulationFile{}"; }
 }
 
 
