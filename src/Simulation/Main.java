@@ -20,6 +20,7 @@ import java.util.Random;
 import javax.swing.JFileChooser;
 import java.io.File;
 import IO.*;
+import Virus.IVirus;
 import Virus.SouthAfricanVariant;
 
 
@@ -34,58 +35,80 @@ public class Main
 
         Map m = new Map();
 
-       m = SimulationFile.SimulationFile(); //Load data from File to map
-        dataInitialization(m);// //contagion 0.01% from the people at the settlement
+        m = SimulationFile.SimulationFile(); //Load data from File to map
+
+        dataInitialization(m);
+
         for (int i = 0; i < simulation_loop; i++)
         {
-            simulation(m);// Play the simulation
+            //simulation(m);// Play the simulation
             Clock.nextTick();
         }
 
     }
 
-    private static void simulation(Map m) {
+    /*private static void simulation(Map m)
+    {
 
-    }
+    }*/
 
-    private static void dataInitialization(Map m) throws Exception {
-        Random randomx =new Random();
-        int x =0;
-        Random randomy =new Random();
-        int y =0;
-        ChineseVariant C =new ChineseVariant();
-        BritishVariant B =new BritishVariant();
-        SouthAfricanVariant S = new SouthAfricanVariant();
+    private static void dataInitialization(Map m)   //טעינת המפה
+    {
+        Random randomx = new Random();
+        Random randomy = new Random();
+        IVirus Cvirus, Bvirus, Svirus;
+        Cvirus = new ChineseVariant();
+        Bvirus = new BritishVariant();
+        Svirus = new SouthAfricanVariant();
 
-
-
-        for (int i = 0; i < m.getMapSize(); i++)
+        try
         {
-            int population = (int) (m.getSettelmentFromMapByIndex(i).getCurrentPopulation());
-
-            int sick = (int) (m.getSettelmentFromMapByIndex(i).getCurrentPopulation() * 0.2);
-
-            for(int j=0;j<sick;j++)
+            //In every settlement show 20% of random sick
+            for (int i = 0; i < m.getMapSize(); i++)
             {
-                x= randomx.nextInt(population);
-                y= randomy.nextInt(3);
-                if(y==0)
-                {
-                    m.getSettelmentFromMapByIndex(i).getHealthyPeronByIndex(x).contagion(C);      // CONTAGION WITH CHINESE VARIANT
-                }
-                if(y==1)
-                {
-                    m.getSettelmentFromMapByIndex(i).getHealthyPeronByIndex(x).contagion(B);         // CONTAGION WITH BRITISH VARIANT
-                }
-                if(y==2)
-                {
-                    m.getSettelmentFromMapByIndex(i).getHealthyPeronByIndex(x).contagion(S);          // CONTAGION WITH SOUTH AFRICAN VARIANT
-                }
-                population--;
+                int population = (int) (m.getSettelmentFromMapByIndex(i).getCurrentPopulation());
 
+                int randomSickPeople = (int) (m.getSettelmentFromMapByIndex(i).getCurrentPopulation() * 0.2);
+
+                for (int j = 0; j < randomSickPeople; j++)      //run until 20% from the settlement
+                {
+                    int x = randomx.nextInt(population);
+                    int y = randomy.nextInt(3);
+                    if (y == 0)
+                    {
+                        m.getSettelmentFromMapByIndex(i).getHealthyPeronByIndex(x).contagion(Cvirus);      // CONTAGION WITH CHINESE VARIANT
+                    }
+                    if (y == 1)
+                    {
+                        m.getSettelmentFromMapByIndex(i).getHealthyPeronByIndex(x).contagion(Bvirus);         // CONTAGION WITH BRITISH VARIANT
+                    }
+                    if (y == 2)
+                    {
+                        m.getSettelmentFromMapByIndex(i).getHealthyPeronByIndex(x).contagion(Svirus);          // CONTAGION WITH SOUTH AFRICAN VARIANT
+                    }
+                    population -= 1;
+                    m.getSettelmentFromMapByIndex(i).getHealthyPeople().remove(m.getSettelmentFromMapByIndex(i).getHealthyPeronByIndex(x));
+                    m.getSettelmentFromMapByIndex(i).getSickPeople().add(m.getSettelmentFromMapByIndex(i).getHealthyPeronByIndex(x));
+                }
             }
 
+            //In every settlement show 3 not sick people and try to contage them
+            /*int notSick=3;
+            for (int i = 0; i < m.getMapSize(); i++)
+            {
+                int population = (int) (m.getSettelmentFromMapByIndex(i).getCurrentPopulation());
 
+                for (int j=0;j<notSick;j++)
+                {
+
+                }
+
+            }*/
+
+        }
+        catch (Exception e)
+        {
+            System.out.print(e);
         }
     }
 
