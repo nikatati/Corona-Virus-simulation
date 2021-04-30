@@ -5,6 +5,9 @@ import Location.Location;
 import Population.Sick;
 import Simulation.Clock;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SouthAfricanVariant implements IVirus{
 
     private static double p_d_18 = 0.05;
@@ -13,6 +16,10 @@ public class SouthAfricanVariant implements IVirus{
     private static double p_c_18 = 0.6;
     private static double p_c_18_55 = 0.5;
     private static double p_c_55= 0.5;
+
+    private static int minContageTime=5;
+    private List<IVirus> variant = new ArrayList<IVirus>();
+
 
     public  double contagionProbability(Person p){
 
@@ -34,9 +41,19 @@ public class SouthAfricanVariant implements IVirus{
 
         //check if the unknown is sick
         if (p_unknown instanceof Sick)
-            return false;
-        else
         {
+            System.out.println("The person is already sick. He cant be infected");
+            return false;
+        }
+        else                                       //p_unknown is not sick
+        {
+            Sick s1=(Sick) p;
+
+            if(Clock.Num_of_days((int) s1.getContagiousTime())<minContageTime)
+            {
+                return false;
+            }
+
             //calculate the probability that the unknown person infected
             //calculate the distance
             double distance = Math.sqrt(Math.pow(p.getLocation().getY() - p_unknown.getLocation().getY(),2)*Math.pow(p.getLocation().getX() - p_unknown.getLocation().getX(),2));
@@ -68,6 +85,21 @@ public class SouthAfricanVariant implements IVirus{
         double p_total= Math.max (0 , (vpd_by_age - 0.01 * vpd_by_age * (Math.pow (t-15,2))));
 
         return p_total <= Math.random();
+    }
+
+    public void addMutation(IVirus virus)
+    {
+        variant.add(virus);
+    }
+
+    public List<IVirus> getMutation()
+    {
+        return variant;
+    }
+
+    public void removeMutation(IVirus virus)
+    {
+        variant.remove(virus);
     }
 
     @Override

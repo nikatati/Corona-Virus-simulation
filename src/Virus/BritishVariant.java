@@ -44,9 +44,19 @@ public class BritishVariant implements IVirus{
 
         //check if the unknown is sick
         if (p_unknown instanceof Sick)
-            return false;
-        else
         {
+            System.out.println("The person is already sick. He cant be infected");
+            return false;
+        }
+        else                                       //p_unknown is not sick
+        {
+            Sick s1=(Sick) p;
+
+            if(Clock.Num_of_days((int) s1.getContagiousTime())<minContageTime)
+            {
+                return false;
+            }
+
             //calculate the probability that the unknown person infected
             //calculate the distance
             double distance = Math.sqrt(Math.pow(p.getLocation().getY() - p_unknown.getLocation().getY(),2)*Math.pow(p.getLocation().getX() - p_unknown.getLocation().getX(),2));
@@ -80,6 +90,23 @@ public class BritishVariant implements IVirus{
 
         return p_total <= Math.random();
     }
+
+    public void addMutation(IVirus virus)
+    {
+        variant.add(virus);
+    }
+
+    public List<IVirus> getMutation()
+    {
+        return variant;
+    }
+
+    public void removeMutation(IVirus virus)
+    {
+        variant.remove(virus);
+    }
+
+
 
     @Override
     public String toString()
