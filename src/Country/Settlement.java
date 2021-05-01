@@ -37,7 +37,6 @@ public abstract class Settlement {
     //default constructor
     public Settlement ()
     {
-
         this.name = "Noname";
         Point p = new Point();
         Size s = new Size();
@@ -48,10 +47,11 @@ public abstract class Settlement {
         this.neighbors=new ArrayList<Settlement>();
         this.currentPopulation=0;
         this.maxPopulation=0;
+        this.vaccineDoses=0;
     }
 
     //constructor get 4 variables
-    public Settlement (String name,Location location,int currentPopulation,int maxPopulation)
+    public Settlement (String name,Location location,int currentPopulation,int maxPopulation, int vaccineDoses)
     {
 
         this.name = name;
@@ -62,26 +62,16 @@ public abstract class Settlement {
         this.ramzorColor = RamzorColor.GREEN;
         this.currentPopulation=currentPopulation;
         this.maxPopulation=maxPopulation;
+        this.vaccineDoses= vaccineDoses;
     }
 
     //Calculates the percentage of contagious in the city
     public double contagiousPercent ()
     {
-
         int number_of_sick_people = getSickPeople().size(); // How many sick people are there in the city
         int number_of_people = getCurrentPopulation();  // How many people are there in the city
-
-
-        //Count how many patients there are in the city
-      /* for (int i = 0; i < number_of_people; i++)
-        {
-            if (people.get(i).ifSick())
-                counter++;
-        }*/
-
         double result  = number_of_sick_people/number_of_people;
         return result;
-
     }
 
     public Point randomLocation ()
@@ -190,6 +180,8 @@ public abstract class Settlement {
     public int getCurrentPopulation() { return currentPopulation; }
 
     public int getVaccineDoses() { return vaccineDoses; }
+
+    public void setVaccineDoses(int vaccineDoses) { this.vaccineDoses = vaccineDoses; }
 
     public String getName(){return name;}
 

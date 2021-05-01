@@ -13,9 +13,9 @@ public class Kibbutz extends Settlement
     }
 
     //constructor get 2 variables
-    public Kibbutz (String name,Location location,int currentPopulation,int maxPopulation)
+    public Kibbutz (String name,Location location,int currentPopulation,int maxPopulation,int vaccineDoses)
     {
-        super(name, location, currentPopulation, maxPopulation);
+        super(name, location, currentPopulation, maxPopulation, vaccineDoses);
     }
 
 

@@ -60,7 +60,8 @@ public class SimulationFile
                                     words[1],
                                     new Location(new Point(Integer.parseInt(words[2]), Integer.parseInt(words[3])),
                                             new Size(Integer.parseInt(words[4]), Integer.parseInt(words[5]))),
-                                    Integer.parseInt(words[6])));
+                                    Integer.parseInt(words[6]),
+                                    Integer.parseInt(words[7])));
                     str = myReader.nextLine();
                 }
 
@@ -136,26 +137,26 @@ public class SimulationFile
 
     }*/
 
-    private static Settlement createNewSettlementByType (String type, String name, Location l, int currentPopulation)
+    private static Settlement createNewSettlementByType (String type, String name, Location l, int currentPopulation,int vaccineDoses)
     {
 
         if (Objects.equals("City", type))
         {
-            City c = new City(name, l,currentPopulation, (int)(currentPopulation*x));
+            City c = new City(name, l,currentPopulation, (int)(currentPopulation*x),vaccineDoses);
             //addPeopleToSettlementByAmount(c, people_amount);
             return c;
         }
 
         else if (Objects.equals("Moshav", type))
         {
-            Moshav m = new Moshav(name, l, currentPopulation, (int)(currentPopulation*x));
+            Moshav m = new Moshav(name, l, currentPopulation, (int)(currentPopulation*x),vaccineDoses);
             //addPeopleToSettlementByAmount(m, people_amount);
             return m;
         }
 
         else if (Objects.equals("Kibbutz", type))
         {
-            Kibbutz k = new Kibbutz (name,l,currentPopulation, (int)(currentPopulation*x));
+            Kibbutz k = new Kibbutz (name,l,currentPopulation, (int)(currentPopulation*x),vaccineDoses);
             //addPeopleToSettlementByAmount(k,people_amount);
             return k;
         }

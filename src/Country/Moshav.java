@@ -15,9 +15,9 @@ public class Moshav extends Settlement
     }
 
     //constructor get 2 variables
-    public Moshav (String name,Location location,int currentPopulation,int maxPopulation)
+    public Moshav (String name,Location location,int currentPopulation,int maxPopulation,int vaccineDoses)
     {
-        super (name,location, currentPopulation, maxPopulation);
+        super (name,location, currentPopulation, maxPopulation, vaccineDoses);
     }
 
     public RamzorColor calculateRamzorGrade() {

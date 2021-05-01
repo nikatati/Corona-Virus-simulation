@@ -5,9 +5,7 @@ import Country.Settlement;
 import Location.Location;
 import Location.Point;
 import Location.Size;
-import Population.Healthy;
-import Population.Person;
-import Population.Sick;
+import Population.*;
 import Simulation.Clock;
 import Virus.BritishVariant;
 import Virus.ChineseVariant;
@@ -63,49 +61,122 @@ public class Main
 
         try
         {
-            //In every settlement show 20% of random sick
+            //In every settlement show 20% of random sick try to contage them
             for (int i = 0; i < m.getMapSize(); i++)
             {
-                int population = (int) (m.getSettelmentFromMapByIndex(i).getCurrentPopulation());
+                int population = (int) (m.getSettelmentFromMapByIndex(i).getCurrentPopulation());  //num of population
 
-                int randomSickPeople = (int) (m.getSettelmentFromMapByIndex(i).getCurrentPopulation() * 0.2);
+                int randomSickPeople = (int) (m.getSettelmentFromMapByIndex(i).getSickPeople().size() * 0.2);
 
-                for (int j = 0; j < randomSickPeople; j++)      //run until 20% from the settlement
+                for (int j = 0; j < randomSickPeople; j++)      //run until 20% sick people from the settlement
                 {
                     int x = randomx.nextInt(population);
                     int y = randomy.nextInt(3);
+
+                    m.getSettelmentFromMapByIndex(i).getSickPeronByIndex(x).toString();                 //דיגום לפני נסיון הדבקה
+
                     if (y == 0)
                     {
-                        m.getSettelmentFromMapByIndex(i).getHealthyPeronByIndex(x).contagion(Cvirus);      // CONTAGION WITH CHINESE VARIANT
+                        m.getSettelmentFromMapByIndex(i).getSickPeronByIndex(x).contagion(Cvirus);      // CONTAGION WITH CHINESE VARIANT
                     }
                     if (y == 1)
                     {
-                        m.getSettelmentFromMapByIndex(i).getHealthyPeronByIndex(x).contagion(Bvirus);         // CONTAGION WITH BRITISH VARIANT
+                        m.getSettelmentFromMapByIndex(i).getSickPeronByIndex(x).contagion(Bvirus);         // CONTAGION WITH BRITISH VARIANT
                     }
                     if (y == 2)
                     {
-                        m.getSettelmentFromMapByIndex(i).getHealthyPeronByIndex(x).contagion(Svirus);          // CONTAGION WITH SOUTH AFRICAN VARIANT
+                        m.getSettelmentFromMapByIndex(i).getSickPeronByIndex(x).contagion(Svirus);          // CONTAGION WITH SOUTH AFRICAN VARIANT
                     }
                     population -= 1;
                     m.getSettelmentFromMapByIndex(i).getHealthyPeople().remove(m.getSettelmentFromMapByIndex(i).getHealthyPeronByIndex(x));
                     m.getSettelmentFromMapByIndex(i).getSickPeople().add(m.getSettelmentFromMapByIndex(i).getHealthyPeronByIndex(x));
+                    m.getSettelmentFromMapByIndex(i).getSickPeronByIndex(x).toString();   //דיגום לאחר נסיון הדבקה
                 }
             }
 
+            //-------------------------------------------------------------------------------------------------------------------------------------------
+            //-------------------------------------------------------------------------------------------------------------------------------------------
+
             //In every settlement show 3 not sick people and try to contage them
-            /*int notSick=3;
+            int notSick=3;
+
             for (int i = 0; i < m.getMapSize(); i++)
             {
-                int population = (int) (m.getSettelmentFromMapByIndex(i).getCurrentPopulation());
-
-                for (int j=0;j<notSick;j++)
+                for(int j=0;j<m.getSettelmentFromMapByIndex(i).getHealthyPeople().size();j++)       //run until size if healty people list
                 {
+                    m.getSettelmentFromMapByIndex(i).getHealthyPeronByIndex(j).toString();                 //לדגם 3 אנשים לא חולים
 
+                    int y = randomy.nextInt(3);
+
+                    for (int z=0;z<notSick;z++)    //runs until 3
+                    {
+                        if (y == 0)
+                        {
+                            m.getSettelmentFromMapByIndex(i).getHealthyPeronByIndex(z).contagion(Cvirus);      // CONTAGION WITH CHINESE VARIANT
+                        }
+                        if (y == 1)
+                        {
+                            m.getSettelmentFromMapByIndex(i).getHealthyPeronByIndex(z).contagion(Bvirus);         // CONTAGION WITH BRITISH VARIANT
+                        }
+                        if (y == 2)
+                        {
+                            m.getSettelmentFromMapByIndex(i).getHealthyPeronByIndex(z).contagion(Svirus);          // CONTAGION WITH SOUTH AFRICAN VARIANT
+                        }
+                        m.getSettelmentFromMapByIndex(i).getHealthyPeople().remove(m.getSettelmentFromMapByIndex(i).getHealthyPeronByIndex(z));//remove the person that got contage from the healthy list
+                        m.getSettelmentFromMapByIndex(i).getSickPeople().add(m.getSettelmentFromMapByIndex(i).getHealthyPeronByIndex(z));//add the person that got contage to the sick list
+
+                    }
                 }
+            }
+            //-------------------------------------------------------------------------------------------------------------------------------------------
+            //-------------------------------------------------------------------------------------------------------------------------------------------
 
-            }*/
+            //make in every settlement all the sick people to convalescent if its been 25 days from the contage day
+            for (int i = 0; i < m.getMapSize(); i++)
+            {
+                for (int j=0; j<m.getSettelmentFromMapByIndex(i).getSickPeople().size();j++)
+                {
+                    if ((Clock.now()-((Sick) m.getSettelmentFromMapByIndex(i).getSickPeronByIndex(j)).getContagiousTime())>25)  //if past 25 days from the day the person got contagious
+                    {
+                        //need to make the sick person to convalescent so I will make new convalescent obj and
+                        //put all the data of the sick person to the new obj
+                        Convalescent As = new Convalescent(m.getSettelmentFromMapByIndex(i).getSickPeronByIndex(j).getAge(),
+                                                           m.getSettelmentFromMapByIndex(i).getSickPeronByIndex(j).getLocation(),
+                                                           m.getSettelmentFromMapByIndex(i).getSickPeronByIndex(j).getSettlement(),
+                                                           ((Sick) m.getSettelmentFromMapByIndex(i).getSickPeronByIndex(j)).getVirus());
 
+                        m.getSettelmentFromMapByIndex(i).getSickPeople().remove(m.getSettelmentFromMapByIndex(i).getSickPeronByIndex(j));
+                        m.getSettelmentFromMapByIndex(i).getHealthyPeople().add(As);
+                    }
+                }
+            }
+            //-------------------------------------------------------------------------------------------------------------------------------------------
+            //-------------------------------------------------------------------------------------------------------------------------------------------
+
+            //In every settlement show 3% of people that trying to random neighbor
+            //Try to move to that neighbor settlement
+
+            //-------------------------------------------------------------------------------------------------------------------------------------------
+            //-------------------------------------------------------------------------------------------------------------------------------------------
+
+            //inoculate (לחסן) healthy people and update the
+            for (int i = 0; i < m.getMapSize(); i++)
+            {
+                if (m.getSettelmentFromMapByIndex(i).getVaccineDoses()>0)   //it means that the settlement has vaccine Doses
+                {
+                    for (int j=0;j<m.getSettelmentFromMapByIndex(i).getHealthyPeople().size();j++)
+                    {
+                        Vaccinated personGotVaccinated= new Vaccinated(m.getSettelmentFromMapByIndex(i).getHealthyPeronByIndex(j).getAge(),
+                                                                       m.getSettelmentFromMapByIndex(i).getHealthyPeronByIndex(j).getLocation(),
+                                                                       m.getSettelmentFromMapByIndex(i).getHealthyPeronByIndex(j).getSettlement(),
+                                                                       Clock.now());
+                        m.getSettelmentFromMapByIndex(i).setVaccineDoses((m.getSettelmentFromMapByIndex(i).getVaccineDoses())-1);
+                    }
+                }
+            }
         }
+
+
         catch (Exception e)
         {
             System.out.print(e);

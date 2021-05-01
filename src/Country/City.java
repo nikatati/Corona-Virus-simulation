@@ -12,9 +12,9 @@ public class City extends Settlement{
     }
 
     //constructor get 4 variables
-    public City (String name,Location location,int currentPopulation,int maxPopulation)
+    public City (String name,Location location,int currentPopulation,int maxPopulation,int vaccineDoses)
     {
-        super (name,location, currentPopulation, maxPopulation);
+        super (name,location, currentPopulation, maxPopulation, vaccineDoses);
     }
 
     public RamzorColor calculateRamzorGrade() {
