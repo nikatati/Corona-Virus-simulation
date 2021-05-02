@@ -57,11 +57,11 @@ public class SimulationFile
                 {
                     simulation_map.addSettelmentToMap(createNewSettlementByType
                             (words[0],
-                                    words[1],
-                                    new Location(new Point(Integer.parseInt(words[2]), Integer.parseInt(words[3])),
-                                            new Size(Integer.parseInt(words[4]), Integer.parseInt(words[5]))),
-                                    Integer.parseInt(words[6]),
-                                    Integer.parseInt(words[7])));
+                             words[1],
+                             new Location(new Point(Integer.parseInt(words[2]), Integer.parseInt(words[3])),
+                             new Size(Integer.parseInt(words[4]), Integer.parseInt(words[5]))),
+                             Integer.parseInt(words[6]),
+                             Integer.parseInt(words[7])));
                     str = myReader.nextLine();
                 }
 
