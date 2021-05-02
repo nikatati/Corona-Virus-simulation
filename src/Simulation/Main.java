@@ -58,6 +58,8 @@ public class Main
         Cvirus = new ChineseVariant();
         Bvirus = new BritishVariant();
         Svirus = new SouthAfricanVariant();
+        List <Person> sickANDhealthyPersonList = null;
+
 
         try
         {
@@ -155,6 +157,32 @@ public class Main
 
             //In every settlement show 3% of people that trying to random neighbor
             //Try to move to that neighbor settlement
+
+            for (int i = 0; i < m.getMapSize(); i++)
+            {
+                for (int j=0;j<m.getSettelmentFromMapByIndex(i).getHealthyPeople().size(); j++)
+                {
+                    sickANDhealthyPersonList.add(m.getSettelmentFromMapByIndex(i).getHealthyPeronByIndex(j));
+                }
+                for (int j=m.getSettelmentFromMapByIndex(i).getHealthyPeople().size();j<m.getSettelmentFromMapByIndex(i).getSickPeople().size(); j++)
+                {
+                    sickANDhealthyPersonList.add(m.getSettelmentFromMapByIndex(i).getSickPeronByIndex(j));
+                }
+                //now the array contains all person- sick and healthy
+
+                for (int j=0;j<sickANDhealthyPersonList.size()*0.03;j++)
+                {
+                    Random rn = new Random();
+                    Random rp = new Random();
+                    int a = rp.nextInt(sickANDhealthyPersonList.size());
+                    int b = rn.nextInt(sickANDhealthyPersonList.get(a).getSettlement().getNeighbors().size());
+                    sickANDhealthyPersonList.
+                            get(a).
+                            getSettlement().
+                            transferPerson(sickANDhealthyPersonList.get(a)
+                            ,sickANDhealthyPersonList.get(a).getSettlement().getNeighbors().get(b));
+                }
+            }
 
             //-------------------------------------------------------------------------------------------------------------------------------------------
             //-------------------------------------------------------------------------------------------------------------------------------------------
