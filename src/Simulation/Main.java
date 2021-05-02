@@ -192,14 +192,29 @@ public class Main
             {
                 if (m.getSettelmentFromMapByIndex(i).getVaccineDoses()>0)   //it means that the settlement has vaccine Doses
                 {
-                    for (int j=0;j<m.getSettelmentFromMapByIndex(i).getHealthyPeople().size();j++)
+                    if(m.getSettelmentFromMapByIndex(i).getVaccineDoses()>=m.getSettelmentFromMapByIndex(i).getHealthyPeople().size())
                     {
-                        Vaccinated personGotVaccinated= new Vaccinated(m.getSettelmentFromMapByIndex(i).getHealthyPeronByIndex(j).getAge(),
-                                                                       m.getSettelmentFromMapByIndex(i).getHealthyPeronByIndex(j).getLocation(),
-                                                                       m.getSettelmentFromMapByIndex(i).getHealthyPeronByIndex(j).getSettlement(),
-                                                                       Clock.now());
-                        m.getSettelmentFromMapByIndex(i).setVaccineDoses((m.getSettelmentFromMapByIndex(i).getVaccineDoses())-1);
+                        for (int j = 0; j < m.getSettelmentFromMapByIndex(i).getHealthyPeople().size(); j++)
+                        {
+                            Vaccinated personGotVaccinated = new Vaccinated(m.getSettelmentFromMapByIndex(i).getHealthyPeronByIndex(j).getAge(),
+                                    m.getSettelmentFromMapByIndex(i).getHealthyPeronByIndex(j).getLocation(),
+                                    m.getSettelmentFromMapByIndex(i).getHealthyPeronByIndex(j).getSettlement(),
+                                    Clock.now());
+                            m.getSettelmentFromMapByIndex(i).setVaccineDoses((m.getSettelmentFromMapByIndex(i).getVaccineDoses()) - 1);
+                        }
                     }
+                   else
+                    {
+                        for (int j = 0; j <m.getSettelmentFromMapByIndex(i).getVaccineDoses(); j++)
+                        {
+                            Vaccinated personGotVaccinated = new Vaccinated(m.getSettelmentFromMapByIndex(i).getHealthyPeronByIndex(j).getAge(),
+                                    m.getSettelmentFromMapByIndex(i).getHealthyPeronByIndex(j).getLocation(),
+                                    m.getSettelmentFromMapByIndex(i).getHealthyPeronByIndex(j).getSettlement(),
+                                    Clock.now());
+                            m.getSettelmentFromMapByIndex(i).setVaccineDoses((m.getSettelmentFromMapByIndex(i).getVaccineDoses()) - 1);
+                        }
+                    }
+
                 }
             }
         }
@@ -211,32 +226,6 @@ public class Main
         }
     }
 
-    /*private static void dataInitialization (Map m)
-    {
-        //contagion 0.01% from the people at the settlement
-        for (int i = 0; i < m.getMapSize(); i++)
-        {
-            for (int j = 0; j < m.getSettelmentFromMapByIndex(i).getCurrentPopulation() * 0.01; j++)
-             {
-                if (m.getSettelmentFromMapByIndex(i).getPeronByIndex(j).ifSick() == false) // if the man Healthy
-                {
-                    try
-                    {
-                        //create new Sick Obj, copy the data from the healthy person and add it to the settlement
-                        Sick sick = new Sick(m.getSettelmentFromMapByIndex(i).getPeronByIndex(j).contagion(new ChineseVariant()));
-                        m.getSettelmentFromMapByIndex(i).removePerson(m.getSettelmentFromMapByIndex(i).getPeronByIndex(j));
-                        m.getSettelmentFromMapByIndex(i).addPerson(sick);
-                    }
-                     catch (Exception e)
-                     {
-                        System.out.print(e);
-                     }
-
-                }
-            }
-
-        }
-    }*/
 
    /* private static void simulation (Map m)
     {
