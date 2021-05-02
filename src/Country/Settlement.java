@@ -199,16 +199,16 @@ public abstract class Settlement {
     @Override
     public String toString()
     {
-        return "Settlement{" +
-                "name='" + name + '\'' +
-                ", location=" + location +
-                ", sickPeople=" + sickPeople +
-                ", healthyPeople=" + healthyPeople +
-                ", ramzorColor=" + ramzorColor +
-                ", maxPopulation=" + maxPopulation +
-                ", currentPopulation=" + currentPopulation +
-                ", vaccineDoses=" + vaccineDoses +
-                ", neighbors=" + neighbors +
+        return "\n"+
+                "name='" + name + '\''+",\n"+
+                " location=" + location +",\n"+
+                " sickPeople=" + sickPeople +",\n"+
+                " healthyPeople=" + healthyPeople +",\n"+
+                " ramzorColor=" + ramzorColor +",\n"+
+                " maxPopulation=" + maxPopulation +",\n"+
+                " currentPopulation=" + currentPopulation +",\n"+
+                " vaccineDoses=" + vaccineDoses +",\n"+
+                " neighbors=" + neighbors +
                 '}';
     }
 

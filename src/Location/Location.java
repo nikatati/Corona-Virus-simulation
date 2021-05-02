@@ -41,7 +41,7 @@ public class Location
     //to string methode- helps me to represent obj as a string
     public String toString()
     {
-        return " The Location:" + "\n\t" + "position=" + position+
+        return  "\n\t" + "position=" + position+
                 "\n\t" + "size=" + size ;
     }
 

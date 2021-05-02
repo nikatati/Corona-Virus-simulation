@@ -48,7 +48,7 @@ public class Size
     //to string methode- helps me to represent obj as a string
     public String toString()
     {
-        return " The Size:" +"\n\t" + "width=" + width +
-                "\n\t" + "height=" + height ;
+        return " The Size:" +"\t" + "width=" + width +
+                " || " + "height=" + height ;
     }
 }
