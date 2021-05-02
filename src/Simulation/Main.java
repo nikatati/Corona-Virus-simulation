@@ -1,6 +1,7 @@
 package Simulation;
 
-import Country.*;
+import Country.Moshav;
+import Country.Settlement;
 import Location.Location;
 import Location.Point;
 import Location.Size;
@@ -8,6 +9,7 @@ import Population.*;
 import Simulation.Clock;
 import Virus.BritishVariant;
 import Virus.ChineseVariant;
+import Country.Map;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -30,35 +32,23 @@ public class Main
     {
 
         Map m = new Map();
-        Point P1= new Point(0,10);
-        Size S1=new Size(10,10);
-        Location L1=new Location(P1,S1);
-        //City (String name,Location location,int currentPopulation,int maxPopulation,int vaccineDoses)
-        Settlement s1 =new City("ASHDOD",L1,1000,2000,10);
-        Settlement s2 =new Moshav("SAAD",L1,1000,2000,10);
-        Settlement s3 =new Kibbutz("METOLA",L1,1000,2000,10);
-        s1.addNeighbor(s2);
-        System.out.println("----------------------------");
-        System.out.println(s1.getRamzorColor()+"\n");
-        System.out.println(s1);
-        System.out.println("----------------------------");
-        System.out.println(s2);
-        System.out.println("----------------------------");
-        System.out.println(s3);
-        System.out.println("----------------------------");
 
-        //m = SimulationFile.SimulationFile(); //Load data from File to map- שלב הטעינה
+        m = SimulationFile.SimulationFile(); //Load data from File to map
 
+        dataInitialization(m);
 
-       /* for (int i = 0; i < simulation_loop; i++)
+        for (int i = 0; i < simulation_loop; i++)
         {
             //simulation(m);// Play the simulation
-            dataInitialization(m);       //שלב האתחול
             Clock.nextTick();
-        }*/
+        }
 
     }
 
+    /*private static void simulation(Map m)
+    {
+
+    }*/
 
     private static void dataInitialization(Map m)   //טעינת המפה
     {
@@ -168,7 +158,7 @@ public class Main
             //In every settlement show 3% of people that trying to random neighbor
             //Try to move to that neighbor settlement
 
-            List <Person> sickANDhealthyPersonList=new ArrayList<>();
+            List <Person> sickANDhealthyPersonList=null;
             for (int i = 0; i < m.getMapSize(); i++)
             {
                 for (int j=0;j<m.getSettelmentFromMapByIndex(i).getHealthyPeople().size(); j++)
@@ -278,6 +268,4 @@ public class Main
             }
         }
     }*/
-
-
 }
