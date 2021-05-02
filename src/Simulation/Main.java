@@ -58,7 +58,7 @@ public class Main
         Cvirus = new ChineseVariant();
         Bvirus = new BritishVariant();
         Svirus = new SouthAfricanVariant();
-        List <Person> sickANDhealthyPersonList = null;
+
 
 
         try
@@ -158,6 +158,7 @@ public class Main
             //In every settlement show 3% of people that trying to random neighbor
             //Try to move to that neighbor settlement
 
+            List <Person> sickANDhealthyPersonList=null;
             for (int i = 0; i < m.getMapSize(); i++)
             {
                 for (int j=0;j<m.getSettelmentFromMapByIndex(i).getHealthyPeople().size(); j++)
