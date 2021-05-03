@@ -33,7 +33,8 @@ public class SimulationFile
         boolean flag1 = true; //no file selected
         String file_path = null;
 
-        while (flag1) {
+        while (flag1)
+        {
             file_path = chooseFile();
             if (!Objects.equals("No file selected", file_path)) // File chosen
                 flag1 = false; // while loop over

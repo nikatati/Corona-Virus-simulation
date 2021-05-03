@@ -1,37 +1,36 @@
 package UI;
+
+
+import Country.Map;
+import IO.SimulationFile;
+import Simulation.Main;
+
 import javax.swing.*;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
 
 import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.Expression;
 import java.io.File;
-import java.util.Objects;
+import java.io.IOException;
+
+import static IO.StatisticsFile.csv;
 
 
-public class Window {
+public class Window extends JFrame implements ActionListener {
+    // private final JFileChooser openFileChooser;
     static final JFrame frame = new JFrame();
+    static Map m = new Map();
 
-    //Usually you will require both swing and awt packages
-// even if you are working with just swings.
-    public static String showFileDialog(){
-        FileDialog fdlg = new FileDialog(frame, "Open file...", FileDialog.LOAD);
-        fdlg.setPreferredSize(new Dimension(400,400));
-        fdlg.setSize(400, 400);
-        fdlg.setLayout(new FlowLayout(FlowLayout.CENTER,10,10));
-        fdlg.setResizable(true);
-        //fdlg.setVisible(true);
-        //fdlg.pack();
-        return fdlg.getFile();
-    }
-    public static <flag1> void main(String args[]) {
+    public static <flag1> void main(String args[]) throws IOException {
 
         //Creating the Frame
         JFrame frame = new JFrame("Main Window");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(400, 400);
-
+        Window s = new Window();
         //Creating the MenuBar and adding components
         JMenuBar mb = new JMenuBar();
         JMenu m1 = new JMenu("File");
@@ -40,39 +39,57 @@ public class Window {
         mb.add(m1);
         mb.add(m2);
         mb.add(m3);
-       // JButton m11 = new JButton("Load");
-        /*m11.addActionListener(new ActionListener()
-        {
-            boolean flag1 = true; //no file selected
-            String file_path = null;
 
-            while (flag1)
-             {
-                file_path = chooseFile();
-                if (!Objects.equals("No file selected", file_path)) // File chosen
-                    flag1 = false; // while loop over
-             }
-
-        });  */ //make sending to file
-
-
-        final Label fileChosen = new Label("No file chosen yet...");
-        Button m11 = new Button("Choose a file");
+        // final Label fileChosen = new Label("No file chosen yet...");
+        Button m11 = new Button("Load");
         m11.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                fileChosen.setText(showFileDialog());
+            public void actionPerformed(ActionEvent arg0) {
+                OpenFile of = new OpenFile();
+                try{
+                    of.PickMe();
+                    m = SimulationFile.SimulationFile(new File(String.valueOf(of)));
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         });
 
+
         JButton m12 = new JButton("Statistics");
+        m12.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                try {
+                    csv(m);
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+            }
+        });
+
         JButton m13 = new JButton("Edit Mutations");
+
         JButton m14 = new JButton("Exit");
+        m14.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+
         m1.add(m11);
         m1.add(m12);
         m1.add(m13);
         m1.add(m14);
         JButton m21 = new JButton("Play");
+        m21.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Main.dataInitialization(m);
+
+            }
+        });
         JButton m22 = new JButton("Pause");
         JButton m23 = new JButton("Stop");
         JButton m24 = new JButton("Set Ticks Per Day");
@@ -82,6 +99,7 @@ public class Window {
         m2.add(m24);
         JButton m31 = new JButton("Help");
         JButton m32 = new JButton("About");
+        m32.addActionListener(s);
         m3.add(m31);
         m3.add(m32);
         JPanel panel = new JPanel();
@@ -89,24 +107,13 @@ public class Window {
         frame.getContentPane().add(BorderLayout.NORTH, mb);
 
 
-
-
-
         frame.setVisible(true);
     }
-}
 
-   /* private static String chooseFile() {
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));  //this is the user's profile directory-> sends me to c:/home/user
-        int result = fileChooser.showOpenDialog( fileChooser);   //Pops up an "Open File" file chooser dialog.
-        if (result == JFileChooser.APPROVE_OPTION)     //Return value if approve (yes, ok) is chosen.
-        {
-            File selectedFile = fileChooser.getSelectedFile();      //Returns the selected file.
-            return (selectedFile.getAbsolutePath());   //returns the absolute pathname of the given file object
-        }
-        else
-            return "No file selected";
+
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
     }
-
-*/
+}
