@@ -36,7 +36,7 @@ public class Main
 
         City c1=new City();
 
-        m = SimulationFile.SimulationFile(); //Load data from File to map
+         //Load data from File to map
 
         dataInitialization(m);
 
@@ -55,7 +55,7 @@ public class Main
 
     }*/
 
-    private static void dataInitialization(Map m)   //טעינת המפה
+    public static void dataInitialization(Map m)   //טעינת המפה
     {
         Random randomx = new Random();
         Random randomy = new Random();
@@ -171,7 +171,7 @@ public class Main
             //In every settlement show 3% of people that trying to random neighbor
             //Try to move to that neighbor settlement
 
-            List <Person> sickANDhealthyPersonList=null;
+            List <Person> sickANDhealthyPersonList=new ArrayList<>();
             for (int i = 0; i < m.getMapSize(); i++)
             {
                 for (int j=0;j<m.getSettelmentFromMapByIndex(i).getHealthyPeople().size(); j++)

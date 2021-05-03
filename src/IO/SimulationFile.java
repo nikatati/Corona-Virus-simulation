@@ -2,6 +2,8 @@ package IO;
 
 import java.io.File;  // Import the File class
 import java.io.FileNotFoundException;  // Import this class to handle errors
+import java.io.FileReader;
+import java.nio.file.FileVisitResult;
 import java.util.Scanner; // Import the Scanner class to read text files
 import Country.Moshav;
 import Location.Location;
@@ -28,7 +30,7 @@ public class SimulationFile
         ArrayList<String> gonnaBeNeighbor = new ArrayList<String>();
 
         Map simulation_map = new Map();            //מערך של יישובים
-
+        //String file_path = new String();
         //choose a file from documents
         boolean flag1 = true; //no file selected
         String file_path = null;
@@ -85,7 +87,7 @@ public class SimulationFile
         {
             try
             {
-                File myObj = new File(file_path);
+                File myObj = new File(String.valueOf(file_path));
                 Scanner myReader1 = new Scanner(myObj);
                 String str = myReader1.nextLine();
                 while (myReader1.hasNextLine())

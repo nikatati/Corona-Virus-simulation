@@ -45,10 +45,11 @@ public class Window extends JFrame implements ActionListener {
         m11.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                OpenFile of = new OpenFile();
+                //OpenFile of = new OpenFile();
                 try{
-                    of.PickMe();
-                    m = SimulationFile.SimulationFile(new File(String.valueOf(of)));
+                    //File file = of.PickMe();
+                    m = SimulationFile.SimulationFile();
+
 
                 }catch (Exception e){
                     e.printStackTrace();
@@ -98,8 +99,20 @@ public class Window extends JFrame implements ActionListener {
         m2.add(m23);
         m2.add(m24);
         JButton m31 = new JButton("Help");
+        m31.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(frame, "This application is created for getting data about viruses on the map");
+            }
+        });
         JButton m32 = new JButton("About");
-        m32.addActionListener(s);
+        m32.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(frame, "Writers: Nika and Liubov");
+            }
+        });
+
         m3.add(m31);
         m3.add(m32);
         JPanel panel = new JPanel();
