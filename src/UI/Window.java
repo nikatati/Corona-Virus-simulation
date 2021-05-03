@@ -50,12 +50,12 @@ public class Window extends JFrame implements ActionListener {
         Button m11 = new Button("Load");
         m11.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent arg0) {
+            public void actionPerformed(ActionEvent arg0)
+            {
                 //OpenFile of = new OpenFile();
                 try{
                     //File file = of.PickMe();
                     m = SimulationFile.SimulationFile();
-
 
                 }catch (Exception e){
                     e.printStackTrace();
@@ -133,17 +133,27 @@ public class Window extends JFrame implements ActionListener {
         m2.add(m23);
         m2.add(m24);
         JButton m31 = new JButton("Help");
-        m31.addActionListener(new ActionListener() {
+        m31.addActionListener(new ActionListener()
+        {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frame, "This application is created for getting data about viruses on the map");
+                JOptionPane.showMessageDialog(frame, "Hello, this is a corona simulation.\n" +
+                                                             "Here you can see all the data about corona in different settlements. \n" +
+                                                             "Each settlement has a color that is painted according to the number of patients\n"+
+                                                              "The first window is the main window:\n There are 3 main buttons-\n->File:\n" +
+                                                               "Open the option to load a txt file.\n Open the statistics of the file\n " +
+                                                               "Open the Edit Mutations window: you can update the variants\n Exit-> exit the app"+
+                                                                "In the Simulation area we have the option:\n Play-> play the simulation(Start)"+
+                                                                 "\n Stop-> stops the simulation\n Set Ticks per day-> opens a window there you can control the ticks that consider for a day"+
+                                                                   "\nIn the Help area we have the option:\nHelp-> see how the app works.\n About->Shows the details of the writers "+
+                                                                    "\n Enjoy !");
             }
         });
         JButton m32 = new JButton("About");
         m32.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frame, "Writers: Nika and Liubov");
+                JOptionPane.showMessageDialog(frame, "Writers:\nNika Tatikishvili ID:321735433 \nLiubov Vasilchuk ID:327248605\n Date Written:3/5/2021\n");
             }
         });
 
@@ -155,6 +165,8 @@ public class Window extends JFrame implements ActionListener {
         frame.getContentPane().add(mapArea);
 
         frame.setVisible(true);
+
+        csv(m);
     }
 
 
