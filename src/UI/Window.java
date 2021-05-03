@@ -28,6 +28,12 @@ public class Window extends JFrame implements ActionListener {
 
         //Creating the Frame
         JFrame frame = new JFrame("Main Window");
+
+        JLabel mapArea = new JLabel();
+        mapArea.setOpaque(true);
+        mapArea.setBackground(new Color(248, 213, 131));
+        mapArea.setPreferredSize(new Dimension(400, 380));
+
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(400, 400);
         Window s = new Window();
@@ -57,7 +63,6 @@ public class Window extends JFrame implements ActionListener {
             }
         });
 
-
         JButton m12 = new JButton("Statistics");
         m12.addActionListener(new ActionListener() {
             @Override
@@ -78,7 +83,6 @@ public class Window extends JFrame implements ActionListener {
                 System.exit(0);
             }
         });
-
         m1.add(m11);
         m1.add(m12);
         m1.add(m13);
@@ -91,8 +95,38 @@ public class Window extends JFrame implements ActionListener {
 
             }
         });
+
         JButton m22 = new JButton("Pause");
+        m22.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                for (Thread t : Thread.getAllStackTraces().keySet())
+                {      if (t.getState()==Thread.State.RUNNABLE) {
+                    try {
+                        t.sleep(200);
+                    } catch (InterruptedException interruptedException) {
+                        interruptedException.printStackTrace();
+                    }
+                }
+                }
+
+            }
+
+        });
+
         JButton m23 = new JButton("Stop");
+        m23.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                for (Thread t : Thread.getAllStackTraces().keySet())
+                {      if (t.getState()==Thread.State.RUNNABLE)
+                    t.stop();
+                }
+
+            }
+
+        });
+
         JButton m24 = new JButton("Set Ticks Per Day");
         m2.add(m21);
         m2.add(m22);
@@ -118,11 +152,10 @@ public class Window extends JFrame implements ActionListener {
         JPanel panel = new JPanel();
         frame.getContentPane().add(BorderLayout.SOUTH, panel);
         frame.getContentPane().add(BorderLayout.NORTH, mb);
-
+        frame.getContentPane().add(mapArea);
 
         frame.setVisible(true);
     }
-
 
 
     @Override

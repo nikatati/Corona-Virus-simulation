@@ -3,6 +3,7 @@ package IO;
 import java.io.File;  // Import the File class
 import java.io.FileNotFoundException;  // Import this class to handle errors
 import java.io.FileReader;
+import java.io.IOException;
 import java.nio.file.FileVisitResult;
 import java.util.Scanner; // Import the Scanner class to read text files
 import Country.Moshav;
@@ -19,13 +20,15 @@ import Country.Map;
 
 import javax.swing.*;
 
+import static IO.StatisticsFile.csv;
+
 public class SimulationFile
 {
 
     private final static double x = 1.3;
 
-    public static Map SimulationFile()
-    {
+    public static Map SimulationFile() {
+
         ArrayList<Settlement> tempStel = new ArrayList<>();
         ArrayList<String> gonnaBeNeighbor = new ArrayList<String>();
 
@@ -128,11 +131,9 @@ public class SimulationFile
 
 
         }
+
         return simulation_map;
     }
-
-
-
 
 
     /*private static void ceateNeighbors()
