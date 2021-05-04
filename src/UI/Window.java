@@ -36,14 +36,32 @@ public class Window extends JFrame implements ActionListener {
         mapArea.setBackground(new Color(248, 213, 131));
         mapArea.setPreferredSize(new Dimension(400, 380));
 
-
-
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(400, 400);
+
         JLabel label = new JLabel("Simulation Speed Slider");
-        JSlider slider=new JSlider(JSlider.HORIZONTAL,0,20,0);
-        slider.setMajorTickSpacing(5);
+        JSlider slider = new JSlider(JSlider.HORIZONTAL, 0, 40, 10);
+        slider.setMinorTickSpacing(5);
+        slider.setMajorTickSpacing(20);
         slider.setPaintTicks(true);
+        slider.setPaintLabels(true);
+        slider.setLabelTable(slider.createStandardLabels(10));
+        //slider.setOrientation(JSlider.BOTTOM);
+        //frame.add(BorderLayout.SOUTH,slider);
+
+
+        //frame.setLayout(new FlowLayout());
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(400, 380);
+        frame.getContentPane().add(slider,BorderLayout.SOUTH);
+        //frame.getContentPane().setBackground(Color.blue);
+        frame.setVisible(true);
+
+        //slider.pack();
+        //slider.setVisible(true);
+
+
+
         Window s = new Window();
         //Creating the MenuBar and adding components
         JMenuBar mb = new JMenuBar();
@@ -147,12 +165,12 @@ public class Window extends JFrame implements ActionListener {
                 JOptionPane.showMessageDialog(frame, "Hello, this is a corona simulation.\n" +
                                                              "Here you can see all the data about corona in different settlements. \n" +
                                                              "Each settlement has a color that is painted according to the number of patients\n"+
-                                                              "The first window is the main window:\n There are 3 main buttons-\n->File:\n" +
+                                                              "The first window is the main window:\n There are 3 main buttons->\nFile, Simolation, Help.\n**In the File area we have the option:\n" +
                                                                "Open the option to load a txt file.\n Open the statistics of the file\n " +
                                                                "Open the Edit Mutations window: you can update the variants\n Exit-> exit the app"+
-                                                                "In the Simulation area we have the option:\n Play-> play the simulation(Start)"+
+                                                                "\n**In the Simulation area we have the option:\n Play-> play the simulation(Start)"+
                                                                  "\n Stop-> stops the simulation\n Set Ticks per day-> opens a window there you can control the ticks that consider for a day"+
-                                                                   "\nIn the Help area we have the option:\nHelp-> see how the app works.\n About->Shows the details of the writers "+
+                                                                   "\n**In the Help area we have the option:\nHelp-> see how the app works.\n About->Shows the details of the writers "+
                                                                     "\n Enjoy !");
             }
         });
@@ -171,9 +189,9 @@ public class Window extends JFrame implements ActionListener {
         frame.getContentPane().add(BorderLayout.NORTH, mb);
         frame.getContentPane().add(mapArea);
 
-        frame.getContentPane().add(slider, BorderLayout.SOUTH);
+        //frame.getContentPane().add(slider, BorderLayout.SOUTH);
         frame.getContentPane().add(BorderLayout.SOUTH,label);
-
+        frame.add(BorderLayout.SOUTH,slider);
 
         frame.setVisible(true);
 
@@ -185,4 +203,6 @@ public class Window extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 
     }
+
+
 }

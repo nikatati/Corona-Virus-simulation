@@ -6,6 +6,7 @@ import Location.Location;
 
 public class City extends Settlement{
 
+    public String Type= "City";
     //Default constructor
     public City () {
         super ();
@@ -31,6 +32,8 @@ public class City extends Settlement{
         else
             return this.setRamzorColor(RamzorColor.RED);
     }
+
+    public String getType() { return Type; }
 
     @Override
     public String toString() {
