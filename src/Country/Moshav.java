@@ -8,7 +8,7 @@ import Location.Size;
 
 public class Moshav extends Settlement
 {
-
+    public String Type= "Moshav";
     //Default constructor
     public Moshav () {
         super ();
@@ -34,6 +34,8 @@ public class Moshav extends Settlement
         else
             return this.setRamzorColor(RamzorColor.RED);
     }
+
+    public String getType() { return Type; }
 
     @Override
     public String toString() {

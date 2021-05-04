@@ -5,6 +5,7 @@ import Location.Location;
 
 public class Kibbutz extends Settlement
 {
+    public String Type= "Kibbutz";
 
     //Default constructor
     public Kibbutz ()
@@ -33,6 +34,8 @@ public class Kibbutz extends Settlement
         else
             return this.setRamzorColor(RamzorColor.RED);
     }
+
+    public String getType() { return Type; }
 
     @Override
     public String toString() {
