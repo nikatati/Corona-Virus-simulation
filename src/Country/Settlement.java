@@ -191,9 +191,12 @@ public abstract class Settlement {
 
     public void addNeighbor(Settlement s) { this.neighbors.add(s); }
 
+    public void getNeighborByIndex(int i) { this.neighbors.get(i); }
+
     public Person getSickPeronByIndex (int i){ return sickPeople.get(i); }
 
     public Person getHealthyPeronByIndex (int i){ return healthyPeople.get(i); }
+    public Location getLocation (){ return location; }
 
 
     @Override
