@@ -37,6 +37,6 @@ public class Moshav extends Settlement
 
     @Override
     public String toString() {
-        return "Moshav{} " + super.toString();
+        return "Moshav " + super.toString();
     }
 }

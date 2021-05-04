@@ -34,6 +34,6 @@ public class City extends Settlement{
 
     @Override
     public String toString() {
-        return "City{} " + super.toString();
+        return "City " + super.toString();
     }
 }

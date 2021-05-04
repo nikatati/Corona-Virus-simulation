@@ -50,10 +50,7 @@ public class Main
 
     }
 
-    /*private static void simulation(Map m)
-    {
 
-    }*/
 
     public static void dataInitialization(Map m)   //טעינת המפה
     {

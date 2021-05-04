@@ -18,8 +18,8 @@ public class StatisticsFile
 
         try {
 
-                    PrintWriter writer = new PrintWriter(new File("test.csv"));
-                    StringBuilder sb = new StringBuilder();
+                PrintWriter writer = new PrintWriter(new File("test.csv"));
+                StringBuilder sb = new StringBuilder();
 
                 sb.append("Settlement type");
                 sb.append(',');

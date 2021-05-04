@@ -36,7 +36,7 @@ public class Kibbutz extends Settlement
 
     @Override
     public String toString() {
-        return "Kibbutz{} " + super.toString();
+        return "Kibbutz " + super.toString();
     }
 }
 

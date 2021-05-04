@@ -48,16 +48,18 @@ public class SimulationFile
         {
             File myObj = new File(file_path);
             Scanner myReader = new Scanner(myObj);
-            String str = myReader.nextLine();
+            String str = new String();
             while (myReader.hasNextLine())
             {
+                str = myReader.nextLine();
                 // read one line from file
                 str = str.replaceAll("\\s", "");        //remove all " " from string
                 String[] words = str.split(";");                  // split the string to words by ; מערך של שורה אחת
 
-                if (words[0] == "#")
+                if (words[0].equals("#"))
                 {
-                    str = myReader.nextLine();
+                    //
+
                 }
                 else
                 {
@@ -68,9 +70,8 @@ public class SimulationFile
                              new Size(Integer.parseInt(words[4]), Integer.parseInt(words[5]))),
                              Integer.parseInt(words[6]),
                              Integer.parseInt(words[7])));
-                    str = myReader.nextLine();
+                   // str = myReader.nextLine();
                 }
-
 
             }
 
@@ -92,21 +93,22 @@ public class SimulationFile
             {
                 File myObj = new File(String.valueOf(file_path));
                 Scanner myReader1 = new Scanner(myObj);
-                String str = myReader1.nextLine();
+                String str = new String();
                 while (myReader1.hasNextLine())
                 {
+                    str = myReader1.nextLine();
                     // read one line from file
                     str = str.replaceAll("\\s", "");        //remove all " " from string
                     String[] words = str.split(";");
 
 
-                    if (words[0] == "#")
+                    if (words[0].equals("#"))
                     {
-                        if (simulation_map.getSettelmentFromMapByIndex(i).getName() == words[1])
+                        if (simulation_map.getSettelmentFromMapByIndex(i).getName().equals(words[1]))
                         {
                             for (int j = i + 1; j < size; j++)
                             {
-                                if (simulation_map.getSettelmentFromMapByIndex(j).getName() == words[2])
+                                if (simulation_map.getSettelmentFromMapByIndex(j).getName().equals(words[2]))
                                 {
                                     simulation_map.getSettelmentFromMapByIndex(i).addNeighbor(simulation_map.getSettelmentFromMapByIndex(j));            //add neighbor B to A
                                     simulation_map.getSettelmentFromMapByIndex(j).addNeighbor(simulation_map.getSettelmentFromMapByIndex(i));            //add neighbor A to B
@@ -115,10 +117,10 @@ public class SimulationFile
                             }
 
                         }
-                        str = myReader1.nextLine();
+                        //str = myReader1.nextLine();
 
-                    } else
-                        str = myReader1.nextLine();
+                    } //else
+                       // str = myReader1.nextLine();
                 }
 
 

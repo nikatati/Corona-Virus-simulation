@@ -200,6 +200,7 @@ public abstract class Settlement {
     public String toString()
     {
         return "\n"+
+                "type="+Settlement.class.getTypeName()+
                 "name='" + name + '\''+",\n"+
                 " location=" + location +",\n"+
                 " sickPeople=" + sickPeople +",\n"+
@@ -211,6 +212,7 @@ public abstract class Settlement {
                 " neighbors=" + neighbors +
                 '}';
     }
+
 
     @Override
     public boolean equals(Object o)

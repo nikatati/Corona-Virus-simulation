@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 
 import javax.swing.JFileChooser;
+import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,6 +25,7 @@ public class Window extends JFrame implements ActionListener {
     static final JFrame frame = new JFrame();
     static Map m = new Map();
 
+
     public static <flag1> void main(String args[]) throws IOException {
 
         //Creating the Frame
@@ -34,8 +36,14 @@ public class Window extends JFrame implements ActionListener {
         mapArea.setBackground(new Color(248, 213, 131));
         mapArea.setPreferredSize(new Dimension(400, 380));
 
+
+
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(400, 400);
+        JLabel label = new JLabel("Simulation Speed Slider");
+        JSlider slider=new JSlider(JSlider.HORIZONTAL,0,20,0);
+        slider.setMajorTickSpacing(5);
+        slider.setPaintTicks(true);
         Window s = new Window();
         //Creating the MenuBar and adding components
         JMenuBar mb = new JMenuBar();
@@ -56,7 +64,6 @@ public class Window extends JFrame implements ActionListener {
                 try{
                     //File file = of.PickMe();
                     m = SimulationFile.SimulationFile();
-
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -164,9 +171,13 @@ public class Window extends JFrame implements ActionListener {
         frame.getContentPane().add(BorderLayout.NORTH, mb);
         frame.getContentPane().add(mapArea);
 
+        frame.getContentPane().add(slider, BorderLayout.SOUTH);
+        frame.getContentPane().add(BorderLayout.SOUTH,label);
+
+
         frame.setVisible(true);
 
-        csv(m);
+
     }
 
 
