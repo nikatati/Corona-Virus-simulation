@@ -26,6 +26,7 @@ public abstract class Settlement {
     private int currentPopulation;    //מספר אנשים עכשווי  בישוב
     private int vaccineDoses;     // מספר מנות חיסון ביישוב -min num is 0
     private List <Settlement> neighbors;    // מערך מייצג שכנים של ישוב מסויים
+    public String Type= null;
 
     //------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -48,6 +49,7 @@ public abstract class Settlement {
         this.currentPopulation=0;
         this.maxPopulation=0;
         this.vaccineDoses=0;
+
     }
 
     //constructor get 4 variables
@@ -195,12 +197,14 @@ public abstract class Settlement {
 
     public Person getHealthyPeronByIndex (int i){ return healthyPeople.get(i); }
 
+    public String getType() { return Type; }
 
     @Override
     public String toString()
     {
         return "\n"+
-                "type="+Settlement.class.getTypeName()+
+                //"type="+Settlement.class.getClass().toString()+
+                "Type="+Type+",\n"+
                 "name='" + name + '\''+",\n"+
                 " location=" + location +",\n"+
                 " sickPeople=" + sickPeople +",\n"+
@@ -212,6 +216,8 @@ public abstract class Settlement {
                 " neighbors=" + neighbors +
                 '}';
     }
+
+
 
 
     @Override
