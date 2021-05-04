@@ -17,6 +17,7 @@ import Population.Vaccinated;
 
 public abstract class Settlement {
 
+
     private String name;
     private Location location;
     private List <Person> sickPeople;
@@ -176,7 +177,6 @@ public abstract class Settlement {
     public List<Person> getHealthyPeople() { return healthyPeople; }
 
     public int getMaxPopulation() { return maxPopulation; }
-
     public int getCurrentPopulation() { return currentPopulation; }
 
     public int getVaccineDoses() { return vaccineDoses; }
@@ -195,6 +195,11 @@ public abstract class Settlement {
 
     public Person getHealthyPeronByIndex (int i){ return healthyPeople.get(i); }
 
+    public Settlement getNeighborByIndex(int i){return neighbors.get(i);}
+
+    public Location getLocation() {
+        return location;
+    }
 
     @Override
     public String toString()
@@ -223,4 +228,8 @@ public abstract class Settlement {
         return maxPopulation == that.maxPopulation && currentPopulation == that.currentPopulation && vaccineDoses == that.vaccineDoses && Objects.equals(name, that.name) && Objects.equals(location, that.location) && Objects.equals(sickPeople, that.sickPeople) && Objects.equals(healthyPeople, that.healthyPeople) && ramzorColor == that.ramzorColor && Objects.equals(neighbors, that.neighbors);
     }
 
-}
+}//\.
+
+
+
+

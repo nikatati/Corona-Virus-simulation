@@ -8,13 +8,13 @@ import Simulation.Main;
 import javax.swing.*;
 import java.awt.*;
 
-import javax.swing.JFileChooser;
-import javax.swing.event.ChangeListener;
-import javax.swing.filechooser.FileNameExtensionFilter;
+//import javax.swing.JFileChooser;
+//import javax.swing.event.ChangeListener;
+//import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.Expression;
-import java.io.File;
+//import java.beans.Expression;
+//import java.io.File;
 import java.io.IOException;
 
 import static IO.StatisticsFile.csv;
@@ -22,11 +22,10 @@ import static IO.StatisticsFile.csv;
 
 public class Window extends JFrame implements ActionListener {
     // private final JFileChooser openFileChooser;
-    static final JFrame frame = new JFrame();
     static Map m = new Map();
 
 
-    public static <flag1> void main(String args[]) throws IOException {
+    public static void main(String args[]) throws IOException {
 
         //Creating the Frame
         JFrame frame = new JFrame("Main Window");
@@ -44,7 +43,6 @@ public class Window extends JFrame implements ActionListener {
         JSlider slider=new JSlider(JSlider.HORIZONTAL,0,20,0);
         slider.setMajorTickSpacing(5);
         slider.setPaintTicks(true);
-        Window s = new Window();
         //Creating the MenuBar and adding components
         JMenuBar mb = new JMenuBar();
         JMenu m1 = new JMenu("File");
@@ -63,7 +61,7 @@ public class Window extends JFrame implements ActionListener {
                 //OpenFile of = new OpenFile();
                 try{
                     //File file = of.PickMe();
-                    m = SimulationFile.SimulationFile();
+                    m= new Map(SimulationFile.SimulationFile());
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -99,6 +97,7 @@ public class Window extends JFrame implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Main.dataInitialization(m);
+                BuildMap.Build(m);
 
             }
         });

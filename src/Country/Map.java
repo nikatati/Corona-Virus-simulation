@@ -7,6 +7,7 @@ import java.util.List;
 
 public class Map
 {
+
     private List<Settlement> settlements;
 
     public Map()
@@ -32,6 +33,7 @@ public class Map
     public int getMapSize (){
         return settlements.size();
     }
+    public Map (Map map){this.settlements =map.settlements;}
 
     @Override
     public String toString() { return "Map{" + "settlements=" + settlements + '}'; }
