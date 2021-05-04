@@ -17,6 +17,7 @@ import Country.Settlement;
 import Country.City;
 import java.util.*;
 import Country.Map;
+import UI.BuildMap;
 
 import javax.swing.*;
 
@@ -24,7 +25,6 @@ import static IO.StatisticsFile.csv;
 
 public class SimulationFile
 {
-
     private final static double x = 1.3;
 
     public static Map SimulationFile() {
@@ -58,7 +58,7 @@ public class SimulationFile
 
                 if (words[0].equals("#"))
                 {
-                    //
+                    continue;
 
                 }
                 else
@@ -84,7 +84,7 @@ public class SimulationFile
         }
 
 
-        // split the string to words by ; מערך של שורה אחת
+        // check all the lines with the neighbors and put in right place
 
         int size = simulation_map.getMapSize();
         for (int i = 0; i < size; i++)
@@ -104,12 +104,9 @@ public class SimulationFile
 
                     if (words[0].equals("#"))
                     {
-                        if (simulation_map.getSettelmentFromMapByIndex(i).getName().equals(words[1]))
-                        {
-                            for (int j = i + 1; j < size; j++)
-                            {
-                                if (simulation_map.getSettelmentFromMapByIndex(j).getName().equals(words[2]))
-                                {
+                        if (simulation_map.getSettelmentFromMapByIndex(i).getName().equals(words[1])) {
+                            for (int j = i + 1; j < size; j++) {
+                                if (simulation_map.getSettelmentFromMapByIndex(j).getName().equals(words[2])) {
                                     simulation_map.getSettelmentFromMapByIndex(i).addNeighbor(simulation_map.getSettelmentFromMapByIndex(j));            //add neighbor B to A
                                     simulation_map.getSettelmentFromMapByIndex(j).addNeighbor(simulation_map.getSettelmentFromMapByIndex(i));            //add neighbor A to B
                                 }
@@ -117,12 +114,9 @@ public class SimulationFile
                             }
 
                         }
-                        //str = myReader1.nextLine();
 
-                    } //else
-                       // str = myReader1.nextLine();
+                    }
                 }
-
 
             }
             catch (FileNotFoundException e)
@@ -131,9 +125,7 @@ public class SimulationFile
                 e.printStackTrace();
             }
 
-
         }
-
         return simulation_map;
     }
 
