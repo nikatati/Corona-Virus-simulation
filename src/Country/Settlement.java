@@ -67,6 +67,8 @@ public abstract class Settlement {
         this.vaccineDoses= vaccineDoses;
     }
 
+
+
     //Calculates the percentage of contagious in the city
     public double contagiousPercent ()
     {
@@ -161,7 +163,19 @@ public abstract class Settlement {
         return false;
     }
 
+    public Settlement (Settlement s)
+    {
 
+        this.name = getName();
+        this.location = s.getLocation();
+        sickPeople = s.getSickPeople();
+        healthyPeople = s.getHealthyPeople();
+        neighbors=s.getNeighbors();
+        this.ramzorColor = s.getRamzorColor();
+        this.currentPopulation=s.getCurrentPopulation();
+        this.maxPopulation=s.getMaxPopulation();
+        this.vaccineDoses= s.getVaccineDoses();
+    }
 
     public RamzorColor getRamzorColor() { return ramzorColor; }
 
@@ -198,6 +212,7 @@ public abstract class Settlement {
     public Person getSickPeronByIndex (int i){ return sickPeople.get(i); }
 
     public Person getHealthyPeronByIndex (int i){ return healthyPeople.get(i); }
+
     public Location getLocation (){ return location; }
 
     public String getType() { return Type; }

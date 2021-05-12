@@ -32,21 +32,6 @@ public class Main
     public static void main(String[] args)
     {
 
-        Map m = new Map();
-
-        City c1=new City();
-
-         //Load data from File to map
-
-        dataInitialization(m);
-
-
-
-        for (int i = 0; i < simulation_loop; i++)
-        {
-            //simulation(m);// Play the simulation
-            Clock.nextTick();
-        }
 
     }
 

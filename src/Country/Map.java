@@ -1,7 +1,5 @@
 package Country;
 
-import Population.Person;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,9 +28,15 @@ public class Map
         return settlements.get(i);
     }
 
+    public List<Settlement> getSettelmet()
+    {
+        return settlements;
+    }
+
     public int getMapSize (){
         return settlements.size();
     }
+
     public Map (Map map){this.settlements =map.settlements;}
 
     @Override

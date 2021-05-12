@@ -36,7 +36,5 @@ public class City extends Settlement{
     public String getType() { return Type; }
 
     @Override
-    public String toString() {
-        return "City " + super.toString();
-    }
+    public String toString() { return "City " + super.toString(); }
 }

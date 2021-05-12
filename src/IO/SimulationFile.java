@@ -2,26 +2,18 @@ package IO;
 
 import java.io.File;  // Import the File class
 import java.io.FileNotFoundException;  // Import this class to handle errors
-import java.io.FileReader;
-import java.io.IOException;
-import java.nio.file.FileVisitResult;
 import java.util.Scanner; // Import the Scanner class to read text files
 import Country.Moshav;
 import Location.Location;
 import Location.Point;
 import Location.Size;
-import Population.Healthy;
-import Population.Person;
 import Country.Kibbutz;
 import Country.Settlement;
 import Country.City;
 import java.util.*;
 import Country.Map;
-import UI.BuildMap;
 
 import javax.swing.*;
-
-import static IO.StatisticsFile.csv;
 
 public class SimulationFile
 {
@@ -116,7 +108,8 @@ public class SimulationFile
                         }
 
                     }
-                }
+                 }
+                return simulation_map;
 
             }
             catch (FileNotFoundException e)
@@ -126,7 +119,7 @@ public class SimulationFile
             }
 
         }
-        return simulation_map;
+        return null;
     }
 
 
