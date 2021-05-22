@@ -4,21 +4,14 @@ import Population.Sick;
 import Location.Location;
 
 
-public class City extends Settlement{
+public class City extends Settlement
+{
 
     public String Type= "City";
-    //Default constructor
-    public City () {
-        super ();
-    }
 
-    //constructor get 4 variables
-    public City (String name,Location location,int currentPopulation,int maxPopulation,int vaccineDoses)
+    @Override
+    public RamzorColor CalculateRamzorGrade()
     {
-        super (name,location, currentPopulation, maxPopulation, vaccineDoses);
-    }
-
-    public RamzorColor calculateRamzorGrade() {
         double color = 0.2  * (Math.pow (4, 1.25 * contagiousPercent()));
 
         //Return the color of the city according to the conditions
@@ -33,8 +26,28 @@ public class City extends Settlement{
             return this.setRamzorColor(RamzorColor.RED);
     }
 
+    @Override
+    public RamzorColor calculateRamzorGrade() {
+        return null;
+    }
+
+    //Default constructor
+    public City () {
+        super ();
+    }
+
+    //constructor get 4 variables
+    public City (String name,Location location,int currentPopulation,int maxPopulation,int vaccineDoses)
+    {
+        super (name,location, currentPopulation, maxPopulation, vaccineDoses);
+    }
+
+
+
     public String getType() { return Type; }
 
     @Override
     public String toString() { return "City " + super.toString(); }
+
+
 }

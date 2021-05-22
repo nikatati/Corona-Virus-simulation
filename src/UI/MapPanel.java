@@ -1,4 +1,4 @@
-package UI;
+/*package UI;
 
 import Country.Map;
 
@@ -25,7 +25,7 @@ public class MapPanel extends JPanel
 
     }
 
-    public void paint(Graphics g)
+    public void  paintComponent(Graphics g)
     {
         super.paintComponent(g);
         if (map==null){return;}
@@ -101,4 +101,4 @@ public class MapPanel extends JPanel
         this.repaint();
     }
 
-}
+}*/

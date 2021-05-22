@@ -1,10 +1,11 @@
 package UI;
 import Country.Map;
+import Country.Settlement;
 import IO.SimulationFile;
 import Simulation.Clock;
 import Simulation.Main;
-
 import javax.swing.*;
+import javax.swing.border.EtchedBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,11 +13,16 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import  java.awt.Component;
+import java.awt.Component;
+import java.awt.RenderingHints;
+import javax.swing.JPanel;
 
-import static IO.StatisticsFile.csv;
+
+//import static IO.StatisticsFile.csv;
 
 
 
@@ -26,25 +32,27 @@ public class Window extends JFrame implements ActionListener
 {
     private Map worldMap = new Map();
 
-    public Map getWorldMap(){ return worldMap;}
+    private Map map;
 
-    private MapPanel map_panel;
+    private MapPanel map_panel= new MapPanel();
 
-    JFrame frame = new JFrame("Main Window");
+    public JFrame frame = new JFrame("Main Window");
 
     JMenuBar menuBar = new JMenuBar();
 
+    double speed=0;
     int xx=0;
     int yy=0;
+//--------------------------------------------------------------------
 
+
+    public Map getWorldMap(){ return worldMap;}
 
 
     public void createFrame()
     {
-        //Creating the Frame
-        //JFrame frame = new JFrame("Main Window");
 
-        JLabel mapArea = new JLabel();
+    JLabel mapArea = new JLabel();
         mapArea.setOpaque(true);
         //MapPanel.MapPanel(worldMap);
         //mapArea.setBorder(MapPanel.MapPanel(worldMap));
@@ -63,17 +71,51 @@ public class Window extends JFrame implements ActionListener
         frame.getContentPane().add(BorderLayout.SOUTH, panel);
         frame.getContentPane().add(BorderLayout.NORTH, menuBar);
         frame.getContentPane().add(mapArea);
+        frame.add(new MapPanel());
+        frame.pack();
 
 
         frame.setVisible(true);
 
-
-        //Creating the MenuBar and adding components
-        //---------------------------------------------------------------------------------
-
-      //frame.add(File());
-
     }
+
+    //***********************************************************************************************************************************
+    public MapPanel map_panel()
+    {
+        map_panel = new MapPanel();
+        map_panel.setVisible(true);
+        map_panel.repaint();
+
+        map_panel.addMouseListener(new MouseAdapter()
+        {
+            public void mouseClicked(MouseEvent event)
+            {
+                for(int i=0;i<worldMap.getMapSize();i++)
+                {
+
+                    int x_c=worldMap.getSettelmentFromMapByIndex(i).getLocation().getPoint().getX();
+                    int y_c=worldMap.getSettelmentFromMapByIndex(i).getLocation().getPoint().getY();
+                    int height_c=worldMap.getSettelmentFromMapByIndex(i).getLocation().getSize().getHeight();
+                    int width_c=worldMap.getSettelmentFromMapByIndex(i).getLocation().getSize().getWidth();
+
+                    if(x_c<=event.getPoint().getX()
+                            && event.getPoint().getX()<=x_c+width_c
+                            && y_c<=event.getPoint().getY()
+                            && event.getPoint().getY()<=y_c+height_c)
+                    {
+                        System.out.println(worldMap.getSettelmentFromMapByIndex(i).getName());
+                        StatisticWindow statistic_d =  statistic_Window(map,map.getSettelmentFromMapByIndex(i).getName());
+                        statistic_d.setVisible(true);
+                        break;
+                    }
+
+                }
+            }
+        });
+
+        return map_panel;
+    }
+
 
 
 
@@ -82,8 +124,9 @@ public class Window extends JFrame implements ActionListener
     {
         JMenu file_m = new JMenu("File");
         menuBar.add(file_m);
-        //loud button
-        //-------------------------------------------------------------------------------
+
+
+        //----------------------------loud button -------------------------------
         JButton load_b = new JButton("Load");
 
         load_b.addActionListener(new ActionListener()
@@ -92,12 +135,12 @@ public class Window extends JFrame implements ActionListener
             public void actionPerformed(ActionEvent arg0)
             {
                 load_b.setEnabled(false);
-                //OpenFile of = new OpenFile();
                 try
                 {
                     worldMap = SimulationFile.SimulationFile(); //load
 
-                    set_Map(worldMap);
+                    map_panel.set_Map(worldMap);
+
                 }
                 catch (Exception e)
                 {
@@ -106,32 +149,26 @@ public class Window extends JFrame implements ActionListener
             }
         });
 
-        //statistics button
-        //-------------------------------------------------------------------------------
-        JButton statistics_b = new JButton("Statistics");
-        statistics_b.addActionListener(new ActionListener()
+
+        //------------------------statistics button--------------------------
+        JButton Bstatistics = new JButton("Statistics");
+        Bstatistics.addActionListener(new ActionListener()
         {
             @Override
-            public void actionPerformed(ActionEvent arg0)
+            public void actionPerformed(ActionEvent e)
             {
-                try
-                {
-                    csv(worldMap);
-                }
-                catch (IOException ioException)
-                {
-                    ioException.printStackTrace();
-                }
+                    StatisticWindow statistic_window= new StatisticWindow(frame,worldMap," ");
+                    statistic_window.setVisible(true);
             }
         });
 
-        //edit mutations button
-        //-------------------------------------------------------------------------------
+
+        //------------------------- edit mutations button------------------------------------------------------
         JButton editMutations = new JButton("Edit Mutations");
 
 
-        //exit button
-        //-------------------------------------------------------------------------------
+
+        //----------------------------exit button----------------------------------------------------------------
         JButton exit_b = new JButton("Exit");
         exit_b.addActionListener(new ActionListener()
         {
@@ -141,10 +178,10 @@ public class Window extends JFrame implements ActionListener
             }
         });
 
-        //adding all buttons to the file menu part
-        //-------------------------------------------------------------------------------
+
+        //----------------------------adding all buttons to the file menu part--------------------------------
         file_m.add(load_b);
-        file_m.add(statistics_b);
+        file_m.add(Bstatistics);
         file_m.add(editMutations);
         file_m.add(exit_b);
 
@@ -155,18 +192,35 @@ public class Window extends JFrame implements ActionListener
 
     public void simulationSlider()
     {
-        JLabel label = new JLabel("Simulation Speed Slider");
-        JSlider slider = new JSlider(JSlider.HORIZONTAL, 0, 40, 10);
-        slider.setMinorTickSpacing(5);
-        slider.setMajorTickSpacing(20);
+        //JLabel label = new JLabel("Simulation Speed Slider");
+        JSlider slider = new JSlider(JSlider.HORIZONTAL, 0, 50, 10);
+        slider.setMinorTickSpacing(1);
+        slider.setMajorTickSpacing(5);
         slider.setPaintTicks(true);
         slider.setPaintLabels(true);
         slider.setLabelTable(slider.createStandardLabels(10));
 
-        frame.getContentPane().add(BorderLayout.SOUTH,label);
-        frame.add(BorderLayout.SOUTH,slider);
+
+        JButton btspeed=new JButton("set speed");
+        btspeed.setPreferredSize(new Dimension(10,10));
+        btspeed.setVisible(true);
+
+
+
+        btspeed.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                speed=1000*slider.getValue();
+            }
+        });
+
+
+        slider.add(btspeed);
+
 
         frame.getContentPane().add(slider,BorderLayout.SOUTH);
+        //frame.getContentPane().add(btspeed);
 
     }
 
@@ -232,8 +286,8 @@ public class Window extends JFrame implements ActionListener
             }
         });
 
-        //set tick per day button
-        //-------------------------------------------------------------------------------
+
+        //---------------------------set tick per day button---------------------------
         JButton setTicksPerDay_b = new JButton("Set Ticks Per Day");
 
         SpinnerModel ticksForAday = new SpinnerNumberModel(1, 1, 100, 1);
@@ -267,8 +321,8 @@ public class Window extends JFrame implements ActionListener
             }
         });
 
-        //adding all buttons to the simulation menu part
-        //-------------------------------------------------------------------------------
+
+        //--------------------------adding all buttons to the simulation menu part-----------------------------
         simulation_m.add(play_b);
         simulation_m.add(pause_b);
         simulation_m.add(stop_b);
@@ -322,40 +376,18 @@ public class Window extends JFrame implements ActionListener
 
     //*************************************************************************************************************************************
 
-
-    public MapPanel map_panel()
+    public void updateAll()
     {
-        map_panel = new MapPanel();
-        map_panel.repaint();
-        map_panel.setVisible(true);
-
-        map_panel.addMouseListener(new MouseAdapter()
+        SwingUtilities.invokeLater(new Runnable()
         {
-            public void mouseClicked(MouseEvent event)
+            public void run()
             {
-                for(int i=0;i<worldMap.getMapSize();i++)
-                {
-
-                    int x_c=worldMap.getSettelmentFromMapByIndex(i).getLocation().getPoint().getX();
-                    int y_c=worldMap.getSettelmentFromMapByIndex(i).getLocation().getPoint().getY();
-                    int height_c=worldMap.getSettelmentFromMapByIndex(i).getLocation().getSize().getHeight();
-                    int width_c=worldMap.getSettelmentFromMapByIndex(i).getLocation().getSize().getWidth();
-
-                    if(x_c<=event.getPoint().getX()
-                       && event.getPoint().getX()<=x_c+width_c
-                       && y_c<=event.getPoint().getY()
-                       && event.getPoint().getY()<=y_c+height_c)
-                    {
-                        System.out.println(worldMap.getSettelmentFromMapByIndex(i).getName());
-                        break;
-                    }
-
-                }
+                map_panel.repaint();
+                StatisticWindow.update_statistics();
             }
         });
-
-        return map_panel;
     }
+
 
 //*************************************************************************************************************************************
 
@@ -372,93 +404,136 @@ public class Window extends JFrame implements ActionListener
 
 
     @Override
-    public void actionPerformed(ActionEvent e)
-    {
+    public void actionPerformed(ActionEvent e) { }
 
+
+    public StatisticWindow statistic_Window(Map map,String row_name)
+    {
+        StatisticWindow statistic_d = new StatisticWindow(this,map,row_name);
+        return statistic_d;
     }
 
 
+
+
+
     //****************************************************************************************************************************************
     //****************************************************************************************************************************************
     //****************************************************************************************************************************************
 
-    public void paint(Graphics g)
+    private class MapPanel extends JPanel
     {
-        super.paint(g);
-        if (worldMap==null){return;}
-        Graphics2D graf1 = (Graphics2D) g;
-        graf1.setRenderingHint(RenderingHints.KEY_ANTIALIASING , RenderingHints.VALUE_ANTIALIAS_ON);
+        Map map12 = new Map();
 
-        int x1=0;
-        int y1=0;
-        int x2=0;
-        int y2=0;
-        int size= worldMap.getMapSize();
+        public  MapPanel () { }
 
-        //creating a lines for the map (the settlement)
-        for(int i=0;i<size-1;i++)
+        @Override
+        public void paintComponent(Graphics g)
         {
-            if(worldMap.getSettelmentFromMapByIndex(i).getNeighbors().size()>0 )
+            super.paintComponent(g);
+
+            if (worldMap == null) { return; }
+
+            Graphics2D graf1 = (Graphics2D) g;
+            graf1.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+            int x1 = 0;
+            int y1 = 0;
+            int x2 = 0;
+            int y2 = 0;
+            int size = worldMap.getMapSize();
+
+
+            //creating a lines for the map (the settlement)
+           for (int i = 0; i < size ; i++)
             {
-                for(int j=0; j<worldMap.getSettelmentFromMapByIndex(i).getNeighbors().size();j++ )
+                g.setColor(Color.black);
+                if (worldMap.getSettelmentFromMapByIndex(i).getNeighbors().size() > 0)
                 {
-                    g.setColor(Color.BLACK);
-                    x1=  worldMap.getSettelmentFromMapByIndex(i).getLocation().getPoint().getX()+worldMap.getSettelmentFromMapByIndex(i).getLocation().getSize().getHeight()/2;
-                    y1=  worldMap.getSettelmentFromMapByIndex(i).getLocation().getPoint().getY()+worldMap.getSettelmentFromMapByIndex(i).getLocation().getSize().getHeight()/2;
-                    x2=  worldMap.getSettelmentFromMapByIndex(i).getNeighbors().get(j).getLocation().getPoint().getX()+
-                         worldMap.getSettelmentFromMapByIndex(i).getNeighbors().get(j).getLocation().getSize().getWidth()/2;
-                    y2=  worldMap.getSettelmentFromMapByIndex(i).getNeighbors().get(j).getLocation().getPoint().getY()+
-                         worldMap.getSettelmentFromMapByIndex(i).getNeighbors().get(j).getLocation().getSize().getHeight()/2;
-                    //g.drawLine((int)x1*(this.getWidth()/xx),(int)y1*(this.getHeight()/yy),(int)x2*(this.getWidth()/xx),(int)y2*(this.getHeight()/yy));
-                    g.drawLine(10,10,20,20);
+                for (int j = 0; j < worldMap.getSettelmentFromMapByIndex(i).getNeighbors().size(); j++)
+                    {
+                        x1 = worldMap.getSettelmentFromMapByIndex(i).getLocation().getPoint().getX() ;
 
-                }
-            }
-        }
+                        y1 = worldMap.getSettelmentFromMapByIndex(i).getLocation().getPoint().getY() ;
 
-        //creating a rectangle for the map (the settlement)
-        for(int k=0;k<size-1;k++)
-        {
+                        x2 = worldMap.getSettelmentFromMapByIndex(i).getNeighbors().get(j).getLocation().getPoint().getX();
 
-            g.setColor(worldMap.getSettelmentFromMapByIndex(k).getRamzorColor().getRamzorColor());
+                        y2 = worldMap.getSettelmentFromMapByIndex(i).getNeighbors().get(j).getLocation().getPoint().getY() ;
 
-            g.drawRect((int)worldMap.getSettelmentFromMapByIndex(k).getLocation().getPoint().getX()*(this.getWidth()/xx),
-                    (int)worldMap.getSettelmentFromMapByIndex(k).getLocation().getPoint().getY()*(this.getHeight()/yy),
-                    (int)worldMap.getSettelmentFromMapByIndex(k).getLocation().getSize().getWidth()*(this.getWidth()/xx),
-                    (int)worldMap.getSettelmentFromMapByIndex(k).getLocation().getSize().getHeight()*(this.getHeight()/yy) );
+                        g.drawLine((int) x1 , (int) y1 , (int) x2 , (int) y2 );
 
-            g.drawString(worldMap.getSettelmentFromMapByIndex(k).getName(),10,20);
-
-            g.fillRect((int)worldMap.getSettelmentFromMapByIndex(k).getLocation().getPoint().getX()*(this.getWidth()/xx),
-                    (int)worldMap.getSettelmentFromMapByIndex(k).getLocation().getPoint().getY()*(this.getHeight()/yy),
-                    (int)worldMap.getSettelmentFromMapByIndex(k).getLocation().getSize().getWidth()*(this.getWidth()/xx),
-                    (int)worldMap.getSettelmentFromMapByIndex(k).getLocation().getSize().getHeight()*(this.getHeight()/yy));
-        }
-
-    }
-    //*************************************************************************************************************************************
-    public void set_Map(Map map)
-    {
-
-        this.worldMap=map;
-
-        xx=yy=1;
-
-        if (map != null)
-            for (int i = 0; i < map.getMapSize(); i++)
-            {
-                if (worldMap.getSettelmentFromMapByIndex(i).getLocation().getPoint().getX() +worldMap.getSettelmentFromMapByIndex(i).getLocation().getSize().getWidth() > xx)
-                {
-                    xx = worldMap.getSettelmentFromMapByIndex(i).getLocation().getPoint().getX()+worldMap.getSettelmentFromMapByIndex(i).getLocation().getSize().getWidth();
-                }
-                if (worldMap.getSettelmentFromMapByIndex(i).getLocation().getPoint().getY()+worldMap.getSettelmentFromMapByIndex(i).getLocation().getSize().getHeight() > yy)
-                {
-                    yy = worldMap.getSettelmentFromMapByIndex(i).getLocation().getPoint().getY()+worldMap.getSettelmentFromMapByIndex(i).getLocation().getSize().getHeight();
+                    }
                 }
             }
 
+            //creating a rectangle for the map (the settlement)
+            for (int k = 0; k < size ; k++)
+            {
+                g.setColor(Color.BLACK);
 
-        this.repaint();
+                g.drawRect((int) worldMap.getSettelmentFromMapByIndex(k).getLocation().getPoint().getX(),
+                        (int) worldMap.getSettelmentFromMapByIndex(k).getLocation().getPoint().getY() ,
+                        (int) worldMap.getSettelmentFromMapByIndex(k).getLocation().getSize().getWidth(),
+                        (int)worldMap.getSettelmentFromMapByIndex(k).getLocation().getSize().getHeight() );
+
+                g.setColor(worldMap.getSettelmentFromMapByIndex(k).getRamzorColor().getRamzorColor());
+
+                g.fillRect((int) worldMap.getSettelmentFromMapByIndex(k).getLocation().getPoint().getX(),
+                           (int) worldMap.getSettelmentFromMapByIndex(k).getLocation().getPoint().getY(),
+                           (int) worldMap.getSettelmentFromMapByIndex(k).getLocation().getSize().getWidth(),
+                           (int) worldMap.getSettelmentFromMapByIndex(k).getLocation().getSize().getHeight());
+
+                g.setColor(Color.BLACK);
+
+                g.drawString(worldMap.getSettelmentFromMapByIndex(k).getName(),
+                            (int) worldMap.getSettelmentFromMapByIndex(k).getLocation().getPoint().getX()+10 ,
+                            (int) worldMap.getSettelmentFromMapByIndex(k).getLocation().getPoint().getY()+10);
+
+                g.setFont(new Font("TimesRoman", Font.BOLD ,(int) 10));
+
+            }
+
+        }
+
+        //*************************************************************************************************************************************
+        public void set_Map(Map map)
+        {
+
+            this.map12 = map;
+
+            xx = 0;
+            yy = 0;
+
+            if (map != null)
+                for (int i = 0; i < map.getMapSize(); i++)
+                {
+                    if (map.getSettelmentFromMapByIndex(i).getLocation().getPoint().getX() + map.getSettelmentFromMapByIndex(i).getLocation().getSize().getWidth() > xx)
+                    {
+                        xx = map.getSettelmentFromMapByIndex(i).getLocation().getPoint().getX() + map.getSettelmentFromMapByIndex(i).getLocation().getSize().getWidth();
+                    }
+                    if (map.getSettelmentFromMapByIndex(i).getLocation().getPoint().getY() + map.getSettelmentFromMapByIndex(i).getLocation().getSize().getHeight() > yy)
+                    {
+                        yy = map.getSettelmentFromMapByIndex(i).getLocation().getPoint().getY() + map.getSettelmentFromMapByIndex(i).getLocation().getSize().getHeight();
+                    }
+                }
+
+            xx=xx+30;
+            yy=yy+30;
+            this.revalidate();
+            this.repaint();
+        }
+
+
+        @Override
+        public Dimension getPreferredSize()             //הגדרת הגודל המועדף על הציור – יהיה הגודל בעת זימון pack
+        {
+            return new Dimension(1000,400);
+        }
+
     }
+
+    //********************************************************************************************************************************************
+
+
 
 }

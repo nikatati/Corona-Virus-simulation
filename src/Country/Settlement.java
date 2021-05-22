@@ -22,11 +22,12 @@ public abstract class Settlement {
     private List <Person> sickPeople;
     private List <Person> healthyPeople;
     private RamzorColor ramzorColor;
-    private int maxPopulation;    //מספר אנשים מרבי בישוב
+    protected int maxPopulation;    //מספר אנשים מרבי בישוב
     private int currentPopulation;    //מספר אנשים עכשווי  בישוב
     private int vaccineDoses;     // מספר מנות חיסון ביישוב -min num is 0
     private List <Settlement> neighbors;    // מערך מייצג שכנים של ישוב מסויים
     public String Type= null;
+
 
     //------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -236,6 +237,12 @@ public abstract class Settlement {
     }
 
 
+    public abstract  RamzorColor CalculateRamzorGrade();
+
+    public void setColor(RamzorColor color)
+    {
+        this.ramzorColor = color;
+    }
 
 
     @Override

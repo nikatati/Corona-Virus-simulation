@@ -1,13 +1,7 @@
 package Population;
 import Country.Settlement;
 import Location.Point;
-import Population.Person;
 import Virus.IVirus;
-import Population.Vaccinated;
-import Population.Person;
-import Virus.ChineseVariant;
-
-import Simulation.Clock;
 
 
 public class Sick extends Person    //A class that describes a sick person
@@ -54,9 +48,10 @@ public class Sick extends Person    //A class that describes a sick person
     }
 
     //method from the FATHER that contagis the sick person. will throw exeption b/s he is already sick
-    public Sick contagion(IVirus x) throws Exception
+    public Person contagion(IVirus x)
     {
-        throw new Exception("Person cant be sick twice");
+        System.out.println("Person cant be sick twice");
+        return null;
     }
 
     //return contagious time attribute
@@ -93,5 +88,7 @@ public class Sick extends Person    //A class that describes a sick person
     {
         return true;
     }
+
+
 
 }

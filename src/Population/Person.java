@@ -28,11 +28,13 @@ public abstract class Person
     public abstract double contagionProbability();
 
     //method that contagis the person in virus x
-    public Sick contagion(IVirus x) throws Exception
+    /*public Sick contagion(IVirus x)
     {
         Sick s1= new Sick(age,location,settlement,Clock.now(),x);
         return s1;
-    }
+    }*/
+
+    public abstract Person contagion(IVirus x);
 
     //method that tells me if the person is sick. return false by defulte
     public boolean ifSick()

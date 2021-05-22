@@ -17,7 +17,7 @@ public class BritishVariant implements IVirus{
     private static double p_c_55= 0.7;
 
     private static int minContageTime=5;
-    private List<IVirus> variant = new ArrayList<IVirus>();
+    private static List<IVirus> variant = new ArrayList<IVirus>();
 
     //CONT
     public BritishVariant(){}
@@ -96,7 +96,7 @@ public class BritishVariant implements IVirus{
         variant.add(virus);
     }
 
-    public List<IVirus> getMutation()
+    public static List<IVirus> getMutation()
     {
         return variant;
     }

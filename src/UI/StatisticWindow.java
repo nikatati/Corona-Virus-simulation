@@ -1,12 +1,9 @@
 package UI;
 
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.util.logging.FileHandler;
-import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -23,92 +20,97 @@ import Country.Settlement;
 import IO.StatisticsFile;
 //import Simulation.MainClass;
 
-/*
+
 public class StatisticWindow extends JDialog
 {
 
 
 
     private Map map=null;
-    //private static StatisticTable tableModel;
+    private static StatisticTable Table;
 
 
-    public StatisticWindow(JFrame window, Map map,String row_name)
+    public StatisticWindow(JFrame windowFrame, Map map,String rowName)
     {
 
 
-        super(window,"Statistics",false);
-        setBounds(390,170,200,300);
+        super(windowFrame,"Statistics",false);
+        windowFrame.setBounds(350,150,170,320);
         getContentPane().setLayout(new GridLayout(2, 1));
 
         JPanel bottom_panel=new JPanel(new GridLayout(1, 3));
         bottom_panel.setLayout(new GridLayout(1, 3));
 
-
-
-        Settlement[] settlements = map.getSettelmet();
-        tableModel = new StatisticTable(settlements,row_name);
-
+        //bottom_panel.setPreferredSize(new Dimension(40, 40));
+        //bottom_panel.setPreferredSize(new Dimension(60,60));
 
 
 
-        //Save Button
-        JButton bt_save = new JButton("Save");
-        bt_save.addActionListener(new ActionListener()
+        List<Settlement> settlements=map.getSettelmet();
+        Table = new StatisticTable(settlements,rowName);
+
+
+
+
+        //---------------------------------Save Button----------------------------------------
+        JButton Bsave = new JButton("Save");
+
+        Bsave.addActionListener(new ActionListener()
         {
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                StatisticsFile.writeCsv(map,MainClass.loadFileFunc());
+                StatisticsFile.csv(map);
             }
         });
 
-        //Add Sick Button
-        JButton bt_sick = new JButton("Add Sick");
-        bt_sick.addActionListener(new ActionListener()
+        //--------------------------------Add Sick Button-------------------------------------
+        JButton Bsick = new JButton("Add Sick");
+
+        Bsick.addActionListener(new ActionListener()
         {
             @Override
             public void actionPerformed(ActionEvent e)
             {
                 try
                 {
-                    tableModel.setSick();
-
+                    Table.setSick();
                 }
-                catch (Exception e1) {
-                    e1.printStackTrace();
-                }
+                catch (Exception e1) { e1.printStackTrace(); }
             }
         });
 
 
-        //Douses Button
-        JButton bt_vaccinate= new JButton("Vaccinate");
-        SpinnerModel vaccinate_nodel=new SpinnerNumberModel(1,1,100,1);
-        JSpinner spinner = new JSpinner(vaccinate_nodel);
-        JPanel p_douses=new JPanel();
-        JButton bt_dose = new JButton("Add");
-        JLabel l_dose = new JLabel("Douses:");
-        p_douses.add(l_dose);
-        p_douses.add(spinner);
-        p_douses.add(bt_dose);
-        bt_dose.addActionListener(new ActionListener()
+        //---------------------------------------Douses Button-------------------------------------
+        JButton Bvaccinate= new JButton("Add Vaccinate doses");
+        //Bvaccinate.setPreferredSize(d);
+        SpinnerModel vaccinateModel=new SpinnerNumberModel(1,1,100,1);
+        JSpinner spinner = new JSpinner(vaccinateModel);
+        JPanel Pdouses=new JPanel();
+        JButton Bdouses = new JButton("Add");
+        JLabel Ldouses = new JLabel("Set douses:");
+
+        Pdouses.add(Ldouses);
+        Pdouses.add(spinner);
+        Pdouses.add(Bdouses);
+
+        Bdouses.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e)
             {
 
                 int douses = (Integer) spinner.getValue();
-                tableModel.setDouse(douses);
+                Table.setDouse(douses);
 
             }
         });
 
+        //------------------------------------vaccinate Dialog--------------------------------------
         JDialog vaccinate=new JDialog(this,"Add vaccinate douses",true);
-        vaccinate.setBounds(390,170,200,300);
-        vaccinate.getContentPane().add(p_douses);
+        vaccinate.setBounds(350,150,170,320);
+        vaccinate.getContentPane().add(Pdouses);
         vaccinate.pack();
-        //Vaccinate Button
-        bt_vaccinate.addActionListener(new ActionListener()
+        Bvaccinate.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e)
             {
@@ -116,11 +118,14 @@ public class StatisticWindow extends JDialog
             }
         });
 
-
-        bottom_panel.add(bt_save);
-        bottom_panel.add(bt_sick);
-        bottom_panel.add(bt_vaccinate);
-        getContentPane().add(tableModel);
+        //-----------------------------------------------------------------------------------------
+        Bsave.setPreferredSize(new Dimension(10,10));
+        Bsick.setPreferredSize(new Dimension(10,10));
+        Bvaccinate.setPreferredSize(new Dimension(10,10));
+        bottom_panel.add(Bsave);
+        bottom_panel.add(Bsick);
+        bottom_panel.add(Bvaccinate);
+        getContentPane().add(Table);
         getContentPane().add(bottom_panel);
 
 
@@ -129,18 +134,17 @@ public class StatisticWindow extends JDialog
     public JTable getTableFromDialog()
     {
 
-        return tableModel.getTableFromPanel();
-    }*/
+        return Table.getTableFromPanel();
+    }
 
-    /*public static void update_statistics()
+    public static void update_statistics()
     {
 
-        if(tableModel != null)
+        if(Table != null)
         {
-            tableModel.updateModel();
+            Table.updateModel();
         }
 
     }
 
-
-}*/
+}

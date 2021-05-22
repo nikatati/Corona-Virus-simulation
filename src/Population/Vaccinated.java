@@ -5,8 +5,15 @@ import Location.Location;
 import Location.Point;
 import Location.Size;
 import Population.Person;
+import Virus.BritishVariant;
+import Virus.ChineseVariant;
 import Virus.IVirus;
 import Simulation.Clock;
+import Virus.SouthAfricanVariant;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class Vaccinated extends Person  //class comes to describe a vaccinated person
 {                                       //Can get sick again after straining
@@ -41,6 +48,38 @@ public class Vaccinated extends Person  //class comes to describe a vaccinated p
             return Math.max(0.05,1.05/(t-14));
     }
 
+    @Override
+    public Person contagion(IVirus ivirus)
+    {
+        Sick s;
+        Random rand = new Random();
+        if (ivirus instanceof BritishVariant)
+        {
+            List<IVirus> list = new ArrayList<IVirus>(BritishVariant.getMutation());
+            int x1=rand.nextInt(list.size());
+            ivirus = list.get(x1);
+            s=new Sick(this.getAge(),this.getLocation(),this.getSettlement(),Clock.now(),ivirus);
+            return s;
+        }
+        if (ivirus instanceof ChineseVariant)
+        {
+            List<IVirus> list = new ArrayList<IVirus>(BritishVariant.getMutation());
+            int x1=rand.nextInt(list.size());
+            ivirus = list.get(x1);
+            s=new Sick(this.getAge(),this.getLocation(),this.getSettlement(),Clock.now(),ivirus);
+            return s;
+        }
+        if (ivirus instanceof SouthAfricanVariant)
+        {
+            List<IVirus> list = new ArrayList<IVirus>(BritishVariant.getMutation());
+            int x1=rand.nextInt(list.size());
+            ivirus = list.get(x1);
+            s=new Sick(this.getAge(),this.getLocation(),this.getSettlement(),Clock.now(),ivirus);
+            return s;
+        }
+        return s=new Sick(this.getAge(),this.getLocation(),this.getSettlement(),Clock.now(),ivirus);
+    }
+
     //equals methode
     @Override
     public boolean equals(Object o)
@@ -52,7 +91,8 @@ public class Vaccinated extends Person  //class comes to describe a vaccinated p
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "Vaccinated{" +
                 "vaccinationTime=" + vaccinationTime +
                 "} " + super.toString();

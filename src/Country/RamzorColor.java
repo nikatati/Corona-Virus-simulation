@@ -31,6 +31,8 @@ public enum RamzorColor
 
     public Color getRamzorColor() { return color; }
 
+    //public void setColor(Color color) { this.color = color; }
+
     public double getPassOption() { return passOption; }
 
 

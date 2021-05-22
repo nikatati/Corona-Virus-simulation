@@ -20,7 +20,8 @@ public class Kibbutz extends Settlement
     }
 
 
-    public RamzorColor calculateRamzorGrade() {
+    public RamzorColor CalculateRamzorGrade()
+    {
         double color = 0.45 + (Math.pow(Math.pow(1.5, getRamzorColor().getFactor()) * (contagiousPercent()-0.4), 3));
 
         //Return the color of the city according to the conditions
@@ -40,6 +41,11 @@ public class Kibbutz extends Settlement
     @Override
     public String toString() {
         return "Kibbutz " + super.toString();
+    }
+
+    @Override
+    public RamzorColor calculateRamzorGrade() {
+        return null;
     }
 }
 

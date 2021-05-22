@@ -8,6 +8,7 @@ import Location.Point;
 import Location.Size;
 import Population.*;
 import Simulation.Clock;
+import UI.Window;
 import Virus.BritishVariant;
 import Virus.ChineseVariant;
 import Country.Map;
@@ -26,8 +27,6 @@ import Virus.SouthAfricanVariant;
 public class Main
 {
     static int simulation_loop = 5;// time of simulation loop
-
-
 
     public static void main(String[] args)
     {

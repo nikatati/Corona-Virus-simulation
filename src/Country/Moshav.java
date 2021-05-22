@@ -20,7 +20,8 @@ public class Moshav extends Settlement
         super (name,location, currentPopulation, maxPopulation, vaccineDoses);
     }
 
-    public RamzorColor calculateRamzorGrade() {
+    public RamzorColor CalculateRamzorGrade()
+    {
         double color =  0.3+3 * (Math.pow(Math.pow(1.2, getRamzorColor().getFactor()) * (contagiousPercent()-0.35), 5));
 
         //Return the color of the city according to the conditions
@@ -40,5 +41,10 @@ public class Moshav extends Settlement
     @Override
     public String toString() {
         return "Moshav " + super.toString();
+    }
+
+    @Override
+    public RamzorColor calculateRamzorGrade() {
+        return null;
     }
 }

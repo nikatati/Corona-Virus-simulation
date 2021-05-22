@@ -12,7 +12,7 @@ import Country.*;
 public class StatisticsFile
 {
 
-    public static void csv(Map map) throws IOException
+    public static void csv(Map map)
     {
         int size = map.getMapSize();
 
@@ -33,7 +33,7 @@ public class StatisticsFile
                 sb.append(',');
                 sb.append("Sick people");
                 sb.append(',');
-                sb.append("Healthy people");
+                sb.append("Location");
                 sb.append('\n');
 
 
@@ -57,7 +57,7 @@ public class StatisticsFile
                     sb.append(',');
                     sb.append(map.getSettelmentFromMapByIndex(i).getSickPeople().size());
                     sb.append(',');
-                    sb.append(map.getSettelmentFromMapByIndex(i).getHealthyPeople().size());
+                    sb.append(map.getSettelmentFromMapByIndex(i).getLocation());
                     sb.append('\n');
                  }
 
