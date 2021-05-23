@@ -96,15 +96,18 @@ public class SimulationFile
 
                     if (words[0].equals("#"))
                     {
-                        if (simulation_map.getSettelmentFromMapByIndex(i).getName().equals(words[1])) {
-                            for (int j = i + 1; j < size; j++) {
-                                if (simulation_map.getSettelmentFromMapByIndex(j).getName().equals(words[2])) {
-                                    simulation_map.getSettelmentFromMapByIndex(i).addNeighbor(simulation_map.getSettelmentFromMapByIndex(j));            //add neighbor B to A
-                                    simulation_map.getSettelmentFromMapByIndex(j).addNeighbor(simulation_map.getSettelmentFromMapByIndex(i));            //add neighbor A to B
+                        for(int k=0;k<size;k++)
+                        {
+                            if (simulation_map.getSettelmentFromMapByIndex(k).getName().equals(words[1])) {
+                                for (int j =0; j < size; j++) {
+                                    if (simulation_map.getSettelmentFromMapByIndex(j).getName().equals(words[2])) {
+                                        simulation_map.getSettelmentFromMapByIndex(k).addNeighbor(simulation_map.getSettelmentFromMapByIndex(j));            //add neighbor B to A
+                                        simulation_map.getSettelmentFromMapByIndex(j).addNeighbor(simulation_map.getSettelmentFromMapByIndex(k));            //add neighbor A to B
+                                    }
+
                                 }
 
                             }
-
                         }
 
                     }
