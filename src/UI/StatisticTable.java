@@ -74,7 +74,7 @@ public class StatisticTable extends JPanel implements ActionListener
         @Override
         public int getRowCount()
         {
-            return settlementsInfo.size()-1;
+            return settlementsInfo.size();
         }
 
 

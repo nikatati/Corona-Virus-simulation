@@ -40,7 +40,7 @@ public class StatisticWindow extends JDialog
 
         JPanel bottom_panel=new JPanel(new GridLayout(1, 3));
         bottom_panel.setLayout(new GridLayout(1, 3));
-        
+        bottom_panel.setBounds(50,150,30,70);
 
 
 
