@@ -255,14 +255,14 @@ public class StatisticTable extends JPanel implements ActionListener
     private void newFilter()
     {
         try { sorter.setRowFilter(RowFilter.regexFilter(tbFilterText.getText(), getcol())); }
-        catch (java.util.regex.PatternSyntaxException e) { }
+        catch (java.util.regex.PatternSyntaxException ignored) { }
     }
 
 
     private void InitialFilter(String row_name)
     {
         try { sorter.setRowFilter(RowFilter.regexFilter(row_name, getcol())); }
-        catch (java.util.regex.PatternSyntaxException e) { }
+        catch (java.util.regex.PatternSyntaxException ignored) { }
     }
 
 

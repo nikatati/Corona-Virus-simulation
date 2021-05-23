@@ -22,7 +22,7 @@ public class SimulationFile
     public static Map SimulationFile() {
 
         ArrayList<Settlement> tempStel = new ArrayList<>();
-        ArrayList<String> gonnaBeNeighbor = new ArrayList<String>();
+        ArrayList<String> gonnaBeNeighbor = new ArrayList<>();
 
         Map simulation_map = new Map();            //מערך של יישובים
         //String file_path = new String();
@@ -123,44 +123,32 @@ public class SimulationFile
     }
 
 
-    /*private static void ceateNeighbors()
-    {
-
-    }*/
 
     private static Settlement createNewSettlementByType (String type, String name, Location l, int currentPopulation,int vaccineDoses)
     {
 
         if (Objects.equals("City", type))
         {
-            City c = new City(name, l,currentPopulation, (int)(currentPopulation*x),vaccineDoses);
             //addPeopleToSettlementByAmount(c, people_amount);
-            return c;
+            return new City(name, l,currentPopulation, (int)(currentPopulation*x),vaccineDoses);
         }
 
         else if (Objects.equals("Moshav", type))
         {
-            Moshav m = new Moshav(name, l, currentPopulation, (int)(currentPopulation*x),vaccineDoses);
             //addPeopleToSettlementByAmount(m, people_amount);
-            return m;
+            return new Moshav(name, l, currentPopulation, (int)(currentPopulation*x),vaccineDoses);
         }
 
         else if (Objects.equals("Kibbutz", type))
         {
-            Kibbutz k = new Kibbutz (name,l,currentPopulation, (int)(currentPopulation*x),vaccineDoses);
             //addPeopleToSettlementByAmount(k,people_amount);
-            return k;
+            return new Kibbutz (name,l,currentPopulation, (int)(currentPopulation*x),vaccineDoses);
         }
         return null;
     }
 
 
 
-   /* private static void addPeopleToSettlementByAmount (Settlement s, int people_amount)
-    {
-        for (int i = 0; i < people_amount; i++)
-            s.addPerson(new Healthy(determiningAge(),s.randomLocation(),s));
-    }*/
 
 
 

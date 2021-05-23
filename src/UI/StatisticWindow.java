@@ -40,9 +40,7 @@ public class StatisticWindow extends JDialog
 
         JPanel bottom_panel=new JPanel(new GridLayout(1, 3));
         bottom_panel.setLayout(new GridLayout(1, 3));
-
-        //bottom_panel.setPreferredSize(new Dimension(40, 40));
-        //bottom_panel.setPreferredSize(new Dimension(60,60));
+        
 
 
 
@@ -54,6 +52,8 @@ public class StatisticWindow extends JDialog
 
         //---------------------------------Save Button----------------------------------------
         JButton Bsave = new JButton("Save");
+        Bsave.setBounds(10,10,10,10);
+
 
         Bsave.addActionListener(new ActionListener()
         {
@@ -66,6 +66,7 @@ public class StatisticWindow extends JDialog
 
         //--------------------------------Add Sick Button-------------------------------------
         JButton Bsick = new JButton("Add Sick");
+        Bsick.setBounds(10,10,10,10);
 
         Bsick.addActionListener(new ActionListener()
         {
@@ -83,7 +84,8 @@ public class StatisticWindow extends JDialog
 
         //---------------------------------------Douses Button-------------------------------------
         JButton Bvaccinate= new JButton("Add Vaccinate doses");
-        //Bvaccinate.setPreferredSize(d);
+        Bvaccinate.setBounds(10,10,10,10);
+
         SpinnerModel vaccinateModel=new SpinnerNumberModel(1,1,100,1);
         JSpinner spinner = new JSpinner(vaccinateModel);
         JPanel Pdouses=new JPanel();
@@ -119,9 +121,7 @@ public class StatisticWindow extends JDialog
         });
 
         //-----------------------------------------------------------------------------------------
-        Bsave.setPreferredSize(new Dimension(10,10));
-        Bsick.setPreferredSize(new Dimension(10,10));
-        Bvaccinate.setPreferredSize(new Dimension(10,10));
+
         bottom_panel.add(Bsave);
         bottom_panel.add(Bsick);
         bottom_panel.add(Bvaccinate);

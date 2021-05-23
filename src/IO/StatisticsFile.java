@@ -1,10 +1,6 @@
 
 package IO;
-import java.util.ArrayList;
-import java.io.IOException;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.File;
+
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import Country.*;
@@ -18,7 +14,7 @@ public class StatisticsFile
 
         try {
 
-                PrintWriter writer = new PrintWriter(new File("test.csv"));
+                PrintWriter writer = new PrintWriter("test.csv");
                 StringBuilder sb = new StringBuilder();
 
                 sb.append("Settlement type");
@@ -49,7 +45,7 @@ public class StatisticsFile
                     sb.append(',');
                     sb.append(map.getSettelmentFromMapByIndex(i).getName());     //writes name
                     sb.append(',');
-                    sb.append(map.getSettelmentFromMapByIndex(i).getCurrentPopulation());       // writes popu
+                    sb.append(map.getSettelmentFromMapByIndex(i).getCurrentPopulation());       // writes Population
                     sb.append(',');
                     sb.append(map.getSettelmentFromMapByIndex(i).getRamzorColor());
                     sb.append(',');

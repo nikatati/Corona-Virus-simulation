@@ -1,11 +1,11 @@
 package UI;
 import Country.Map;
-import Country.Settlement;
+
 import IO.SimulationFile;
 import Simulation.Clock;
 import Simulation.Main;
 import javax.swing.*;
-import javax.swing.border.EtchedBorder;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,7 +17,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Component;
 import java.awt.RenderingHints;
 import javax.swing.JPanel;
 
@@ -30,6 +29,7 @@ import javax.swing.JPanel;
 
 public class Window extends JFrame implements ActionListener
 {
+
     private Map worldMap = new Map();
 
     private Map map;
@@ -52,11 +52,8 @@ public class Window extends JFrame implements ActionListener
     public void createFrame()
     {
 
-    JLabel mapArea = new JLabel();
+        JLabel mapArea = new JLabel();
         mapArea.setOpaque(true);
-        //MapPanel.MapPanel(worldMap);
-        //mapArea.setBorder(MapPanel.MapPanel(worldMap));
-        //mapArea.setBackground(new Color(247, 216, 159));
         mapArea.setPreferredSize(new Dimension(400, 380));
 
 
@@ -120,7 +117,7 @@ public class Window extends JFrame implements ActionListener
 
 
     //*************************************************************************************************************************************
-    public Component File()
+    public void File()
     {
         JMenu file_m = new JMenu("File");
         menuBar.add(file_m);
@@ -185,14 +182,16 @@ public class Window extends JFrame implements ActionListener
         file_m.add(editMutations);
         file_m.add(exit_b);
 
-        return null;
     }
 
     //*************************************************************************************************************************************
 
     public void simulationSlider()
     {
-        //JLabel label = new JLabel("Simulation Speed Slider");
+
+        JPanel slid=new JPanel();
+        slid.setLayout(new BoxLayout(slid, BoxLayout.LINE_AXIS));
+
         JSlider slider = new JSlider(JSlider.HORIZONTAL, 0, 50, 10);
         slider.setMinorTickSpacing(1);
         slider.setMajorTickSpacing(5);
@@ -200,33 +199,37 @@ public class Window extends JFrame implements ActionListener
         slider.setPaintLabels(true);
         slider.setLabelTable(slider.createStandardLabels(10));
 
-
         JButton btspeed=new JButton("set speed");
-        btspeed.setPreferredSize(new Dimension(10,10));
+        btspeed.setBackground(new Color(18, 95, 160));
+        btspeed.setForeground(Color.WHITE);
+        btspeed.setFocusPainted(false);
+        btspeed.setFont(new Font("Tahoma", Font.BOLD, 12));
+        btspeed.setBounds(10,10,10,10);
+        //btspeed.setPreferredSize(new Dimension(10,10));
         btspeed.setVisible(true);
-
-
 
         btspeed.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e)
             {
                 speed=1000*slider.getValue();
+                JOptionPane.showMessageDialog(frame, "Simulation speed defined");
             }
         });
 
 
-        slider.add(btspeed);
+        //slider.add(btspeed);
 
 
-        frame.getContentPane().add(slider,BorderLayout.SOUTH);
-        //frame.getContentPane().add(btspeed);
+        slid.add(btspeed,BorderLayout.BEFORE_LINE_BEGINS);
+        slid.add(slider,BorderLayout.SOUTH);
+        frame.getContentPane().add(slid,BorderLayout.SOUTH);
 
     }
 
     //*************************************************************************************************************************************
 
-    public Component simulation_func()
+    public void simulation_func()
     {
         JMenu simulation_m = new JMenu("Simulation");
         menuBar.add(simulation_m);
@@ -258,7 +261,7 @@ public class Window extends JFrame implements ActionListener
                     {
                         try
                         {
-                            t.sleep(200);
+                            Thread.sleep(200);
                         }
                         catch (InterruptedException interruptedException)
                         {
@@ -328,11 +331,10 @@ public class Window extends JFrame implements ActionListener
         simulation_m.add(stop_b);
         simulation_m.add(setTicksPerDay_b);
 
-        return null;
     }
 
     //*************************************************************************************************************************************
-    public Component Help()
+    public void Help()
     {
         JMenu help_m = new JMenu("Help");
         menuBar.add(help_m);
@@ -344,16 +346,26 @@ public class Window extends JFrame implements ActionListener
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                JOptionPane.showMessageDialog(frame, "Hello, this is a corona simulation.\n" +
-                        "Here you can see all the data about corona in different settlements. \n" +
-                        "Each settlement has a color that is painted according to the number of patients\n"+
-                        "The first window is the main window:\n There are 3 main buttons->\nFile, Simolation, Help.\n**In the File area we have the option:\n" +
-                        "Open the option to load a txt file.\n Open the statistics of the file\n " +
-                        "Open the Edit Mutations window: you can update the variants\n Exit-> exit the app"+
-                        "\n**In the Simulation area we have the option:\n Play-> play the simulation(Start)"+
-                        "\n Stop-> stops the simulation\n Set Ticks per day-> opens a window there you can control the ticks that consider for a day"+
-                        "\n**In the Help area we have the option:\nHelp-> see how the app works.\n About->Shows the details of the writers "+
-                        "\n Enjoy !");
+                JOptionPane.showMessageDialog(frame, """
+                        Hello, this is a corona simulation.
+                        Here you can see all the data about corona in different settlements.\s
+                        Each settlement has a color that is painted according to the number of patients
+                        The first window is the main window:
+                         There are 3 main buttons->
+                        File, Simulation, Help.
+                        **In the File area we have the option:
+                        Open the option to load a txt file.
+                         Open the statistics of the file
+                         Open the Edit Mutations window: you can update the variants
+                         Exit-> exit the app
+                        **In the Simulation area we have the option:
+                         Play-> play the simulation(Start)
+                         Stop-> stops the simulation
+                         Set Ticks per day-> opens a window there you can control the ticks that consider for a day
+                        **In the Help area we have the option:
+                        Help-> see how the app works.
+                         About->Shows the details of the writers\s
+                         Enjoy !""");
             }
         });
 
@@ -371,7 +383,6 @@ public class Window extends JFrame implements ActionListener
 
             help_m.add(help_b);
             help_m.add(about_b);
-        return null;
     }
 
     //*************************************************************************************************************************************
@@ -391,7 +402,7 @@ public class Window extends JFrame implements ActionListener
 
 //*************************************************************************************************************************************
 
-    public static void main(String args[]) throws IOException
+    public static void main(String[] args) throws IOException
     {
         Window allFrame= new Window();
         allFrame.createFrame();
@@ -409,8 +420,7 @@ public class Window extends JFrame implements ActionListener
 
     public StatisticWindow statistic_Window(Map map,String row_name)
     {
-        StatisticWindow statistic_d = new StatisticWindow(this,map,row_name);
-        return statistic_d;
+        return new StatisticWindow(this,map,row_name);
     }
 
 
@@ -437,10 +447,7 @@ public class Window extends JFrame implements ActionListener
             Graphics2D graf1 = (Graphics2D) g;
             graf1.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-            int x1 = 0;
-            int y1 = 0;
-            int x2 = 0;
-            int y2 = 0;
+            int x1 , y1 , x2 , y2 ;
             int size = worldMap.getMapSize();
 
 
@@ -489,7 +496,7 @@ public class Window extends JFrame implements ActionListener
                             (int) worldMap.getSettelmentFromMapByIndex(k).getLocation().getPoint().getX()+10 ,
                             (int) worldMap.getSettelmentFromMapByIndex(k).getLocation().getPoint().getY()+10);
 
-                g.setFont(new Font("TimesRoman", Font.BOLD ,(int) 10));
+                g.setFont(new Font("Tahoma", Font.PLAIN , 12) );
 
             }
 
@@ -527,7 +534,7 @@ public class Window extends JFrame implements ActionListener
         @Override
         public Dimension getPreferredSize()             //הגדרת הגודל המועדף על הציור – יהיה הגודל בעת זימון pack
         {
-            return new Dimension(1000,400);
+            return new Dimension(800,400);
         }
 
     }
