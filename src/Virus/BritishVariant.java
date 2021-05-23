@@ -15,6 +15,9 @@ public class BritishVariant implements IVirus{
     private static double p_c_18 = 0.7;
     private static double p_c_18_55 = 0.7;
     private static double p_c_55= 0.7;
+    private static boolean MutationBritish=true;
+    private static boolean MutationChinese=true;
+    private static boolean MutationSouthAfrican=true;
 
     private static int minContageTime=5;
     private static List<IVirus> variant = new ArrayList<IVirus>();
@@ -100,6 +103,18 @@ public class BritishVariant implements IVirus{
     {
         return variant;
     }
+
+    public static boolean getMutationBritish() { return MutationBritish; }
+
+    public static boolean getMutationChinese() { return MutationChinese; }
+
+    public static boolean getMutationSouthAfrican() { return MutationSouthAfrican; }
+
+    public static void setMutationBritish(boolean TF) { MutationBritish=TF; }
+
+    public static void setMutationChinese(boolean TF) { MutationChinese=TF; }
+
+    public static void setMutationSouthAfrican(boolean TF) { MutationSouthAfrican=TF; }
 
     public void removeMutation(IVirus virus)
     {

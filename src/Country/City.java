@@ -1,6 +1,5 @@
 package Country;
-import Population.Person;
-import Population.Sick;
+
 import Location.Location;
 
 
@@ -16,18 +15,33 @@ public class City extends Settlement
 
         //Return the color of the city according to the conditions
 
-        if (color < RamzorColor.GREEN.getFactor())
+        if (color <= 0.4)
             return this.setRamzorColor(RamzorColor.GREEN);
-        else if (color < RamzorColor.YELLOW.getFactor())
+        if (color >0.4 && color<=0.6)
             return this.setRamzorColor(RamzorColor.YELLOW);
-        else if (color < RamzorColor.ORANGE.getFactor())
+        if (color >0.6 && color <=0.8)
             return this.setRamzorColor(RamzorColor.ORANGE);
-        else
+        if(color>0.8)
             return this.setRamzorColor(RamzorColor.RED);
+        return null;
     }
 
+
     @Override
-    public RamzorColor calculateRamzorGrade() {
+    public RamzorColor calculateRamzorGrade()
+    {
+        double color = 0.2  * (Math.pow (4, 1.25 * contagiousPercent()));
+
+        //Return the color of the city according to the conditions
+
+        if (color <= 0.4)
+            return this.setRamzorColor(RamzorColor.GREEN);
+        if (color >0.4 && color<=0.6)
+            return this.setRamzorColor(RamzorColor.YELLOW);
+        if (color >0.6 && color <=0.8)
+            return this.setRamzorColor(RamzorColor.ORANGE);
+        if(color>0.8)
+            return this.setRamzorColor(RamzorColor.RED);
         return null;
     }
 

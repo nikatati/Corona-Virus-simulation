@@ -83,13 +83,13 @@ public class StatisticWindow extends JDialog
 
 
         //---------------------------------------Douses Button-------------------------------------
-        JButton Bvaccinate= new JButton("Add Vaccinate doses");
+        JButton Bvaccinate= new JButton("Set Vaccinate doses");
         Bvaccinate.setBounds(10,10,10,10);
 
         SpinnerModel vaccinateModel=new SpinnerNumberModel(1,1,100,1);
         JSpinner spinner = new JSpinner(vaccinateModel);
         JPanel Pdouses=new JPanel();
-        JButton Bdouses = new JButton("Add");
+        JButton Bdouses = new JButton("Set");
         JLabel Ldouses = new JLabel("Set douses:");
 
         Pdouses.add(Ldouses);
@@ -108,7 +108,7 @@ public class StatisticWindow extends JDialog
         });
 
         //------------------------------------vaccinate Dialog--------------------------------------
-        JDialog vaccinate=new JDialog(this,"Add vaccinate douses",true);
+        JDialog vaccinate=new JDialog(this,"Set vaccinate douses",true);
         vaccinate.setBounds(350,150,170,320);
         vaccinate.getContentPane().add(Pdouses);
         vaccinate.pack();
@@ -122,6 +122,9 @@ public class StatisticWindow extends JDialog
 
         //-----------------------------------------------------------------------------------------
 
+        Bsave.setPreferredSize( new Dimension(20,20));
+        Bsick.setPreferredSize( new Dimension(20,20));
+        Bvaccinate.setPreferredSize( new Dimension(20,20));
         bottom_panel.add(Bsave);
         bottom_panel.add(Bsick);
         bottom_panel.add(Bvaccinate);

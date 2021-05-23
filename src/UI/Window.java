@@ -4,6 +4,11 @@ import Country.Map;
 import IO.SimulationFile;
 import Simulation.Clock;
 import Simulation.Main;
+import Virus.BritishVariant;
+import Virus.ChineseVariant;
+import Virus.IVirus;
+import Virus.SouthAfricanVariant;
+
 import javax.swing.*;
 
 import java.awt.*;
@@ -18,11 +23,8 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.util.ArrayList;
 import javax.swing.JPanel;
-
-
-//import static IO.StatisticsFile.csv;
-
 
 
 
@@ -39,6 +41,10 @@ public class Window extends JFrame implements ActionListener
     public JFrame frame = new JFrame("Main Window");
 
     JMenuBar menuBar = new JMenuBar();
+
+    ArrayList<IVirus> variants=new ArrayList<>();
+
+
 
     double speed=0;
     int xx=0;
@@ -162,6 +168,20 @@ public class Window extends JFrame implements ActionListener
 
         //------------------------- edit mutations button------------------------------------------------------
         JButton editMutations = new JButton("Edit Mutations");
+
+        variants.add(new BritishVariant());
+        variants.add(new ChineseVariant());
+        variants.add(new SouthAfricanVariant());
+
+        MutationWindows MutationsEdit = new MutationWindows(this,variants);
+
+        editMutations.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                MutationsEdit.setVisible(true);
+            }
+        });
 
 
 
@@ -451,8 +471,9 @@ public class Window extends JFrame implements ActionListener
             int size = worldMap.getMapSize();
 
 
+
             //creating a lines for the map (the settlement)
-           for (int i = 0; i < size ; i++)
+           for (int i = 0; i < size-1 ; i++)
             {
                 g.setColor(Color.black);
                 if (worldMap.getSettelmentFromMapByIndex(i).getNeighbors().size() > 0)

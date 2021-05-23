@@ -101,7 +101,7 @@ public class StatisticTable extends JPanel implements ActionListener
                 case 4:
                     return settlement.getVaccineDoses();
                 case 5:
-                    return settlement.contagiousPercent()*100+"%";
+                    return settlement.contagiousPercent();
                 case 6:
                     return settlement.getLocation();
             }
@@ -128,30 +128,33 @@ public class StatisticTable extends JPanel implements ActionListener
         {
             IVirus virus=null;
             Settlement settlement=settlementsInfo.get(row);
-            Random rand=new Random();
-            int rand_n=rand.nextInt();
+            Random r=new Random();
+            int rand_n=r.nextInt();
 
-            if (rand_n==0)
+            if (rand_n%3==0)
                 {virus=new ChineseVariant();}
-            else if (rand_n==1)
+            else if (rand_n%3==1)
                 {virus=new BritishVariant();}
             else
                 {virus=new SouthAfricanVariant();}
 
             double numContagion=settlement.getCurrentPopulation()* ContagionOPTION;
 
-            for (int i=0;i<numContagion && settlement.getCurrentPopulation()<settlement.getMaxPopulation();i++)
+            for (int i=0;i<numContagion && settlement.getHealthyPeople().size() >0;i++)
             {
-                int x=Math.abs(rand.nextInt(settlement.getHealthyPeople().size()));
+                int x=r.nextInt(settlement.getHealthyPeople().size());
+
                 if(settlement.getHealthyPeronByIndex(x).contagion(virus) instanceof Sick)
                 {
-                    settlement.getSickPeople().add(settlement.getHealthyPeople().get(x).contagion(virus));
                     settlement.getHealthyPeople().remove(x);
+                    settlement.getSickPeople().add(settlement.getHealthyPeople().get(x).contagion(virus));
                 }
+
             }
             settlement.setColor(settlement.CalculateRamzorGrade());
+            settlement.contagiousPercent();
             fireTableCellUpdated(row, 4);
-            fireTableCellUpdated(row, 3);
+            fireTableCellUpdated(row, 6);
         }
 
         public void setdouses(int row,int douses)
@@ -201,7 +204,8 @@ public class StatisticTable extends JPanel implements ActionListener
 
         tbFilterText.setToolTipText("Filter Row");
         column.setToolTipText("Filter Column");
-        tbFilterText.getDocument().addDocumentListener(new DocumentListener() {
+        tbFilterText.getDocument().addDocumentListener(new DocumentListener()
+        {
             public void insertUpdate(DocumentEvent e) { newFilter(); }
             public void removeUpdate(DocumentEvent e) { newFilter(); }
             public void changedUpdate(DocumentEvent e) { newFilter(); }

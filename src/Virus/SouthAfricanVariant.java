@@ -16,6 +16,10 @@ public class SouthAfricanVariant implements IVirus{
     private static double p_c_18 = 0.6;
     private static double p_c_18_55 = 0.5;
     private static double p_c_55= 0.5;
+    private static boolean MutationBritish=true;
+    private static boolean MutationChinese=true;
+    private static boolean MutationSouthAfrican=true;
+
 
     private static int minContageTime=5;
     private List<IVirus> variant = new ArrayList<IVirus>();
@@ -101,6 +105,19 @@ public class SouthAfricanVariant implements IVirus{
     {
         variant.remove(virus);
     }
+
+    public static boolean getMutationBritish() { return MutationBritish; }
+
+    public static boolean getMutationChinese() { return MutationChinese; }
+
+    public static boolean getMutationSouthAfrican() { return MutationSouthAfrican; }
+
+    public static void setMutationBritish(boolean TF) { MutationBritish=TF; }
+
+    public static void setMutationChinese(boolean TF) { MutationChinese=TF; }
+
+    public static void setMutationSouthAfrican(boolean TF) { MutationSouthAfrican=TF; }
+
 
     @Override
     public String toString() {
