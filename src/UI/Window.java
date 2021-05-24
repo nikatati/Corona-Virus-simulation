@@ -169,9 +169,9 @@ public class Window extends JFrame implements ActionListener
         //------------------------- edit mutations button------------------------------------------------------
         JButton editMutations = new JButton("Edit Mutations");
 
-        variants.add(new BritishVariant());
-        variants.add(new ChineseVariant());
-        variants.add(new SouthAfricanVariant());
+        // variants.add(new BritishVariant());
+       // variants.add(new ChineseVariant());
+       // variants.add(new SouthAfricanVariant());
 
         MutationWindows MutationsEdit = new MutationWindows(this,variants);
 
