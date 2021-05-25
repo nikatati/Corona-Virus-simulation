@@ -8,7 +8,7 @@ import Virus.BritishVariant;
 import Virus.ChineseVariant;
 import Virus.IVirus;
 import Virus.SouthAfricanVariant;
-
+import Simulation.*;
 import javax.swing.*;
 
 import java.awt.*;
@@ -16,6 +16,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.io.IOException;
 
 import java.awt.Color;
@@ -141,7 +142,6 @@ public class Window extends JFrame implements ActionListener
                 try
                 {
                     worldMap = SimulationFile.SimulationFile(); //load
-
                     map_panel.set_Map(worldMap);
 
                 }
@@ -182,8 +182,8 @@ public class Window extends JFrame implements ActionListener
                 MutationsEdit.setVisible(true);
             }
         });
-
-
+        //----------------------------log button----------------------------------------------------------------
+        JButton log_b = new JButton("Log");
 
         //----------------------------exit button----------------------------------------------------------------
         JButton exit_b = new JButton("Exit");
@@ -200,6 +200,7 @@ public class Window extends JFrame implements ActionListener
         file_m.add(load_b);
         file_m.add(Bstatistics);
         file_m.add(editMutations);
+        file_m.add(log_b);
         file_m.add(exit_b);
 
     }
@@ -262,8 +263,32 @@ public class Window extends JFrame implements ActionListener
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                Main.dataInitialization(worldMap);
 
+               Main.dataInitialization(worldMap);
+                /*System.out.println("make Sick start");
+                Thread Ms = new Simulation.Main.MakeSick(worldMap);
+                Ms.run();
+                System.out.println("make Sick finished");
+
+                System.out.println("Try to contagion start");
+                Thread Tc = new Simulation.Main.TryContagion(worldMap);
+                Tc.run();
+                System.out.println("Try to contagion finished");
+
+                System.out.println("Become healthy start");
+                Thread Bh = new Simulation.Main.BecomeHealthy(worldMap);
+                Bh.run();
+                System.out.println("Become healthy  finished");
+
+                System.out.println("Try To Move start");
+                Thread Ttm = new Simulation.Main.TryToMove(worldMap);
+                Ttm.run();
+                System.out.println("Try To Move  finished");
+
+                System.out.println("Get Vaccinated start");
+                Thread Gv = new Simulation.Main.GetVaccinated(worldMap);
+                Gv.run();
+                System.out.println("Get Vaccinated  finished");*/
             }
         });
 
@@ -282,6 +307,7 @@ public class Window extends JFrame implements ActionListener
                         try
                         {
                             Thread.sleep(200);
+                            System.out.println("thread is paused");
                         }
                         catch (InterruptedException interruptedException)
                         {
@@ -300,11 +326,9 @@ public class Window extends JFrame implements ActionListener
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                for (Thread t : Thread.getAllStackTraces().keySet())
-                {
-                    if (t.getState()==Thread.State.RUNNABLE)
-                        t.stop();
-                }
+                worldMap=null;
+                map_panel.set_Map(null);
+
 
             }
         });
