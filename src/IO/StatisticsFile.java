@@ -1,16 +1,30 @@
 
 package IO;
 
+import java.awt.*;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
+
 import Country.*;
 
 public class StatisticsFile
 {
+    public static String path=null;
+    public static FileHandler fileHandler =null; //The FileHandler can either write to a specified file, or it can write to a rotating set of files.
+
+
+    private static String string;
+
 
     public static void csv(Map map)
     {
+
         int size = map.getMapSize();
+
 
         try {
 
@@ -68,7 +82,40 @@ public class StatisticsFile
         }
     }
 
+    public static void LogWriting(Settlement s)
+    {
+        Logger logger = Logger.getLogger("");
+
+        try
+        {
+            fileHandler = new FileHandler(path, true);
+            logger.addHandler(fileHandler);
+            SimpleFormatter formatter = new SimpleFormatter();//Print a brief summary of the LogRecord in a human readable format.
+                                                              // The summary will typically be 1 or 2 lines.
+            fileHandler.setFormatter(formatter);              //Sets the formatter to be used by this handler.
+
+            logger.info(s.getName()+" Number of sick: "+s.getSickPeople().size()+" Number of dead: "+s.getDeadPeople()+"\n");
+            fileHandler.close();
+        }
+        catch (SecurityException | IOException e) { e.printStackTrace(); }
+    }
+
+
+
+    public static void loadFileFunc()
+    {
+        FileDialog fileDialog = new FileDialog((Frame) null, "Please choose a file:", FileDialog.LOAD);
+        fileDialog.setVisible(true);
+        if (fileDialog.getFile() == null)
+            return ;
+        path=fileDialog.getFile();
+
+        try { fileHandler = new FileHandler(path); }
+        catch (SecurityException | IOException e) { e.printStackTrace(); }
+    }
 }
+
+
 
 
 

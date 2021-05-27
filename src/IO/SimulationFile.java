@@ -98,9 +98,12 @@ public class SimulationFile
                     {
                         for(int k=0;k<size;k++)
                         {
-                            if (simulation_map.getSettelmentFromMapByIndex(k).getName().equals(words[1])) {
-                                for (int j =0; j < size; j++) {
-                                    if (simulation_map.getSettelmentFromMapByIndex(j).getName().equals(words[2])) {
+                            if (simulation_map.getSettelmentFromMapByIndex(k).getName().equals(words[1]))
+                            {
+                                for (int j =0; j < size; j++)
+                                {
+                                    if (simulation_map.getSettelmentFromMapByIndex(j).getName().equals(words[2]))
+                                    {
                                         simulation_map.getSettelmentFromMapByIndex(k).addNeighbor(simulation_map.getSettelmentFromMapByIndex(j));            //add neighbor B to A
                                         simulation_map.getSettelmentFromMapByIndex(j).addNeighbor(simulation_map.getSettelmentFromMapByIndex(k));            //add neighbor A to B
                                     }
@@ -111,7 +114,9 @@ public class SimulationFile
                         }
 
                     }
-                 }
+                }
+                TreadStart(simulation_map.getSettelmet());
+
                 return simulation_map;
 
             }
@@ -125,6 +130,15 @@ public class SimulationFile
         return null;
     }
 
+    private static void TreadStart(List<Settlement> settelmet)
+    {
+        for (int i=0; i<settelmet.size();i++)
+        {
+            new Thread(settelmet.get(i)).start();
+
+        }
+
+    }
 
 
     private static Settlement createNewSettlementByType (String type, String name, Location l, int currentPopulation,int vaccineDoses)

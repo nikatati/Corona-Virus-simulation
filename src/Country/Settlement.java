@@ -1,4 +1,5 @@
 package Country;
+import IO.StatisticsFile;
 import Population.Person;
 import Location.Location;
 import Location.Point;
@@ -13,9 +14,16 @@ import Population.Convalescent;
 import Population.Sick;
 import Population.Healthy;
 import Population.Vaccinated;
+import Simulation.Clock;
+import UI.Window;
+import Virus.BritishVariant;
+import Virus.ChineseVariant;
+import Virus.IVirus;
+import Virus.SouthAfricanVariant;
 
 
-public abstract class Settlement {
+public abstract class Settlement implements Runnable
+{
 
     private String name;
     private Location location;
@@ -27,6 +35,13 @@ public abstract class Settlement {
     private int vaccineDoses;     // מספר מנות חיסון ביישוב -min num is 0
     private List <Settlement> neighbors;    // מערך מייצג שכנים של ישוב מסויים
     public String Type= null;
+    protected int DeadPeople = 0;
+    private static double DeadPercent = 0.01;
+
+
+
+    public Random randomx=new Random();
+    public Random randomy=new Random();
 
 
     //------------------------------------------------------------------------------------------------------------------------------------------
@@ -218,6 +233,12 @@ public abstract class Settlement {
 
     public String getType() { return Type; }
 
+    public int getDeadPeople() { return DeadPeople; }
+
+    public void addDeadPeople() { this.DeadPeople++;}
+
+    public void setDeadPeople(int deadPeople) { DeadPeople = deadPeople; }
+
     @Override
     public String toString()
     {
@@ -254,4 +275,229 @@ public abstract class Settlement {
         return maxPopulation == that.maxPopulation && currentPopulation == that.currentPopulation && vaccineDoses == that.vaccineDoses && Objects.equals(name, that.name) && Objects.equals(location, that.location) && Objects.equals(sickPeople, that.sickPeople) && Objects.equals(healthyPeople, that.healthyPeople) && ramzorColor == that.ramzorColor && Objects.equals(neighbors, that.neighbors);
     }
 
+    private synchronized void tryTokill()
+    {
+
+        if (this.getSickPeople().size() > 0)
+        {
+            for (int k = 0; k < this.getSickPeople().size(); k++)
+            {
+                Sick s = (Sick) this.getSickPeople().get(k);
+                if (s != null)
+                {
+                    if (s.tryToDie())
+                    {
+                        this.getSickPeople().remove(s);
+                        this.addDeadPeople();
+                    }
+                }
+
+            }
+        }
+        if (this.getDeadPeople() >=this.getCurrentPopulation()* DeadPercent)
+        {
+            StatisticsFile.LogWriting(this);
+        }
+    }
+
+    @Override
+    public void run()
+    {
+        Random randomx = new Random();
+        Random randomy = new Random();
+        IVirus Cvirus, Bvirus, Svirus;
+        Cvirus = new ChineseVariant();
+        Bvirus = new BritishVariant();
+        Svirus = new SouthAfricanVariant();
+        Sick sick_p=null;
+
+        System.out.println("hate");
+
+        //In every settlement show 20% of random sick try to contage them
+
+        while (true)
+        {
+            {
+                int population = (int) (this.getCurrentPopulation());  //num of population
+
+                int randomHealthyPeople = (int) (this.getHealthyPeople().size() * 0.2);
+
+                for (int j = 0; j < randomHealthyPeople; j++)      //run until 20% sick people from the settlement
+                {
+                    int x = randomx.nextInt(population);
+                    int y = randomy.nextInt(3);
+
+                    if (y == 0)
+                    {
+                        sick_p = new Sick(this.getHealthyPeronByIndex(j).getAge(),  // CONTAGION WITH CHINESE VARIANT
+                                 this.getHealthyPeronByIndex(j).getLocation(),
+                                 this.getHealthyPeronByIndex(j).getSettlement(),
+                                 Clock.now(),
+                                 Cvirus);
+                    }
+                    if (y == 1)
+                    {
+                        sick_p = new Sick(this.getHealthyPeronByIndex(j).getAge(), // CONTAGION WITH BRITISH VARIANT
+                                 this.getHealthyPeronByIndex(j).getLocation(),
+                                 this.getHealthyPeronByIndex(j).getSettlement(),
+                                 Clock.now(),
+                                 Bvirus);
+                    }
+                    if (y == 2)
+                    {
+                        sick_p = new Sick(this.getHealthyPeronByIndex(j).getAge(),
+                                 this.getHealthyPeronByIndex(j).getLocation(),
+                                 this.getHealthyPeronByIndex(j).getSettlement(),
+                                 Clock.now(),
+                                 Svirus);
+                    }
+                    this.getHealthyPeople().remove(j);
+                    this.getSickPeople().add(sick_p);
+                    this.getSickPeronByIndex(x).toString();   //דיגום לאחר נסיון הדבקה
+                }
+            }
+
+            //-------------------------------------------------------------------------------------------------------------------------------------------
+            //-------------------------------------------------------------------------------------------------------------------------------------------
+
+
+            //In every settlement show 3 not sick people and try to contage them
+            int notSick = 3;
+            String x;
+            IVirus v = null;
+
+
+            {
+                for (int j = 0; j < this.getSickPeople().size(); j++)       //run until size if healty people list
+                {
+                    x = this.getSickPeronByIndex(j).toString();
+
+                    for (int z = 0; z < notSick; z++)    //runs until 3
+                    {
+                        if (x.contains("BritishVariant"))
+                        {
+                            v = new BritishVariant();      //BRITISH VARIANT
+                        }
+                        if (x.contains("SouthAfricanVariant"))
+                        {
+                            v = new SouthAfricanVariant();         //SouthAfrican Variant
+                        }
+                        if (x.contains("ChineseVariant"))
+                        {
+                            v = new ChineseVariant();          //CHINESE VARIANT
+                        }
+
+                        if (v.tryToContagion(this.getSickPeronByIndex(j), this.getHealthyPeronByIndex(j)))
+                        {
+                            Sick s1 = new Sick(this.getHealthyPeronByIndex(j).getAge(),
+                                    this.getHealthyPeronByIndex(j).getLocation(),
+                                    this.getHealthyPeronByIndex(j).getSettlement(),
+                                    Clock.now(),
+                                    v);
+
+                            this.getSickPeople().add(this.getHealthyPeronByIndex(z));//add the person that got contage to the sick list
+                            this.getHealthyPeople().remove(this.getHealthyPeronByIndex(z));//remove the person that got contage from the healthy list
+                        }
+                    }
+
+                }
+            }
+
+            //-------------------------------------------------------------------------------------------------------------------------------------------
+            //-------------------------------------------------------------------------------------------------------------------------------------------
+            this.tryTokill();
+            //-------------------------------------------------------------------------------------------------------------------------------------------
+            //-------------------------------------------------------------------------------------------------------------------------------------------
+
+            //make in every settlement all the sick people to convalescent if its been 25 days from the contage day
+            {
+                for (int j = 0; j < this.getSickPeople().size(); j++)
+                {
+                    if ((Clock.now() - ((Sick) this.getSickPeronByIndex(j)).getContagiousTime()) > 25)  //if past 25 days from the day the person got contagious
+                    {
+                        //need to make the sick person to convalescent so I will make new convalescent obj and
+                        //put all the data of the sick person to the new obj
+                        Convalescent As =  new Convalescent(((Sick)this.getSickPeople().get(j)).getAge(),
+                                               ((Sick) this.getSickPeople().get(j)).getLocation(),
+                                               ((Sick)this.getSickPeople().get(j)).getSettlement(),
+                                               ((Sick) this.getSickPeople().get(j)).getVirus());
+
+                        this.getSickPeople().remove(j);
+                        this.getHealthyPeople().add(As);
+
+
+                    }
+                }
+            }
+            //-------------------------------------------------------------------------------------------------------------------------------------------
+            //-------------------------------------------------------------------------------------------------------------------------------------------
+
+            //In every settlement show 3% of people that trying to random neighbor
+            //Try to move to that neighbor settlement
+
+            List<Person> sickANDhealthyPersonList = new ArrayList<>();
+            {
+                for (int j = 0; j < this.getHealthyPeople().size(); j++) {
+                    sickANDhealthyPersonList.add(this.getHealthyPeronByIndex(j));
+                }
+                for (int j = this.getHealthyPeople().size(); j < this.getSickPeople().size(); j++) {
+                    sickANDhealthyPersonList.add(this.getSickPeronByIndex(j));
+                }
+                //now the array contains all person- sick and healthy
+
+                for (int j = 0; j < sickANDhealthyPersonList.size() * 0.03; j++) {
+                    Random rn = new Random();
+                    Random rp = new Random();
+                    int a = rp.nextInt(sickANDhealthyPersonList.size());
+                    int b = rn.nextInt(sickANDhealthyPersonList.get(a).getSettlement().getNeighbors().size());
+                    sickANDhealthyPersonList.
+                            get(a).
+                            getSettlement().
+                            transferPerson(sickANDhealthyPersonList.get(a)
+                                    , sickANDhealthyPersonList.get(a).getSettlement().getNeighbors().get(b));
+                }
+            }
+
+            //-------------------------------------------------------------------------------------------------------------------------------------------
+            //-------------------------------------------------------------------------------------------------------------------------------------------
+
+            //inoculate (לחסן) healthy people and update the
+            {
+                if (this.getVaccineDoses() > 0)   //it means that the settlement has vaccine Doses
+                {
+                    if (this.getVaccineDoses() >= this.getHealthyPeople().size())
+                    {
+                        for (int j = 0; j < this.getHealthyPeople().size(); j++)
+                        {
+                            Vaccinated personGotVaccinated = new Vaccinated(this.getHealthyPeronByIndex(j).getAge(),
+                                    this.getHealthyPeronByIndex(j).getLocation(),
+                                    this.getHealthyPeronByIndex(j).getSettlement(),
+                                    Clock.now());
+                            this.setVaccineDoses((this.getVaccineDoses()) - 1);
+                        }
+                    }
+                    else
+                        {
+                        for (int j = 0; j < this.getVaccineDoses(); j++)
+                        {
+                            Vaccinated personGotVaccinated = new Vaccinated(this.getHealthyPeronByIndex(j).getAge(),
+                                    this.getHealthyPeronByIndex(j).getLocation(),
+                                    this.getHealthyPeronByIndex(j).getSettlement(),
+                                    Clock.now());
+                            this.setVaccineDoses((this.getVaccineDoses()) - 1);
+                        }
+                    }
+
+                }
+            }
+            //System.out.println(this.healthyPeople.size() +" Healthy people at the settlement "+this.getName());  //** מחזיר 0 -לא עובד**
+            //System.out.println(this.sickPeople.size() +" Sick people at the settlement "+this.getName());          ////** מחזיר 0 -לא עובד**
+
+            //System.out.println(this.getRamzorColor() +" ramzor color of the settlement "+this.getName());
+            //System.out.println(this.getNeighbors().size() +" Neighbors of the settlement "+this.getName());
+            System.out.println(this.currentPopulation +" People in the settlement "+this.getName());
+            //System.out.println(this.maxPopulation +" Max People in the settlement "+this.getName());
+            //System.out.println(this.getType() +" Type of the settlement "+this.getName());
+        }
+    }
 }

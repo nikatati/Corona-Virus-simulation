@@ -37,41 +37,32 @@ class MutationWindows extends JDialog
             IVirus virus = virusType.get(rowi);
             if(rowi == 0)
             {
-                switch (coli)
-                {
-                    case 0:
-                        return BritishVariant.getMutationChinese();
-                    case 1:
-                        return BritishVariant.getMutationBritish();
-                    case 2:
-                        return BritishVariant.getMutationSouthAfrican();
-                }
+                if (coli==0)
+                    return BritishVariant.getMutationChinese();
+                else if(coli==1)
+                    return BritishVariant.getMutationBritish();
+                else if(coli==2)
+                    return BritishVariant.getMutationSouthAfrican();
             }
 
             if(rowi == 1)
             {
-                switch (coli)
-                {
-                    case 0:
-                        return BritishVariant.getMutationChinese();
-                    case 1:
-                        return BritishVariant.getMutationBritish();
-                    case 2:
-                        return BritishVariant.getMutationSouthAfrican();
-                }
+                if (coli==0)
+                    return BritishVariant.getMutationChinese();
+                if(coli==1)
+                    return BritishVariant.getMutationBritish();
+                if(coli==2)
+                    return BritishVariant.getMutationSouthAfrican();
             }
 
             if(rowi == 2)
             {
-                switch (coli)
-                {
-                    case 0:
-                        return BritishVariant.getMutationChinese();
-                    case 1:
-                        return BritishVariant.getMutationBritish();
-                    case 2:
-                        return BritishVariant.getMutationSouthAfrican();
-                }
+                if (coli==0)
+                    return BritishVariant.getMutationChinese();
+                if(coli==1)
+                    return BritishVariant.getMutationBritish();
+                if(coli==2)
+                    return BritishVariant.getMutationSouthAfrican();
             }
             return null;
 

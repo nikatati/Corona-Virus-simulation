@@ -2,13 +2,14 @@ package UI;
 import Country.Map;
 
 import IO.SimulationFile;
+import IO.StatisticsFile;
 import Simulation.Clock;
 import Simulation.Main;
 import Virus.BritishVariant;
 import Virus.ChineseVariant;
 import Virus.IVirus;
 import Virus.SouthAfricanVariant;
-import Simulation.*;
+
 import javax.swing.*;
 
 import java.awt.*;
@@ -16,7 +17,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
 import java.io.IOException;
 
 import java.awt.Color;
@@ -44,6 +44,8 @@ public class Window extends JFrame implements ActionListener
     JMenuBar menuBar = new JMenuBar();
 
     ArrayList<IVirus> variants=new ArrayList<>();
+
+    public static boolean PlayFlag=false;
 
 
 
@@ -142,6 +144,7 @@ public class Window extends JFrame implements ActionListener
                 try
                 {
                     worldMap = SimulationFile.SimulationFile(); //load
+
                     map_panel.set_Map(worldMap);
 
                 }
@@ -182,8 +185,20 @@ public class Window extends JFrame implements ActionListener
                 MutationsEdit.setVisible(true);
             }
         });
+
         //----------------------------log button----------------------------------------------------------------
-        JButton log_b = new JButton("Log");
+        JButton Blog = new JButton("Log file");
+
+        Blog.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                StatisticsFile.loadFileFunc();
+
+            }
+        });
+
 
         //----------------------------exit button----------------------------------------------------------------
         JButton exit_b = new JButton("Exit");
@@ -200,7 +215,7 @@ public class Window extends JFrame implements ActionListener
         file_m.add(load_b);
         file_m.add(Bstatistics);
         file_m.add(editMutations);
-        file_m.add(log_b);
+        file_m.add(Blog);
         file_m.add(exit_b);
 
     }
@@ -264,36 +279,14 @@ public class Window extends JFrame implements ActionListener
             public void actionPerformed(ActionEvent e)
             {
 
-               Main.dataInitialization(worldMap);
-                /*System.out.println("make Sick start");
-                Thread Ms = new Simulation.Main.MakeSick(worldMap);
-                Ms.run();
-                System.out.println("make Sick finished");
+                PlayFlag=true;
+                Main.dataInitialization(worldMap);
 
-                System.out.println("Try to contagion start");
-                Thread Tc = new Simulation.Main.TryContagion(worldMap);
-                Tc.run();
-                System.out.println("Try to contagion finished");
-
-                System.out.println("Become healthy start");
-                Thread Bh = new Simulation.Main.BecomeHealthy(worldMap);
-                Bh.run();
-                System.out.println("Become healthy  finished");
-
-                System.out.println("Try To Move start");
-                Thread Ttm = new Simulation.Main.TryToMove(worldMap);
-                Ttm.run();
-                System.out.println("Try To Move  finished");
-
-                System.out.println("Get Vaccinated start");
-                Thread Gv = new Simulation.Main.GetVaccinated(worldMap);
-                Gv.run();
-                System.out.println("Get Vaccinated  finished");*/
             }
         });
 
-        //pause button
-        //-------------------------------------------------------------------------------
+
+        //-----------------------------------pause button--------------------------------------------
         JButton pause_b = new JButton("Pause");
         pause_b.addActionListener(new ActionListener()
         {
@@ -307,7 +300,6 @@ public class Window extends JFrame implements ActionListener
                         try
                         {
                             Thread.sleep(200);
-                            System.out.println("thread is paused");
                         }
                         catch (InterruptedException interruptedException)
                         {
@@ -327,8 +319,7 @@ public class Window extends JFrame implements ActionListener
             public void actionPerformed(ActionEvent e)
             {
                 worldMap=null;
-                map_panel.set_Map(null);
-
+               map_panel.set_Map(null);
 
             }
         });
@@ -454,6 +445,7 @@ public class Window extends JFrame implements ActionListener
         allFrame.simulation_func();
         allFrame.Help();
         allFrame.simulationSlider();
+
 
     }
 

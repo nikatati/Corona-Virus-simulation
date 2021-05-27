@@ -67,7 +67,9 @@ public class Sick extends Person    //A class that describes a sick person
     //A method that guerrilla with probability P whether the person will die as a result of the virus
     public boolean tryToDie()
     {
-        return virus.tryToKill(this);
+        if (virus.tryToKill(this))
+            return true;
+        return false;
     }
 
     //equals methode
