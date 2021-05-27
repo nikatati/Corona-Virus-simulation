@@ -3,15 +3,16 @@ package IO;
 import java.io.File;  // Import the File class
 import java.io.FileNotFoundException;  // Import this class to handle errors
 import java.util.Scanner; // Import the Scanner class to read text files
-import Country.Moshav;
+
+import Country.*;
+import Country.Map;
 import Location.Location;
 import Location.Point;
 import Location.Size;
-import Country.Kibbutz;
-import Country.Settlement;
-import Country.City;
+
 import java.util.*;
-import Country.Map;
+
+import Population.Person;
 
 import javax.swing.*;
 
@@ -60,6 +61,8 @@ public class SimulationFile
                              words[1],
                              new Location(new Point(Integer.parseInt(words[2]), Integer.parseInt(words[3])),
                              new Size(Integer.parseInt(words[4]), Integer.parseInt(words[5]))),
+                              RamzorColor.GREEN,
+                             null,null,
                              Integer.parseInt(words[6]),
                              Integer.parseInt(words[7])));
                    // str = myReader.nextLine();
@@ -141,25 +144,25 @@ public class SimulationFile
     }
 
 
-    private static Settlement createNewSettlementByType (String type, String name, Location l, int currentPopulation,int vaccineDoses)
+    private static Settlement createNewSettlementByType (String type, String name, Location l, RamzorColor color, List<Person> healthy, List<Person> sick ,int currentPopulation, int vaccineDoses)
     {
 
         if (Objects.equals("City", type))
         {
             //addPeopleToSettlementByAmount(c, people_amount);
-            return new City(name, l,currentPopulation, (int)(currentPopulation*x),vaccineDoses);
+            return new City(name, l, color,  healthy, sick, currentPopulation, (int)(currentPopulation*x),vaccineDoses);
         }
 
         else if (Objects.equals("Moshav", type))
         {
             //addPeopleToSettlementByAmount(m, people_amount);
-            return new Moshav(name, l, currentPopulation, (int)(currentPopulation*x),vaccineDoses);
+            return new Moshav(name, l, color,  healthy, sick, currentPopulation, (int)(currentPopulation*x),vaccineDoses);
         }
 
         else if (Objects.equals("Kibbutz", type))
         {
             //addPeopleToSettlementByAmount(k,people_amount);
-            return new Kibbutz (name,l,currentPopulation, (int)(currentPopulation*x),vaccineDoses);
+            return new Kibbutz (name, l, color,  healthy, sick, currentPopulation, (int)(currentPopulation*x),vaccineDoses);
         }
         return null;
     }

@@ -3,6 +3,8 @@ import Population.Person;
 import Population.Sick;
 import Location.Location;
 
+import java.util.List;
+
 public class Kibbutz extends Settlement
 {
     public String Type= "Kibbutz";
@@ -14,9 +16,9 @@ public class Kibbutz extends Settlement
     }
 
     //constructor get 2 variables
-    public Kibbutz (String name,Location location,int currentPopulation,int maxPopulation,int vaccineDoses)
+    public Kibbutz (String name, Location location, RamzorColor color, List<Person> healthy, List<Person> sick, int currentPopulation, int maxPopulation, int vaccineDoses)
     {
-        super(name, location, currentPopulation, maxPopulation, vaccineDoses);
+        super(name, location, color,healthy, sick, currentPopulation, maxPopulation, vaccineDoses);
     }
 
 

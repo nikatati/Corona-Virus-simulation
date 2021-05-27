@@ -1,6 +1,9 @@
 package Country;
 
 import Location.Location;
+import Population.Person;
+
+import java.util.List;
 
 
 public class City extends Settlement
@@ -51,9 +54,9 @@ public class City extends Settlement
     }
 
     //constructor get 4 variables
-    public City (String name,Location location,int currentPopulation,int maxPopulation,int vaccineDoses)
+    public City (String name, Location location, RamzorColor color, List<Person> healthy, List<Person> sick, int currentPopulation, int maxPopulation, int vaccineDoses)
     {
-        super (name,location, currentPopulation, maxPopulation, vaccineDoses);
+        super (name,location, color,  healthy, sick, currentPopulation, maxPopulation, vaccineDoses);
     }
 
 

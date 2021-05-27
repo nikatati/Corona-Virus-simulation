@@ -69,7 +69,7 @@ public abstract class Settlement implements Runnable
     }
 
     //constructor get 4 variables
-    public Settlement (String name,Location location,int currentPopulation,int maxPopulation, int vaccineDoses)
+    public Settlement (String name,Location location,RamzorColor color, List<Person> healthy,List<Person> sick,int currentPopulation,int maxPopulation, int vaccineDoses)
     {
 
         this.name = name;
@@ -311,7 +311,6 @@ public abstract class Settlement implements Runnable
         Svirus = new SouthAfricanVariant();
         Sick sick_p=null;
 
-        System.out.println("hate");
 
         //In every settlement show 20% of random sick try to contage them
 
@@ -360,8 +359,7 @@ public abstract class Settlement implements Runnable
             //-------------------------------------------------------------------------------------------------------------------------------------------
             //-------------------------------------------------------------------------------------------------------------------------------------------
 
-
-            //In every settlement show 3 not sick people and try to contage them
+                       //In every settlement show 3 not sick people and try to contage them
             int notSick = 3;
             String x;
             IVirus v = null;
@@ -490,12 +488,14 @@ public abstract class Settlement implements Runnable
 
                 }
             }
+
+
             //System.out.println(this.healthyPeople.size() +" Healthy people at the settlement "+this.getName());  //** מחזיר 0 -לא עובד**
             //System.out.println(this.sickPeople.size() +" Sick people at the settlement "+this.getName());          ////** מחזיר 0 -לא עובד**
 
             //System.out.println(this.getRamzorColor() +" ramzor color of the settlement "+this.getName());
             //System.out.println(this.getNeighbors().size() +" Neighbors of the settlement "+this.getName());
-            System.out.println(this.currentPopulation +" People in the settlement "+this.getName());
+            //System.out.println(this.currentPopulation +" People in the settlement "+this.getName());
             //System.out.println(this.maxPopulation +" Max People in the settlement "+this.getName());
             //System.out.println(this.getType() +" Type of the settlement "+this.getName());
         }

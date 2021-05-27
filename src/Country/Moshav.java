@@ -15,9 +15,9 @@ public class Moshav extends Settlement
     }
 
     //constructor get 2 variables
-    public Moshav (String name,Location location,int currentPopulation,int maxPopulation,int vaccineDoses)
+    public Moshav (String name,Location location,RamzorColor color, List<Person> healthy,List<Person> sick,int currentPopulation,int maxPopulation,int vaccineDoses)
     {
-        super (name,location, currentPopulation, maxPopulation, vaccineDoses);
+        super (name,location,color, healthy, sick, currentPopulation, maxPopulation, vaccineDoses);
     }
 
     public String getType() { return Type; }

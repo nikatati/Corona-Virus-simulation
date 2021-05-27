@@ -1,6 +1,7 @@
 package UI;
 import Country.Map;
 
+import Country.Settlement;
 import IO.SimulationFile;
 import IO.StatisticsFile;
 import Simulation.Clock;

@@ -51,7 +51,7 @@ public class Main
     }
 
 
-    public static void dataInitialization(Map m)   //טעינת המפה
+    public static void dataInitialization(Map m)   //סימולציה
     {
         Random randomx = new Random();
         Random randomy = new Random();
