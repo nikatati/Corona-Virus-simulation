@@ -1,0 +1,16 @@
+Settlement type,Settlement name,Population,Color,Vaccine dose,Sick people,Location
+City,Ashdod,1000,RamzorColor{factor=0.4} GREEN,10,0,
+	position=The Point(0,0)
+	size= The Size:	width=90 || height=50
+City,Beer-Sheva,1200,RamzorColor{factor=0.4} GREEN,20,0,
+	position=The Point(120,190)
+	size= The Size:	width=40 || height=40
+Moshav,Gevim,100,RamzorColor{factor=0.4} GREEN,30,0,
+	position=The Point(200,70)
+	size= The Size:	width=10 || height=20
+City,Rehovot,100,RamzorColor{factor=0.4} GREEN,15,0,
+	position=The Point(90,270)
+	size= The Size:	width=30 || height=30
+City,Ashkelon,500,RamzorColor{factor=0.4} GREEN,90,0,
+	position=The Point(300,300)
+	size= The Size:	width=90 || height=70
