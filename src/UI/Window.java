@@ -1,15 +1,11 @@
 package UI;
 import Country.Map;
 
-import Country.Settlement;
 import IO.SimulationFile;
 import IO.StatisticsFile;
 import Simulation.Clock;
 import Simulation.Main;
-import Virus.BritishVariant;
-import Virus.ChineseVariant;
 import Virus.IVirus;
-import Virus.SouthAfricanVariant;
 
 import javax.swing.*;
 
@@ -144,7 +140,9 @@ public class Window extends JFrame implements ActionListener
                 load_b.setEnabled(false);
                 try
                 {
-                    worldMap = SimulationFile.SimulationFile(); //load
+                    worldMap = SimulationFile.LoadFile(); //load
+
+
 
                     map_panel.set_Map(worldMap);
 
@@ -195,7 +193,7 @@ public class Window extends JFrame implements ActionListener
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                StatisticsFile.loadFileFunc();
+                StatisticsFile.loadFile();
 
             }
         });
@@ -281,7 +279,7 @@ public class Window extends JFrame implements ActionListener
             {
 
                 PlayFlag=true;
-                Main.dataInitialization(worldMap);
+                Main.Simulation2(worldMap);
 
             }
         });

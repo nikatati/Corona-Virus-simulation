@@ -16,6 +16,12 @@ class MutationWindows extends JDialog
 
         private final String[] col_names ={"Chinese Mutation","British Mutation","SouthAfrican Mutation"};
 
+        @Override
+        public int getRowCount() { return virusType.size(); }
+
+        @Override
+        public int getColumnCount() { return 3; }
+
         public MutationModel(ArrayList<IVirus> virusType)
         {
             virusType.add(new ChineseVariant());
@@ -23,12 +29,6 @@ class MutationWindows extends JDialog
             virusType.add(new SouthAfricanVariant());
             this.virusType = (ArrayList<IVirus>) virusType;
         }
-
-        @Override
-        public int getRowCount() { return virusType.size(); }
-
-        @Override
-        public int getColumnCount() { return 3; }
 
         @Override
         public Object getValueAt(int rowi, int coli)
@@ -69,15 +69,6 @@ class MutationWindows extends JDialog
         }
 
         @Override
-        public String getColumnName(int col) { return col_names[col]; }
-
-        @Override
-        public Class getColumnClass(int col) { return getValueAt(0, col).getClass(); }
-
-        @Override
-        public boolean isCellEditable(int row, int col) { return true; }
-
-        @Override
         public void setValueAt(Object aValue, int row, int col)
         {
             boolean TrueFalse=(Boolean) aValue;
@@ -113,8 +104,17 @@ class MutationWindows extends JDialog
 
             fireTableCellUpdated(row, col);
         }
-    }
 
+        @Override
+        public String getColumnName(int col) { return col_names[col]; }
+
+        @Override
+        public boolean isCellEditable(int row, int col) { return true; }
+
+        @Override
+        public Class getColumnClass(int col) { return getValueAt(0, col).getClass(); }
+
+    }
     @Override
     public Dimension getPreferredSize() { return new Dimension(500,100); }
 

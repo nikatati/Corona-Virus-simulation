@@ -51,14 +51,13 @@ public abstract class Person
     //return person settlement
     public Settlement getSettlement() { return settlement; }
 
-    @Override
-    public String toString() {
-        return "Person{" +
-                "age=" + age +
-                ", location=" + location +
-                ", settlement=" + settlement +
-                '}';
+
+    public String toString()
+    {
+
+        return "age: "+this.getAge()+" location:"+this.getLocation().toString()+" Settlement:"+this.getSettlement().toString();
     }
+
 
     //copy cont fo person
     public Person (Person p)

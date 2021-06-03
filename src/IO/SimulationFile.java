@@ -12,7 +12,12 @@ import Location.Size;
 
 import java.util.*;
 
+import Population.Healthy;
 import Population.Person;
+import Population.Sick;
+import Simulation.Clock;
+import Virus.ChineseVariant;
+import Virus.IVirus;
 
 import javax.swing.*;
 
@@ -20,7 +25,8 @@ public class SimulationFile
 {
     private final static double x = 1.3;
 
-    public static Map SimulationFile() {
+    public static Map LoadFile()
+    {
 
         ArrayList<Settlement> tempStel = new ArrayList<>();
         ArrayList<String> gonnaBeNeighbor = new ArrayList<>();
@@ -119,6 +125,7 @@ public class SimulationFile
                     }
                 }
                 TreadStart(simulation_map.getSettelmet());
+                dataInitialization(simulation_map);
 
                 return simulation_map;
 
@@ -133,11 +140,11 @@ public class SimulationFile
         return null;
     }
 
-    private static void TreadStart(List<Settlement> settelmet)
+    private static void TreadStart(List<Settlement> settelemet)
     {
-        for (int i=0; i<settelmet.size();i++)
+        for (int i=0; i<settelemet.size();i++)
         {
-            new Thread(settelmet.get(i)).start();
+            new Thread(settelemet.get(i)).start();
 
         }
 
@@ -149,20 +156,38 @@ public class SimulationFile
 
         if (Objects.equals("City", type))
         {
-            //addPeopleToSettlementByAmount(c, people_amount);
-            return new City(name, l, color,  healthy, sick, currentPopulation, (int)(currentPopulation*x),vaccineDoses);
+            City city= new City(name, l, color,  healthy, sick, currentPopulation, (int)(currentPopulation*x),vaccineDoses);
+            //add People To Settlement
+            for (int i=0;i<currentPopulation;i++)
+            {
+                Healthy h =new Healthy(determiningAge(),city.randomLocation(),city);
+                city.addPerson(h);
+            }
+            return city;
         }
 
         else if (Objects.equals("Moshav", type))
         {
-            //addPeopleToSettlementByAmount(m, people_amount);
-            return new Moshav(name, l, color,  healthy, sick, currentPopulation, (int)(currentPopulation*x),vaccineDoses);
+            Moshav moshav= new Moshav(name, l, color,  healthy, sick, currentPopulation, (int)(currentPopulation*x),vaccineDoses);
+            //add People To Settlement
+            for (int i=0;i<currentPopulation;i++)
+            {
+                Healthy h =new Healthy(determiningAge(),moshav.randomLocation(),moshav);
+                moshav.addPerson(h);
+            }
+            return moshav;
         }
 
         else if (Objects.equals("Kibbutz", type))
         {
-            //addPeopleToSettlementByAmount(k,people_amount);
-            return new Kibbutz (name, l, color,  healthy, sick, currentPopulation, (int)(currentPopulation*x),vaccineDoses);
+            Kibbutz kibbutz= new Kibbutz(name, l, color,  healthy, sick, currentPopulation, (int)(currentPopulation*x),vaccineDoses);
+            //add People To Settlement
+            for (int i=0;i<currentPopulation;i++)
+            {
+                Healthy h =new Healthy(determiningAge(),kibbutz.randomLocation(),kibbutz);
+                kibbutz.addPerson(h);
+            }
+            return kibbutz;
         }
         return null;
     }
@@ -205,6 +230,39 @@ public class SimulationFile
         }
         else
             return "No file selected";
+    }
+
+
+
+    //הגדרה של %1 מכלל התושבים ביישובים בתור חולים באחד הוריאנטים
+    private static void dataInitialization (Map m)
+    {
+        IVirus Cvirus = new ChineseVariant();
+        //contagion 0.01% from the people at the settlement
+        for (int i = 0; i < m.getMapSize(); i++)
+        {
+            for (int j = 0; j < m.getSettelmentFromMapByIndex(i).getCurrentPopulation() * 0.01; j++)
+            {
+                if (m.getSettelmentFromMapByIndex(i).getPeronByIndex(j).ifSick() == false) // if the man Healthy
+                {
+                    try
+                    {
+                        //create mew Sick Obj, copy the data from the healthy person and add it to the settlement
+                        Sick sick = new Sick(m.getSettelmentFromMapByIndex(i).getHealthyPeople().get(j).getAge(),
+                                m.getSettelmentFromMapByIndex(i).getHealthyPeople().get(j).getLocation(),
+                                m.getSettelmentFromMapByIndex(i).getHealthyPeople().get(j).getSettlement(),
+                                Clock.now(),Cvirus);
+
+                        m.getSettelmentFromMapByIndex(i).getHealthyPeople().remove(j);
+                        m.getSettelmentFromMapByIndex(i).getSickPeople().add(sick);
+
+                    }
+                    catch (Exception e) { System.out.print(e); }
+
+                }
+            }
+
+        }
     }
 
 

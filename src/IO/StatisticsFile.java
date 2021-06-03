@@ -13,11 +13,9 @@ import Country.*;
 
 public class StatisticsFile
 {
-    public static String path=null;
+    public static String string_path =null;
     public static FileHandler fileHandler =null; //The FileHandler can either write to a specified file, or it can write to a rotating set of files.
 
-
-    private static String string;
 
 
     public static void csv(Map map)
@@ -82,13 +80,28 @@ public class StatisticsFile
         }
     }
 
+
+
+    public static void loadFile()
+    {
+        FileDialog fileDialog = new FileDialog((Frame) null, "Please choose a file:", FileDialog.LOAD);
+        fileDialog.setVisible(true);
+        if (fileDialog.getFile() == null)
+            return ;
+        string_path =fileDialog.getFile();
+
+        try { fileHandler = new FileHandler(string_path); }
+        catch (SecurityException | IOException e) { e.printStackTrace(); }
+    }
+
+
     public static void LogWriting(Settlement s)
     {
         Logger logger = Logger.getLogger("");
 
         try
         {
-            fileHandler = new FileHandler(path, true);
+            fileHandler = new FileHandler(string_path, true);
             logger.addHandler(fileHandler);
             SimpleFormatter formatter = new SimpleFormatter();//Print a brief summary of the LogRecord in a human readable format.
                                                               // The summary will typically be 1 or 2 lines.
@@ -97,20 +110,6 @@ public class StatisticsFile
             logger.info(s.getName()+" Number of sick: "+s.getSickPeople().size()+" Number of dead: "+s.getDeadPeople()+"\n");
             fileHandler.close();
         }
-        catch (SecurityException | IOException e) { e.printStackTrace(); }
-    }
-
-
-
-    public static void loadFileFunc()
-    {
-        FileDialog fileDialog = new FileDialog((Frame) null, "Please choose a file:", FileDialog.LOAD);
-        fileDialog.setVisible(true);
-        if (fileDialog.getFile() == null)
-            return ;
-        path=fileDialog.getFile();
-
-        try { fileHandler = new FileHandler(path); }
         catch (SecurityException | IOException e) { e.printStackTrace(); }
     }
 }

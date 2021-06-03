@@ -28,7 +28,6 @@ import Virus.SouthAfricanVariant;
 
 public class Main
 {
-    static int simulation_loop = 5;// time of simulation loop
 
     public static void main(String[] args)
     {
@@ -37,21 +36,63 @@ public class Main
     }
 
 
-    public static File loadFileFunc()
+
+
+
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~סימולציה ראשונה~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    //מעבר על כל היישובים, בחירה של כל חולה, עבורו בחירה אקראית של שישה אנשים מעל אותו יישוב, ולנסות להדביקם.
+    private static void simulation1 (Map m)
     {
-        FileDialog fileDialog = new FileDialog((Frame) null, "Please choose a file for loading:", FileDialog.LOAD);
-        fileDialog.setVisible(true);
+        ChineseVariant variant = new ChineseVariant(); // Choose kind of Corona variant
 
-        if (fileDialog.getFile() == null)
-            return null;
-        File f = new File(fileDialog.getDirectory(), fileDialog.getFile());
+        //loop all the settlements
+        for(int i = 0; i < m.getMapSize(); i++)
+        {
+            //loop all people at settlement
+            for (int j = 0; j < m.getSettelmentFromMapByIndex(i).getCurrentPopulation(); j++)
+            {
+                if (m.getSettelmentFromMapByIndex(i).getHealthyPeople().get(j).ifSick() == false)//if the man Healthy
+                    for (int k = 0; k < 6; k++)   //try 6 times so contagion
+                    {
+                        int index = 0;
+                        boolean flag = false;
+                        while (!flag)
+                        {
+                            Random x = new Random();
+                            index = x.nextInt(m.getSettelmentFromMapByIndex(i).getCurrentPopulation());// get random person
+                            if (index != j)// its not the same healthy person
+                                flag = true;
+                        }
 
-        System.out.println(f.getPath());
-        return f;
+                        if (m.getSettelmentFromMapByIndex(i).getHealthyPeople().get(index).ifSick() == true) // the random person is sick
+                        {
+                            //Try to contagion by Probability contagion function
+                            if (variant.tryToContagion(m.getSettelmentFromMapByIndex(i).getHealthyPeople().get(index), m.getSettelmentFromMapByIndex(i).getHealthyPeople().get(j)))
+                                try
+                                {
+                                    Sick sick = new Sick(m.getSettelmentFromMapByIndex(i).getHealthyPeople().get(j).getAge(),
+                                            m.getSettelmentFromMapByIndex(i).getLocation().getPoint(),
+                                            m.getSettelmentFromMapByIndex(i).getHealthyPeople().get(j).getSettlement(),
+                                            Clock.now(),
+                                            variant);
+
+                                    m.getSettelmentFromMapByIndex(i).getHealthyPeople().remove(j);
+                                    m.getSettelmentFromMapByIndex(i).getSickPeople().add(sick);
+                                }
+                                catch (Exception e) { System.out.print(e); }
+                        }
+                    }
+
+            }
+        }
     }
 
+    //------------------------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------
 
-    public static void dataInitialization(Map m)   //סימולציה
+
+    public static void Simulation2(Map m)   //סימולציה 2
     {
         Random randomx = new Random();
         Random randomy = new Random();
@@ -81,26 +122,26 @@ public class Main
 
                     if (y == 0)
                     {
-                        sick_p = new Sick(m.getSettelmentFromMapByIndex(i).getHealthyPeronByIndex(j).getAge(),   // CONTAGION WITH CHINESE VARIANT
-                                     m.getSettelmentFromMapByIndex(i).getHealthyPeronByIndex(j).getLocation(),
-                                     m.getSettelmentFromMapByIndex(i).getHealthyPeronByIndex(j).getSettlement(),
+                        sick_p = new Sick(m.getSettelmentFromMapByIndex(i).getHealthyPeople().get(j).getAge(),   // CONTAGION WITH CHINESE VARIANT
+                                     m.getSettelmentFromMapByIndex(i).getHealthyPeople().get(j).getLocation(),
+                                     m.getSettelmentFromMapByIndex(i).getHealthyPeople().get(j).getSettlement(),
                                      Clock.now(),
                                      Cvirus);
 
                     }
                     if (y == 1)
                     {
-                        sick_p = new Sick(m.getSettelmentFromMapByIndex(i).getHealthyPeronByIndex(j).getAge(),   // CONTAGION WITH BRITISH VARIANT
-                                 m.getSettelmentFromMapByIndex(i).getHealthyPeronByIndex(j).getLocation(),
-                                 m.getSettelmentFromMapByIndex(i).getHealthyPeronByIndex(j).getSettlement(),
+                        sick_p = new Sick(m.getSettelmentFromMapByIndex(i).getHealthyPeople().get(j).getAge(),   // CONTAGION WITH BRITISH VARIANT
+                                 m.getSettelmentFromMapByIndex(i).getHealthyPeople().get(j).getLocation(),
+                                 m.getSettelmentFromMapByIndex(i).getHealthyPeople().get(j).getSettlement(),
                                  Clock.now(),
                                  Bvirus);
                     }
                     if (y == 2)
                     {
-                        sick_p = new Sick(m.getSettelmentFromMapByIndex(i).getHealthyPeronByIndex(j).getAge(),  // CONTAGION WITH SOUTH AFRICAN VARIANT
-                                 m.getSettelmentFromMapByIndex(i).getHealthyPeronByIndex(j).getLocation(),
-                                 m.getSettelmentFromMapByIndex(i).getHealthyPeronByIndex(j).getSettlement(),
+                        sick_p = new Sick(m.getSettelmentFromMapByIndex(i).getHealthyPeople().get(j).getAge(),  // CONTAGION WITH SOUTH AFRICAN VARIANT
+                                 m.getSettelmentFromMapByIndex(i).getHealthyPeople().get(j).getLocation(),
+                                 m.getSettelmentFromMapByIndex(i).getHealthyPeople().get(j).getSettlement(),
                                  Clock.now(),
                                  Svirus);
 
@@ -142,15 +183,15 @@ public class Main
                             {
                                 v=new ChineseVariant();          //CHINESE VARIANT
                             }
-                            if (v.tryToContagion(m.getSettelmentFromMapByIndex(i).getSickPeronByIndex(j),m.getSettelmentFromMapByIndex(i).getHealthyPeronByIndex(j)))
+                            if (v.tryToContagion(m.getSettelmentFromMapByIndex(i).getSickPeronByIndex(j),m.getSettelmentFromMapByIndex(i).getHealthyPeople().get(j)))
                             {
-                                Sick s1= new Sick(m.getSettelmentFromMapByIndex(i).getHealthyPeronByIndex(j).getAge(),
-                                                  m.getSettelmentFromMapByIndex(i).getHealthyPeronByIndex(j).getLocation(),
-                                                  m.getSettelmentFromMapByIndex(i).getHealthyPeronByIndex(j).getSettlement(),
+                                Sick s1= new Sick(m.getSettelmentFromMapByIndex(i).getHealthyPeople().get(j).getAge(),
+                                                  m.getSettelmentFromMapByIndex(i).getHealthyPeople().get(j).getLocation(),
+                                                  m.getSettelmentFromMapByIndex(i).getHealthyPeople().get(j).getSettlement(),
                                                   Clock.now(),
                                                   v);
-                                m.getSettelmentFromMapByIndex(i).getSickPeople().add(m.getSettelmentFromMapByIndex(i).getHealthyPeronByIndex(z));//add the person that got contage to the sick list
-                                m.getSettelmentFromMapByIndex(i).getHealthyPeople().remove(m.getSettelmentFromMapByIndex(i).getHealthyPeronByIndex(z));//remove the person that got contage from the healthy list
+                                m.getSettelmentFromMapByIndex(i).getSickPeople().add(m.getSettelmentFromMapByIndex(i).getHealthyPeople().get(z));//add the person that got contage to the sick list
+                                m.getSettelmentFromMapByIndex(i).getHealthyPeople().remove(m.getSettelmentFromMapByIndex(i).getHealthyPeople().get(z));//remove the person that got contage from the healthy list
                             }
                     }
 
@@ -191,7 +232,7 @@ public class Main
             {
                 for (int j=0;j<m.getSettelmentFromMapByIndex(i).getHealthyPeople().size(); j++)
                 {
-                    sickANDhealthyPersonList.add(m.getSettelmentFromMapByIndex(i).getHealthyPeronByIndex(j));
+                    sickANDhealthyPersonList.add(m.getSettelmentFromMapByIndex(i).getHealthyPeople().get(j));
                 }
                 for (int j=m.getSettelmentFromMapByIndex(i).getHealthyPeople().size();j<m.getSettelmentFromMapByIndex(i).getSickPeople().size(); j++)
                 {
@@ -225,9 +266,9 @@ public class Main
                     {
                         for (int j = 0; j < m.getSettelmentFromMapByIndex(i).getHealthyPeople().size(); j++)
                         {
-                            Vaccinated personGotVaccinated = new Vaccinated(m.getSettelmentFromMapByIndex(i).getHealthyPeronByIndex(j).getAge(),
-                                    m.getSettelmentFromMapByIndex(i).getHealthyPeronByIndex(j).getLocation(),
-                                    m.getSettelmentFromMapByIndex(i).getHealthyPeronByIndex(j).getSettlement(),
+                            Vaccinated personGotVaccinated = new Vaccinated(m.getSettelmentFromMapByIndex(i).getHealthyPeople().get(j).getAge(),
+                                    m.getSettelmentFromMapByIndex(i).getHealthyPeople().get(j).getLocation(),
+                                    m.getSettelmentFromMapByIndex(i).getHealthyPeople().get(j).getSettlement(),
                                     Clock.now());
                             m.getSettelmentFromMapByIndex(i).setVaccineDoses((m.getSettelmentFromMapByIndex(i).getVaccineDoses()) - 1);
                         }
@@ -236,9 +277,9 @@ public class Main
                     {
                         for (int j = 0; j <m.getSettelmentFromMapByIndex(i).getVaccineDoses(); j++)
                         {
-                            Vaccinated personGotVaccinated = new Vaccinated(m.getSettelmentFromMapByIndex(i).getHealthyPeronByIndex(j).getAge(),
-                                    m.getSettelmentFromMapByIndex(i).getHealthyPeronByIndex(j).getLocation(),
-                                    m.getSettelmentFromMapByIndex(i).getHealthyPeronByIndex(j).getSettlement(),
+                            Vaccinated personGotVaccinated = new Vaccinated(m.getSettelmentFromMapByIndex(i).getHealthyPeople().get(j).getAge(),
+                                    m.getSettelmentFromMapByIndex(i).getHealthyPeople().get(j).getLocation(),
+                                    m.getSettelmentFromMapByIndex(i).getHealthyPeople().get(j).getSettlement(),
                                     Clock.now());
                             m.getSettelmentFromMapByIndex(i).setVaccineDoses((m.getSettelmentFromMapByIndex(i).getVaccineDoses()) - 1);
                         }
@@ -256,44 +297,4 @@ public class Main
     }
 
 
-   /* private static void simulation (Map m)
-    {
-        ChineseVariant variant = new ChineseVariant(); // Choose kind of Corona variant
-
-        //loop all the settlements
-        for(int i = 0; i < m.getMapSize(); i++)
-        {
-            //loop all people at settlement
-            for (int j = 0; j < m.getSettelmentFromMapByIndex(i).getCurrentPopulation(); j++)
-            {
-                if (m.getSettelmentFromMapByIndex(i).getPeronByIndex(j).ifSick() == false)//if the man Healthy
-                    for (int k = 0; k < 6; k++)   //try 6 times so contagion
-                    {
-                        int index = 0;
-                        boolean flag = false;
-                        while (!flag)
-                         {
-                            Random x = new Random();
-                            index = x.nextInt(m.getSettelmentFromMapByIndex(i).getCurrentPopulation());// get random person
-                            if (index != j)// its not the same healthy person
-                                flag = true;
-                        }
-
-                        if (m.getSettelmentFromMapByIndex(i).getPeronByIndex(index).ifSick() == true) // the random person is sick
-                        {
-                            //Try to contagion by Probability contagion function
-                            if (variant.tryToContagion(m.getSettelmentFromMapByIndex(i).getPeronByIndex(index), m.getSettelmentFromMapByIndex(i).getPeronByIndex(j)))
-                                try {
-                                    Sick sick = new Sick(m.getSettelmentFromMapByIndex(i).getPeronByIndex(j).contagion(new ChineseVariant()));
-                                    m.getSettelmentFromMapByIndex(i).removePerson(m.getSettelmentFromMapByIndex(i).getPeronByIndex(j));
-                                    m.getSettelmentFromMapByIndex(i).addPerson(sick);
-                                } catch (Exception e) {
-                                    System.out.print(e);
-                                }
-                        }
-                    }
-
-            }
-        }
-    }*/
 }

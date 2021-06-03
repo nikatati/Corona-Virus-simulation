@@ -71,12 +71,29 @@ public class StatisticTable extends JPanel implements ActionListener
         }
 
 
+
         @Override
         public int getRowCount()
         {
             return settlementsInfo.size();
         }
 
+
+        public String getColumnName(int column)
+        {
+            return colNames[column];
+        }
+
+        public Class getColumnClass(int clas)
+        {
+            return getValueAt(0,clas).getClass();
+        }
+
+        @Override
+        public boolean isCellEditable(int rowIndex, int columnIndex)
+        {
+            return columnIndex >=0;
+        }
 
         @Override
         public Object getValueAt(int rowIndex, int columnIndex)
@@ -108,22 +125,6 @@ public class StatisticTable extends JPanel implements ActionListener
             return null;
         }
 
-        public String getColumnName(int column)
-        {
-            return colNames[column];
-        }
-
-        public Class getColumnClass(int clas)
-        {
-            return getValueAt(0,clas).getClass();
-        }
-
-        @Override
-        public boolean isCellEditable(int rowIndex, int columnIndex)
-        {
-            return columnIndex >=0;
-        }
-
         public void setSick(int row)
         {
             IVirus virus=null;
@@ -144,7 +145,7 @@ public class StatisticTable extends JPanel implements ActionListener
             {
                 int x=r.nextInt(settlement.getHealthyPeople().size());
 
-                if(settlement.getHealthyPeronByIndex(x).contagion(virus) instanceof Sick)
+                if(settlement.getHealthyPeople().get(x).contagion(virus) instanceof Sick)
                 {
                     settlement.getHealthyPeople().remove(x);
                     settlement.getSickPeople().add(settlement.getHealthyPeople().get(x).contagion(virus));
@@ -169,12 +170,12 @@ public class StatisticTable extends JPanel implements ActionListener
             fireTableDataChanged();
         }
     }
-    private TableRowSorter<StatisticModel> sorter;
-    private JTextField tbFilterText;
     private int col;
     private JTable table;
     private StatisticModel model;
+    private JTextField textField;
     private JComboBox<ColumnName> column=null;
+    private TableRowSorter<StatisticModel> to_sort;
 
     public StatisticTable(List<Settlement> settlementsInfo,String row_name)
     {
@@ -189,26 +190,39 @@ public class StatisticTable extends JPanel implements ActionListener
         table.setRowHeight(10);
         table.setPreferredScrollableViewportSize(new Dimension(500, 150));
         table.setFillsViewportHeight(true);
-        table.setRowSorter(sorter = new TableRowSorter<StatisticModel>(model));
-        InitialFilter(row_name);
+        table.setRowSorter(to_sort = new TableRowSorter<StatisticModel>(model));
+        initialFilter(row_name);
         this.add(new JLabel("filter:"));
         this.add(top);
         this.add(new JScrollPane(table));
         top.add(new JLabel("Col:"));
         top.add(column);
         top.add(new JLabel("Row:"));
-        tbFilterText = new JTextField();
-        tbFilterText.setSize(80,30);
-        top.add(tbFilterText);
+        textField = new JTextField();
+        textField.setSize(80,30);
+        top.add(textField);
 
 
-        tbFilterText.setToolTipText("Filter Row");
+        textField.setToolTipText("Filter Row");
         column.setToolTipText("Filter Column");
-        tbFilterText.getDocument().addDocumentListener(new DocumentListener()
+
+        textField.getDocument().addDocumentListener(new DocumentListener()
         {
-            public void insertUpdate(DocumentEvent e) { newFilter(); }
-            public void removeUpdate(DocumentEvent e) { newFilter(); }
-            public void changedUpdate(DocumentEvent e) { newFilter(); }
+
+            public void insertUpdate(DocumentEvent event)
+            {
+                do_new_filt();
+            }
+
+            public void removeUpdate(DocumentEvent event)
+            {
+                do_new_filt();
+            }
+
+            public void changedUpdate(DocumentEvent event)
+            {
+                do_new_filt();
+            }
 
         });
 
@@ -219,7 +233,7 @@ public class StatisticTable extends JPanel implements ActionListener
     public void updateModel()
     {
         model.updateTable();
-        newFilter();
+        do_new_filt();
     }
 
 
@@ -233,14 +247,16 @@ public class StatisticTable extends JPanel implements ActionListener
     public void setDouse(int douses)
     {
         if(table.getSelectedRow()>=0)
-            model.setdouses(table.getRowSorter().convertRowIndexToModel(table.getSelectedRow()),douses);
+        {
+            model.setdouses(table.getRowSorter().convertRowIndexToModel(table.getSelectedRow()), douses);
+        }
     }
 
 
     public void actionPerformed1(ActionEvent e)
     {
         col=column.getItemAt(column.getSelectedIndex()).getcol();
-        newFilter();
+        do_new_filt();
     }
 
 
@@ -250,22 +266,23 @@ public class StatisticTable extends JPanel implements ActionListener
     }
 
 
+
     public JTable getTableFromPanel()
     {
         return table;
     }
 
 
-    private void newFilter()
+    private void do_new_filt()
     {
-        try { sorter.setRowFilter(RowFilter.regexFilter(tbFilterText.getText(), getcol())); }
+        try { to_sort.setRowFilter(RowFilter.regexFilter(textField.getText(), getcol())); }
         catch (java.util.regex.PatternSyntaxException ignored) { }
     }
 
 
-    private void InitialFilter(String row_name)
+    private void initialFilter(String row_name)
     {
-        try { sorter.setRowFilter(RowFilter.regexFilter(row_name, getcol())); }
+        try { to_sort.setRowFilter(RowFilter.regexFilter(row_name, getcol())); }
         catch (java.util.regex.PatternSyntaxException ignored) { }
     }
 
