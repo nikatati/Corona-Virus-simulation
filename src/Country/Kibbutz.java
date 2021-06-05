@@ -29,37 +29,21 @@ public class Kibbutz extends Settlement
         return "Kibbutz " + super.toString();
     }
 
-    public RamzorColor CalculateRamzorGrade()
-    {
-        double color = 0.45 + (Math.pow(Math.pow(1.5, getRamzorColor().getFactor()) * (contagiousPercent()-0.4), 3));
-
-        //Return the color of the city according to the conditions
-
-        if (color < RamzorColor.GREEN.getFactor())
-            return RamzorColor.GREEN;
-        else if (color < RamzorColor.YELLOW.getFactor())
-            return RamzorColor.YELLOW;
-        else if (color < RamzorColor.ORANGE.getFactor())
-            return RamzorColor.ORANGE;
-        else
-            return RamzorColor.RED;
-    }
 
     @Override
     public RamzorColor calculateRamzorGrade()
     {
         double color = 0.45 + (Math.pow(Math.pow(1.5, getRamzorColor().getFactor()) * (contagiousPercent()-0.4), 3));
 
-        //Return the color of the city according to the conditions
-
-        if (color < RamzorColor.GREEN.getFactor())
-            return RamzorColor.GREEN;
-        else if (color < RamzorColor.YELLOW.getFactor())
-            return RamzorColor.YELLOW;
-        else if (color < RamzorColor.ORANGE.getFactor())
-            return RamzorColor.ORANGE;
-        else
-            return RamzorColor.RED;
+        if (color <= 0.4)
+            return this.setRamzorColor(RamzorColor.GREEN);
+        if (color > 0.4 && color <= 0.6)
+            return this.setRamzorColor(RamzorColor.YELLOW);
+        if (color > 0.6 && color <= 0.8)
+            return this.setRamzorColor(RamzorColor.ORANGE);
+        if (color > 0.8)
+            return this.setRamzorColor(RamzorColor.RED);
+        return null;
     }
 }
 

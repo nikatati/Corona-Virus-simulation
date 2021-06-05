@@ -198,7 +198,10 @@ public abstract class Settlement implements Runnable {
     }
 
 
-    public void setRamzorColor(RamzorColor color ) { this.ramzorColor = color; }
+    public RamzorColor setRamzorColor(RamzorColor color ) {
+        this.ramzorColor = color;
+        return color;
+    }
 
 
     public List<Person> getSickPeople() {
