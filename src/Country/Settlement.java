@@ -352,9 +352,9 @@ public abstract class Settlement implements Runnable {
         ChineseVariant variant = new ChineseVariant(); // Choose kind of Corona variant
 
             //loop all people at settlement
-            for (int j = 0; j < this.getCurrentPopulation(); j++)
+            for (int j = 0; j < this.getHealthyPeople().size(); j++)
             {
-                if (!this.getHealthyPeople().get(j).ifSick())//if the man Healthy
+           //     if (!this.getHealthyPeople().get(j).ifSick())//if the man Healthy
                     for (int k = 0; k < 6; k++)   //try 6 times so contagion
                     {
                         int index = 0;
@@ -362,15 +362,20 @@ public abstract class Settlement implements Runnable {
                         while (!flag)
                         {
                             Random x = new Random();
-                            index = x.nextInt(this.getCurrentPopulation());// get random person
+                            index = x.nextInt(this.getSickPeople().size());// get random person
+
                             if (index != j)// its not the same healthy person
                                 flag = true;
+                            if(index<0)
+                                flag = false;
+                            if(index==getSickPeople().size())
+                               index--;
                         }
 
-                        if (this.getHealthyPeople().get(index).ifSick()) // the random person is sick
-                        {
+                      //  if (this.getHealthyPeople().get(index).ifSick()) // the random person is sick
+                        //{
                             //Try to contagion by Probability contagion function
-                            if (variant.tryToContagion(this.getHealthyPeople().get(index), this.getHealthyPeople().get(j)))
+                            if (variant.tryToContagion(this.getSickPeople().get(index), this.getHealthyPeople().get(j)))
                                 try {
                                     Sick sick = new Sick(this.getHealthyPeople().get(j).getAge(),
                                             this.getLocation().getPoint(),
@@ -383,7 +388,7 @@ public abstract class Settlement implements Runnable {
                                 } catch (Exception e) {
                                     System.out.print(e);
                                 }
-                        }
+                      //  }
                     }
             }
     }
@@ -626,16 +631,16 @@ public abstract class Settlement implements Runnable {
 
         while (true)
         {
-            this.simulation1();
+          //  this.simulation1();
             this.partOneSimoTwo();
             //this.partTwoSimoTwo();
             //this.tryTokill();
             //this.partThreeSimoTwo();
-            this.partFourSimoTwo();
+           // this.partFourSimoTwo();
             this.partFiveSimoTwo();
             System.out.println(this.healthyPeople.size() + " Healthy people at the settlement " + this.getName());  //** מחזיר 0 -לא עובד**
-           // System.out.println(this.sickPeople.size() +" Sick people at the settlement "+this.getName());          ////** מחזיר 0 -לא עובד**
-
+            System.out.println(this.sickPeople.size() +" Sick people at the settlement "+this.getName());          ////** מחזיר 0 -לא עובד**
+            System.out.println(this.getRamzorColor() +" ramzor color of the settlement "+this.getName());
         }
 
 

@@ -1,4 +1,5 @@
 package Virus;
+import Population.Healthy;
 import Population.Person;
 import Population.Sick;
 import Location.Location;
@@ -40,16 +41,37 @@ public class ChineseVariant implements IVirus{
 
     }
 
-    public boolean tryToContagion(Person p, Person p_unknown) {
+    @Override
+    public boolean tryToContagion(Person p_sick, Person p_unknown) {
+      //  Sick s1=(Sick)p_sick;
+
+       // if(Clock.Num_of_days((int) s1.getContagiousTime())<minContageTime)
+        //{
+          //  return false;
+        //}
+
+
+        //calculate the probability that the unknown person infected
+        //calculate the distance
+        double distance = Math.sqrt(Math.pow(p_sick.getLocation().getY() - p_unknown.getLocation().getY(),2)*Math.pow(p_sick.getLocation().getX() - p_unknown.getLocation().getX(),2));
+        double p_total = Math.min(1,0.14*(Math.exp(2-0.25*distance)))*contagionProbability(p_unknown);
+
+        return p_total <= Math.random();
+    }
+
+
+    public boolean tryToContagion(Sick p, Healthy p_unknown) {
+
+
         //check if the unknown is sick
-        if (p_unknown instanceof Sick)
-        {
-            System.out.println("The person is already sick. He cant be infected");
-            return false;
-        }
-        else                                       //p_unknown is not sick
-        {
-            Sick s1=(Sick) p;
+       // if (p_unknown instanceof Sick)
+       // {
+        //    System.out.println("The person is already sick. He cant be infected");
+       //     return false;
+      //  }
+        //else                                       //p_unknown is not sick
+        //{
+            Sick s1=(Sick)p;
 
             if(Clock.Num_of_days((int) s1.getContagiousTime())<minContageTime)
             {
@@ -64,7 +86,7 @@ public class ChineseVariant implements IVirus{
 
             return p_total <= Math.random();
 
-        }
+        //}
     }
 
     public boolean tryToKill(Sick p) {
