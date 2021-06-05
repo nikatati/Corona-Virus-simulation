@@ -11,21 +11,21 @@ public class City extends Settlement
 
     public String Type= "City";
 
-    @Override
+
     public RamzorColor CalculateRamzorGrade()
     {
-        double color = 0.2  * (Math.pow (4, 1.25 * contagiousPercent()));
+        double color = 0.2  * (Math.pow (4, 1.25 * super.contagiousPercent()));
 
         //Return the color of the city according to the conditions
 
         if (color <= 0.4)
-            return this.setRamzorColor(RamzorColor.GREEN);
+            return RamzorColor.GREEN;
         if (color >0.4 && color<=0.6)
-            return this.setRamzorColor(RamzorColor.YELLOW);
+            return RamzorColor.YELLOW;
         if (color >0.6 && color <=0.8)
-            return this.setRamzorColor(RamzorColor.ORANGE);
+            return RamzorColor.ORANGE;
         if(color>0.8)
-            return this.setRamzorColor(RamzorColor.RED);
+            return RamzorColor.RED;
         return null;
     }
 
@@ -33,18 +33,18 @@ public class City extends Settlement
     @Override
     public RamzorColor calculateRamzorGrade()
     {
-        double color = 0.2  * (Math.pow (4, 1.25 * contagiousPercent()));
+        double color = 0.2  * (Math.pow (4, 1.25 * super.contagiousPercent()));
 
         //Return the color of the city according to the conditions
 
         if (color <= 0.4)
-            return this.setRamzorColor(RamzorColor.GREEN);
+            return RamzorColor.GREEN;
         if (color >0.4 && color<=0.6)
-            return this.setRamzorColor(RamzorColor.YELLOW);
+            return RamzorColor.YELLOW;
         if (color >0.6 && color <=0.8)
-            return this.setRamzorColor(RamzorColor.ORANGE);
+            return RamzorColor.ORANGE;
         if(color>0.8)
-            return this.setRamzorColor(RamzorColor.RED);
+            return RamzorColor.RED;
         return null;
     }
 

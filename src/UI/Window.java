@@ -1,6 +1,7 @@
 package UI;
 import Country.Map;
 
+import Country.Settlement;
 import IO.SimulationFile;
 import IO.StatisticsFile;
 import Simulation.Clock;
@@ -23,6 +24,8 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.util.ArrayList;
 import javax.swing.JPanel;
+import java.util.List;
+import java.util.logging.Level;
 
 
 
@@ -31,21 +34,12 @@ public class Window extends JFrame implements ActionListener
 {
 
     private Map worldMap = new Map();
-
     private Map map;
-
     private MapPanel map_panel= new MapPanel();
-
     public JFrame frame = new JFrame("Main Window");
-
     JMenuBar menuBar = new JMenuBar();
-
     ArrayList<IVirus> variants=new ArrayList<>();
-
     public static boolean PlayFlag=false;
-
-
-
     double speed=0;
     int xx=0;
     int yy=0;
@@ -142,8 +136,6 @@ public class Window extends JFrame implements ActionListener
                 {
                     worldMap = SimulationFile.LoadFile(); //load
 
-
-
                     map_panel.set_Map(worldMap);
 
                 }
@@ -194,6 +186,7 @@ public class Window extends JFrame implements ActionListener
             public void actionPerformed(ActionEvent e)
             {
                 StatisticsFile.loadFile();
+
 
             }
         });
@@ -279,8 +272,9 @@ public class Window extends JFrame implements ActionListener
             {
 
                 PlayFlag=true;
-                Main.Simulation2(worldMap);
 
+
+                TreadStart(worldMap);
             }
         });
 
@@ -292,20 +286,7 @@ public class Window extends JFrame implements ActionListener
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                for (Thread t : Thread.getAllStackTraces().keySet())
-                {
-                    if (t.getState()==Thread.State.RUNNABLE)
-                    {
-                        try
-                        {
-                            Thread.sleep(200);
-                        }
-                        catch (InterruptedException interruptedException)
-                        {
-                            interruptedException.printStackTrace();
-                        }
-                    }
-                }
+                //TreadStart(worldMap);
             }
         });
 
@@ -318,8 +299,7 @@ public class Window extends JFrame implements ActionListener
             public void actionPerformed(ActionEvent e)
             {
                 worldMap=null;
-               map_panel.set_Map(null);
-
+                map_panel.set_Map(null);
             }
         });
 
@@ -576,6 +556,16 @@ public class Window extends JFrame implements ActionListener
     }
 
     //********************************************************************************************************************************************
+
+    private static void TreadStart(Map map)
+    {
+        for (int i=0; i<map.getMapSize();i++)
+        {
+            new Thread(map.getSettelmet().get(i)).start();
+
+        }
+
+    }
 
 
 

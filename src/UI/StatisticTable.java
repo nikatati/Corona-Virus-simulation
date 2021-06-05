@@ -152,7 +152,7 @@ public class StatisticTable extends JPanel implements ActionListener
                 }
 
             }
-            settlement.setColor(settlement.CalculateRamzorGrade());
+            settlement.setColor(settlement.calculateRamzorGrade());
             settlement.contagiousPercent();
             fireTableCellUpdated(row, 4);
             fireTableCellUpdated(row, 6);

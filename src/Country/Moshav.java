@@ -34,13 +34,13 @@ public class Moshav extends Settlement
         //Return the color of the city according to the conditions
 
         if (color < RamzorColor.GREEN.getFactor())
-            return this.setRamzorColor(RamzorColor.GREEN);
+            return RamzorColor.GREEN;
         else if (color < RamzorColor.YELLOW.getFactor())
-            return this.setRamzorColor(RamzorColor.YELLOW);
+            return RamzorColor.YELLOW;
         else if (color < RamzorColor.ORANGE.getFactor())
-            return this.setRamzorColor(RamzorColor.ORANGE);
+            return RamzorColor.ORANGE;
         else
-            return this.setRamzorColor(RamzorColor.RED);
+            return RamzorColor.RED;
     }
 
     @Override
@@ -49,13 +49,13 @@ public class Moshav extends Settlement
         double color =  0.3+3 * (Math.pow(Math.pow(1.2, getRamzorColor().getFactor()) * (contagiousPercent()-0.35), 5));
 
         //Return the color of the city according to the conditions
-
         if (color < RamzorColor.GREEN.getFactor())
-            return this.setRamzorColor(RamzorColor.GREEN);
+            return RamzorColor.GREEN;
         else if (color < RamzorColor.YELLOW.getFactor())
-            return this.setRamzorColor(RamzorColor.YELLOW);
+            return RamzorColor.YELLOW;
         else if (color < RamzorColor.ORANGE.getFactor())
-            return this.setRamzorColor(RamzorColor.ORANGE);
+            return RamzorColor.ORANGE;
         else
-            return this.setRamzorColor(RamzorColor.RED);    }
+            return RamzorColor.RED;
+    }
 }

@@ -124,7 +124,7 @@ public class SimulationFile
 
                     }
                 }
-                TreadStart(simulation_map.getSettelmet());
+                //TreadStart(simulation_map.getSettelmet());
                 dataInitialization(simulation_map);
 
                 return simulation_map;
@@ -140,15 +140,15 @@ public class SimulationFile
         return null;
     }
 
-    private static void TreadStart(List<Settlement> settelemet)
+    /*private static void TreadStart(List<Settlement> settlement)
     {
-        for (int i=0; i<settelemet.size();i++)
+        for (int i=0; i<settlement.size();i++)
         {
-            new Thread(settelemet.get(i)).start();
+            new Thread(settlement.get(i)).start();
 
         }
 
-    }
+    }*/
 
 
     private static Settlement createNewSettlementByType (String type, String name, Location l, RamzorColor color, List<Person> healthy, List<Person> sick ,int currentPopulation, int vaccineDoses)

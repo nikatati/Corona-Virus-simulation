@@ -86,10 +86,7 @@ public class StatisticsFile
     {
         FileDialog fileDialog = new FileDialog((Frame) null, "Please choose a file:", FileDialog.LOAD);
         fileDialog.setVisible(true);
-        if (fileDialog.getFile() == null)
-            return ;
         string_path =fileDialog.getFile();
-
         try { fileHandler = new FileHandler(string_path); }
         catch (SecurityException | IOException e) { e.printStackTrace(); }
     }
@@ -110,7 +107,7 @@ public class StatisticsFile
             logger.info(s.getName()+" Number of sick: "+s.getSickPeople().size()+" Number of dead: "+s.getDeadPeople()+"\n");
             fileHandler.close();
         }
-        catch (SecurityException | IOException e) { e.printStackTrace(); }
+        catch (Exception e) {}
     }
 }
 
