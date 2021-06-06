@@ -97,7 +97,7 @@ public abstract class Settlement implements Runnable {
     public double contagiousPercent()
     {
         int number_of_sick_people = getSickPeople().size(); // How many sick people are there in the city
-        int number_of_people = getCurrentPopulation();  // How many people are there in the city
+        int number_of_people = getSickPeople().size()+getHealthyPeople().size();  // How many people are there in the city
         return number_of_sick_people / number_of_people;
     }
 

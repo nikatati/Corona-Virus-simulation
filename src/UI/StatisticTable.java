@@ -118,7 +118,7 @@ public class StatisticTable extends JPanel implements ActionListener
                 case 4:
                     return settlement.getVaccineDoses();
                 case 5:
-                    return settlement.contagiousPercent();
+                    return ((double)settlement.getSickPeople().size()/(settlement.getSickPeople().size()+settlement.getHealthyPeople().size()));
                 case 6:
                     return settlement.getLocation();
             }

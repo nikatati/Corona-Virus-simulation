@@ -63,7 +63,7 @@ public class StatisticsFile
                     sb.append(',');
                     sb.append(map.getSettelmentFromMapByIndex(i).getVaccineDoses());
                     sb.append(',');
-                    sb.append(map.getSettelmentFromMapByIndex(i).getSickPeople().size());
+                    sb.append((double)map.getSettelmentFromMapByIndex(i).getSickPeople().size()/(map.getSettelmentFromMapByIndex(i).getSickPeople().size()+map.getSettelmentFromMapByIndex(i).getHealthyPeople().size())*100);
                     sb.append(',');
                     sb.append(map.getSettelmentFromMapByIndex(i).getLocation());
                     sb.append('\n');
