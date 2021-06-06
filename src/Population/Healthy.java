@@ -4,11 +4,6 @@ import Location.Point;
 import Virus.BritishVariant;
 import Virus.ChineseVariant;
 import Virus.IVirus;
-import Population.Person;
-import Country.Settlement;
-import Location.Point;
-import Population.Vaccinated;
-import Simulation.Clock;
 import Virus.SouthAfricanVariant;
 
 import java.util.ArrayList;
@@ -43,7 +38,7 @@ public class Healthy extends Person //המחלקה באה לתאר אדם ברי
             List<IVirus> list = new ArrayList<IVirus>(BritishVariant.getMutation());
             int x1=rand.nextInt(list.size());
             ivirus = list.get(x1);
-            s=new Sick(this.getAge(),this.getLocation(),this.getSettlement(),Clock.now(),ivirus);
+            s=new Sick(this.getAge(),this.getLocation(),this.getSettlement(), Simulation.Clock.now(),ivirus);
             return s;
         }
         if (ivirus instanceof ChineseVariant)
@@ -51,7 +46,7 @@ public class Healthy extends Person //המחלקה באה לתאר אדם ברי
             List<IVirus> list = new ArrayList<IVirus>(BritishVariant.getMutation());
             int x1=rand.nextInt(list.size());
             ivirus = list.get(x1);
-            s=new Sick(this.getAge(),this.getLocation(),this.getSettlement(),Clock.now(),ivirus);
+            s=new Sick(this.getAge(),this.getLocation(),this.getSettlement(), Simulation.Clock.now(),ivirus);
             return s;
         }
         if (ivirus instanceof SouthAfricanVariant)
@@ -59,10 +54,10 @@ public class Healthy extends Person //המחלקה באה לתאר אדם ברי
             List<IVirus> list = new ArrayList<IVirus>(BritishVariant.getMutation());
             int x1=rand.nextInt(list.size());
             ivirus = list.get(x1);
-            s=new Sick(this.getAge(),this.getLocation(),this.getSettlement(),Clock.now(),ivirus);
+            s=new Sick(this.getAge(),this.getLocation(),this.getSettlement(), Simulation.Clock.now(),ivirus);
             return s;
         }
-        return s=new Sick(this.getAge(),this.getLocation(),this.getSettlement(),Clock.now(),ivirus);
+        return s=new Sick(this.getAge(),this.getLocation(),this.getSettlement(), Simulation.Clock.now(),ivirus);
     }
 
 
@@ -70,7 +65,7 @@ public class Healthy extends Person //המחלקה באה לתאר אדם ברי
     //Making a healthy person vaccinated
     public Person vaccinate()
     {
-        Vaccinated v1= new Vaccinated(getAge(),getLocation(),getSettlement(),Clock.now());
+        Vaccinated v1= new Vaccinated(getAge(),getLocation(),getSettlement(), Simulation.Clock.now());
         return v1;
     }
 

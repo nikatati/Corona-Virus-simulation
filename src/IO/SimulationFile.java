@@ -15,7 +15,6 @@ import java.util.*;
 import Population.Healthy;
 import Population.Person;
 import Population.Sick;
-import Simulation.Clock;
 import Virus.ChineseVariant;
 import Virus.IVirus;
 
@@ -251,7 +250,7 @@ public class SimulationFile
                         Sick sick = new Sick(m.getSettelmentFromMapByIndex(i).getHealthyPeople().get(j).getAge(),
                                 m.getSettelmentFromMapByIndex(i).getHealthyPeople().get(j).getLocation(),
                                 m.getSettelmentFromMapByIndex(i).getHealthyPeople().get(j).getSettlement(),
-                                Clock.now(),Cvirus);
+                                Simulation.Clock.now(),Cvirus);
 
                         m.getSettelmentFromMapByIndex(i).getHealthyPeople().remove(j);
                         m.getSettelmentFromMapByIndex(i).getSickPeople().add(sick);

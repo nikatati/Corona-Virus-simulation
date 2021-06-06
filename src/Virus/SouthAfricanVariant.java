@@ -1,9 +1,6 @@
 package Virus;
 import Population.Person;
 import Population.Sick;
-import Location.Location;
-import Population.Sick;
-import Simulation.Clock;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,14 +43,10 @@ public class SouthAfricanVariant implements IVirus{
         //check if the unknown is sick
         if (p_unknown instanceof Sick)
         {
-            System.out.println("The person is already sick. He cant be infected");
             return false;
         }
-        else                                       //p_unknown is not sick
-        {
-            Sick s1=(Sick) p;
 
-            if(Clock.Num_of_days((int) s1.getContagiousTime())<minContageTime)
+            if( ((Sick)(p)).getContagiousTime()<minContageTime)
             {
                 return false;
             }
@@ -65,7 +58,7 @@ public class SouthAfricanVariant implements IVirus{
 
             return p_total <= Math.random();
 
-        }
+
     }
 
     public boolean tryToKill(Sick p) {
@@ -82,7 +75,7 @@ public class SouthAfricanVariant implements IVirus{
 
         //Calculate the time from the moment of infection to now
 
-        long t = p.getContagiousTime() - Clock.now();
+        long t = p.getContagiousTime() - Simulation.Clock.now();
 
         //Calculate the total probability to die
 

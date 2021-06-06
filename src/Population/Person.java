@@ -3,7 +3,6 @@ import Country.City;
 import Location.Point;
 import Virus.IVirus;
 import Country.Settlement;
-import Simulation.Clock;
 
 public abstract class Person
 {

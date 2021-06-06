@@ -2,11 +2,8 @@ package Population;
 import Country.City;
 import Country.Settlement;
 import Location.Point;
-import Simulation.Clock;
 import Virus.ChineseVariant;
 import Virus.IVirus;
-import Population.Person;
-import Population.Sick;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +43,7 @@ public class Convalescent extends Person //The class comes to describe a recover
             List<IVirus> list = new ArrayList<IVirus>(BritishVariant.getMutation());
             int x1=rand.nextInt(list.size());
             ivirus = list.get(x1);
-            s=new Sick(this.getAge(),this.getLocation(),this.getSettlement(), Clock.now(),ivirus);
+            s=new Sick(this.getAge(),this.getLocation(),this.getSettlement(), Simulation.Clock.now(),ivirus);
             return s;
         }
         if (ivirus instanceof ChineseVariant)
@@ -54,7 +51,7 @@ public class Convalescent extends Person //The class comes to describe a recover
             List<IVirus> list = new ArrayList<IVirus>(BritishVariant.getMutation());
             int x1=rand.nextInt(list.size());
             ivirus = list.get(x1);
-            s=new Sick(this.getAge(),this.getLocation(),this.getSettlement(),Clock.now(),ivirus);
+            s=new Sick(this.getAge(),this.getLocation(),this.getSettlement(), Simulation.Clock.now(),ivirus);
             return s;
         }
         if (ivirus instanceof SouthAfricanVariant)
@@ -62,10 +59,10 @@ public class Convalescent extends Person //The class comes to describe a recover
             List<IVirus> list = new ArrayList<IVirus>(BritishVariant.getMutation());
             int x1=rand.nextInt(list.size());
             ivirus = list.get(x1);
-            s=new Sick(this.getAge(),this.getLocation(),this.getSettlement(),Clock.now(),ivirus);
+            s=new Sick(this.getAge(),this.getLocation(),this.getSettlement(), Simulation.Clock.now(),ivirus);
             return s;
         }
-        return s=new Sick(this.getAge(),this.getLocation(),this.getSettlement(),Clock.now(),ivirus);
+        return s=new Sick(this.getAge(),this.getLocation(),this.getSettlement(), Simulation.Clock.now(),ivirus);
 
     }
 

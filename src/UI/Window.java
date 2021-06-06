@@ -1,11 +1,8 @@
 package UI;
 import Country.Map;
 
-import Country.Settlement;
 import IO.SimulationFile;
 import IO.StatisticsFile;
-import Simulation.Clock;
-import Simulation.Main;
 import Virus.IVirus;
 
 import javax.swing.*;
@@ -24,10 +21,7 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.util.ArrayList;
 import javax.swing.JPanel;
-import java.util.List;
-import java.util.logging.Level;
-
-
+import java.util.concurrent.CyclicBarrier;
 
 
 public class Window extends JFrame implements ActionListener
@@ -61,7 +55,7 @@ public class Window extends JFrame implements ActionListener
         frame.setSize(400, 400);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(400, 380);
-        frame.setVisible(true);
+        //frame.setVisible(true);
 
 
         JPanel panel = new JPanel();
@@ -69,10 +63,10 @@ public class Window extends JFrame implements ActionListener
         frame.getContentPane().add(BorderLayout.NORTH, menuBar);
         frame.getContentPane().add(mapArea);
         frame.add(new MapPanel());
+        frame.setVisible(true);
         frame.pack();
 
 
-        frame.setVisible(true);
 
     }
 
@@ -80,7 +74,7 @@ public class Window extends JFrame implements ActionListener
     public MapPanel map_panel()
     {
         map_panel = new MapPanel();
-        map_panel.setVisible(true);
+        //map_panel.setVisible(true);
         map_panel.repaint();
 
         map_panel.addMouseListener(new MouseAdapter()
@@ -110,6 +104,7 @@ public class Window extends JFrame implements ActionListener
             }
         });
 
+        map_panel.setVisible(true);
         return map_panel;
     }
 
@@ -135,16 +130,36 @@ public class Window extends JFrame implements ActionListener
                 try
                 {
                     worldMap = SimulationFile.LoadFile(); //load
+                    frame.pack();
 
-                    map_panel.set_Map(worldMap);
+                    //map_panel.set_Map(worldMap);
+
+                    /*for (Settlement settle : worldMap)
+                    { settle.setMap__(worldMap); }*/
+
+                    for (int i=0;i<worldMap.getMapSize();i++)
+                    {
+                        worldMap.getSettelmet().get(i).setMap__(worldMap);
+                    }
+
+                    map_panel.setMap(worldMap);
+                    worldMap.cyclic_barrier = new CyclicBarrier(worldMap.getSettelmet().size()-1, new Runnable()
+                    {
+                        public void run()
+                        {
+                            Simulation.Clock.nextTick();
+                            updateAll();
+                            try { Thread.sleep((long) speed); }
+                            catch (InterruptedException e) { e.printStackTrace(); }
+                        }
+                    });
 
                 }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
-                }
+                catch (Exception exception) { exception.printStackTrace(); }
+
             }
         });
+
 
 
         //------------------------statistics button--------------------------
@@ -156,6 +171,7 @@ public class Window extends JFrame implements ActionListener
             {
                     StatisticWindow statistic_window= new StatisticWindow(frame,worldMap," ");
                     statistic_window.setVisible(true);
+                    frame.pack();
             }
         });
 
@@ -270,11 +286,9 @@ public class Window extends JFrame implements ActionListener
             @Override
             public void actionPerformed(ActionEvent e)
             {
-
-                PlayFlag=true;
-
-
+                worldMap.setPlay(true);
                 TreadStart(worldMap);
+
             }
         });
 
@@ -286,7 +300,11 @@ public class Window extends JFrame implements ActionListener
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                //TreadStart(worldMap);
+                map.setPlay(false);
+                play_b.setEnabled(true);
+                pause_b.setEnabled(false);
+
+
             }
         });
 
@@ -299,7 +317,7 @@ public class Window extends JFrame implements ActionListener
             public void actionPerformed(ActionEvent e)
             {
                 worldMap=null;
-                map_panel.set_Map(null);
+                map_panel.setMap(null);
             }
         });
 
@@ -322,7 +340,7 @@ public class Window extends JFrame implements ActionListener
             public void actionPerformed(ActionEvent e)
             {
                 int spinner_tick = (Integer) spinner.getValue();
-                Clock.setTick_per_day(spinner_tick);
+                Simulation.Clock.setTick_per_day(spinner_tick);
             }
         });
 
@@ -519,10 +537,12 @@ public class Window extends JFrame implements ActionListener
         }
 
         //*************************************************************************************************************************************
-        public void set_Map(Map map)
+        public void setMap(Map map)
         {
 
             this.map12 = map;
+            this.setVisible(true);
+
 
             xx = 0;
             yy = 0;
@@ -557,15 +577,14 @@ public class Window extends JFrame implements ActionListener
 
     //********************************************************************************************************************************************
 
-    private static void TreadStart(Map map)
+    private static void TreadStart(Map s)
     {
-        for (int i=0; i<map.getMapSize();i++)
+        for (int i=0; i<s.getMapSize();i++)
         {
-            new Thread(map.getSettelmet().get(i)).start();
-
+            new Thread(s.getSettelmet().get(i)).start();
         }
-
     }
+
 
 
 

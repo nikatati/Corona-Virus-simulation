@@ -16,8 +16,8 @@ import Population.Convalescent;
 import Population.Sick;
 import Population.Healthy;
 import Population.Vaccinated;
-import Simulation.Clock;
 
+import Simulation.Clock;
 import Virus.BritishVariant;
 import Virus.ChineseVariant;
 import Virus.IVirus;
@@ -37,6 +37,7 @@ public abstract class Settlement implements Runnable {
     private List<Settlement> neighbors;    // מערך מייצג שכנים של ישוב מסויים
     public String Type = null;
     protected int DeadPeople = 0;
+    private Map map;
 
 
     public Random randomx = new Random();
@@ -54,7 +55,7 @@ public abstract class Settlement implements Runnable {
         this.name = "Noname";
         Point p = new Point();
         Size s = new Size();
-        this.sickPeople = new ArrayList<Person>();
+        this.sickPeople = new ArrayList<Person>(currentPopulation);
         this.healthyPeople = new ArrayList<Person>(currentPopulation);
         this.location = new Location(p, s);
         this.ramzorColor = RamzorColor.GREEN;
@@ -71,7 +72,7 @@ public abstract class Settlement implements Runnable {
 
         this.name = name;
         this.location = new Location(location);
-        this.sickPeople = new ArrayList<Person>();
+        this.sickPeople = new ArrayList<Person>(currentPopulation);
         this.healthyPeople = new ArrayList<Person>(currentPopulation);
 
         for (Person person : healthyPeople)
@@ -87,7 +88,9 @@ public abstract class Settlement implements Runnable {
         this.currentPopulation = currentPopulation;
         this.maxPopulation = maxPopulation;
         this.vaccineDoses = vaccineDoses;
+
     }
+
 
 
     //Calculates the percentage of contagious in the city
@@ -119,13 +122,18 @@ public abstract class Settlement implements Runnable {
     }
 
     //add person to the settlement
-    public boolean addPerson(Person p) {
-        if (getMaxPopulation() > getCurrentPopulation())   //כל עוד מה שיש לי עכשיו ביישוב קטן מהקסימום שהוא יכול להכיל אז אפשר להוסיף עוד
+    public boolean addPerson(Person p)
+    {
+        if (this.healthyPeople.size()+this.sickPeople.size() < maxPopulation)   //כל עוד מה שיש לי עכשיו ביישוב קטן מהקסימום שהוא יכול להכיל אז אפשר להוסיף עודif (this.healthyPeople.size()+this.sickPeople.size() < maxPopulation)   //כל עוד מה שיש לי עכשיו ביישוב קטן מהקסימום שהוא יכול להכיל אז אפשר להוסיף עוד
         {
-            if (p instanceof Healthy) {
+            if (p instanceof Healthy||p instanceof Vaccinated ||p instanceof Convalescent)
+            {
                 this.healthyPeople.add(p);
             }
-            this.sickPeople.add(p);
+            else
+                {
+                    this.sickPeople.add(p);
+                }
             return true;
         }
         return false;
@@ -154,29 +162,17 @@ public abstract class Settlement implements Runnable {
 
 
     //transfer person from the settlment to other settlement
-    public boolean transferPerson(Person p, Settlement s)
+    public boolean transferPerson(Person person, Settlement settlement) // for transfer person between settles
     {
-        double p1 = this.getRamzorColor().getPassOption();
-        double p2 = s.getRamzorColor().getPassOption();
+        if (this.getCurrentPopulation() >= this.maxPopulation) { return false; }
 
-        if (transferChance(p1, p2))  //מחזיר נכון אם המעבר יצליח
+        double randomProbability = Math.random();
+
+        if (settlement.getRamzorColor().getPassOption() * person.getSettlement().getRamzorColor().getPassOption() <= randomProbability)
         {
-            if (s.addPerson(p))
-            {
-                if (p instanceof Sick)
-                {
-                    this.sickPeople.remove(p);
-                    s.sickPeople.add(p);
-                }
-                else
-                    {
-                    this.healthyPeople.remove(p);
-                    s.healthyPeople.add(p);
-                    }
-                return true;
-            }
+            return false;
         }
-        return false;
+        return true;
     }
 
     public Settlement(Settlement s)
@@ -251,6 +247,8 @@ public abstract class Settlement implements Runnable {
     public Person getSickPeronByIndex(int i) {
         return sickPeople.get(i);
     }
+
+    public Person getHealtyPeronByIndex(int i) { return healthyPeople.get(i); }
 
     //public Person getHealthyPeronByIndex (int i){ return healthyPeople.get(i); }
 
@@ -340,12 +338,12 @@ public abstract class Settlement implements Runnable {
                         Sick sick = new Sick(this.getHealthyPeople().get(j).getAge(),
                                 this.getHealthyPeople().get(j).getLocation(),
                                 this.getHealthyPeople().get(j).getSettlement(),
-                                Clock.now(),Cvirus);
+                                Simulation.Clock.now(),Cvirus);
 
                         this.getHealthyPeople().remove(j);
                         this.getSickPeople().add(sick);
-
                     }
+
                     catch (Exception e) { System.out.print(e); }
 
                 }
@@ -355,12 +353,18 @@ public abstract class Settlement implements Runnable {
     //-----------------------------Simulation 1------------------------
     private synchronized void simulation1()
     {
-        ChineseVariant variant = new ChineseVariant(); // Choose kind of Corona variant
+
+        ChineseVariant Cvariant = new ChineseVariant(); // Choose kind of Corona variant
+        BritishVariant Bvariant = new BritishVariant(); // Choose kind of Corona variant
+        SouthAfricanVariant Svariant = new SouthAfricanVariant(); // Choose kind of Corona variant
+        Random random_num=new Random();
+        int r=random_num.nextInt(3);
+
 
             //loop all people at settlement
             for (int j = 0; j < this.getCurrentPopulation(); j++)
             {
-                if (!this.getHealthyPeople().get(j).ifSick())//if the man Healthy
+                if (!this.healthyPeople.get(j).ifSick())//if the man Healthy
                     for (int k = 0; k < 6; k++)   //try 6 times so contagion
                     {
                         int index = 0;
@@ -373,22 +377,21 @@ public abstract class Settlement implements Runnable {
                                 flag = true;
                         }
 
-                        if (this.getHealthyPeople().get(index).ifSick()) // the random person is sick
+                        if (this.healthyPeople.get(index).ifSick()) // the random person is sick
                         {
                             //Try to contagion by Probability contagion function
-                            if (variant.tryToContagion(this.getHealthyPeople().get(index), this.getHealthyPeople().get(j)))
+                            if (Bvariant.tryToContagion(this.healthyPeople.get(index), this.healthyPeople.get(j)))
                                 try {
-                                    Sick sick = new Sick(this.getHealthyPeople().get(j).getAge(),
-                                            this.getLocation().getPoint(),
-                                            this.getHealthyPeople().get(j).getSettlement(),
-                                            Clock.now(),
-                                            variant);
+                                        Sick sick = new Sick(this.healthyPeople.get(j).getAge(),
+                                             this.getLocation().getPoint(),
+                                                this.healthyPeople.get(j).getSettlement(),
+                                                Simulation.Clock.now(),
+                                                Bvariant);
 
-                                    this.getHealthyPeople().remove(j);
-                                    this.getSickPeople().add(sick);
-                                } catch (Exception e) {
-                                    System.out.print(e);
-                                }
+                                        this.healthyPeople.remove(j);
+                                        this.sickPeople.add(sick);
+                                    }
+                                    catch (Exception e) { System.out.print(e); }
                         }
                     }
             }
@@ -398,6 +401,17 @@ public abstract class Settlement implements Runnable {
 
     //*-*-*-*-*-*-*--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*--*-*-*-*-*-*
     //-----------------------------Simulation 2------------------------
+
+    private synchronized void simulation2()
+    {
+        partOneSimoTwo();
+        //partTwoSimoTwo();
+        tryTokill();
+        partThreeSimoTwo();
+        //partFourSimoTwo();
+        partFiveSimoTwo();
+        this.setRamzorColor(this.calculateRamzorGrade());
+    }
 
     public synchronized void partOneSimoTwo()
     {
@@ -417,7 +431,7 @@ public abstract class Settlement implements Runnable {
 
         for (int j = 0; j < randomHealthyPeople; j++)      //run until 20% sick people from the settlement
         {
-            int x = randomx.nextInt(population);
+            int x = randomx.nextInt(getHealthyPeople().size());
             int y = randomy.nextInt(3);
 
             if (y == 0)
@@ -449,10 +463,12 @@ public abstract class Settlement implements Runnable {
 
             this.getHealthyPeople().remove(j);
             this.getSickPeople().add(sick_p);
-            this.getSickPeronByIndex(x).toString();   //דיגום לאחר נסיון הדבקה
+            //this.sickPeople.get(x).toString();   //דיגום לאחר נסיון הדבקה
+            this.setColor(calculateRamzorGrade());
             //StatisticsFile.LogWriting(this);
         }
     }
+
 
     //*-*-*-*-*-*-*--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*--*-*-*-*-*-*
 
@@ -476,7 +492,7 @@ public abstract class Settlement implements Runnable {
 
 
 
-        for (int j = 0; j < this.getSickPeople().size(); j++)       //run until size if healty people list
+        for (int j = 0; j < this.getSickPeople().size()-1; j++)       //run until size if healty people list
         {
             x = this.getSickPeronByIndex(j).toString();
 
@@ -495,16 +511,17 @@ public abstract class Settlement implements Runnable {
                     v = new ChineseVariant();          //CHINESE VARIANT
                 }
 
-                if (v.tryToContagion(this.getSickPeronByIndex(j), this.getHealthyPeople().get(j)))
+                if (v.tryToContagion(this.sickPeople.get(j), this.healthyPeople.get(j)))
                 {
                     Sick s1 = new Sick(this.getHealthyPeople().get(j).getAge(),
                             this.getHealthyPeople().get(j).getLocation(),
                             this.getHealthyPeople().get(j).getSettlement(),
-                            Clock.now(),
+                            Simulation.Clock.now(),
                             v);
 
-                    this.getSickPeople().add(this.getHealthyPeople().get(z));//add the person that got contage to the sick list
-                    this.getHealthyPeople().remove(this.getHealthyPeople().get(z));//remove the person that got contage from the healthy list
+                    this.getSickPeople().add(s1);//add the person that got contage to the sick list
+                    this.getHealthyPeople().remove(z);//remove the person that got contage from the healthy list
+                    this.setColor(calculateRamzorGrade());
                 }
             }
         }
@@ -514,16 +531,16 @@ public abstract class Settlement implements Runnable {
 
     private synchronized void tryTokill()
     {
-        if (this.getSickPeople().size() > 0)
+        if (this.sickPeople.size() > 0)
         {
-            for (int k = 0; k < this.getSickPeople().size(); k++)
+            for (int k = 0; k < this.sickPeople.size(); k++)
             {
-                Sick sick = (Sick) this.getSickPeople().get(k);
+                Sick sick = (Sick) this.sickPeople.get(k);
                 if (sick != null)
                 {
                     if (sick.tryToDie())
                     {
-                        this.getSickPeople().remove(sick);
+                        this.sickPeople.remove(sick);
                         this.addDeadPeople();
                     }
                 }
@@ -542,11 +559,11 @@ public abstract class Settlement implements Runnable {
         //make in every settlement all the sick people to convalescent if its been 25 days from the contage day
         for (int j = 0; j < this.getSickPeople().size(); j++)
         {
-            if ((Clock.now() - ((Sick) this.getSickPeople().get(j)).getContagiousTime()) > 25)  //if past 25 days from the day the person got contagious
+            if ((Simulation.Clock.now() - ((Sick) this.getSickPeople().get(j)).getContagiousTime()) > 25)  //if past 25 days from the day the person got contagious
             {
                 //need to make the sick person to convalescent so I will make new convalescent obj and
                 //put all the data of the sick person to the new obj
-                Convalescent As = new Convalescent(((Sick) this.getSickPeople().get(j)).getAge(),
+                Person As = new Convalescent(((Sick) this.getSickPeople().get(j)).getAge(),
                         ((Sick) this.getSickPeople().get(j)).getLocation(),
                         ((Sick) this.getSickPeople().get(j)).getSettlement(),
                         ((Sick) this.getSickPeople().get(j)).getVirus());
@@ -579,11 +596,11 @@ public abstract class Settlement implements Runnable {
             int a = rp.nextInt(sickANDhealthyPersonList.size());
             int b = rn.nextInt(sickANDhealthyPersonList.get(a).getSettlement().getNeighbors().size());
 
-            sickANDhealthyPersonList.
-            get(a).
-            getSettlement().
-            transferPerson(sickANDhealthyPersonList.get(a),
-            sickANDhealthyPersonList.get(a).getSettlement().getNeighbors().get(b));
+            if (sickANDhealthyPersonList.get(a).getSettlement().transferPerson(sickANDhealthyPersonList.get(a),
+            sickANDhealthyPersonList.get(a).getSettlement().getNeighbors().get(b)) )
+            {
+                //sickANDhealthyPersonList.get(a).getSettlement().getNeighbors().add(sickANDhealthyPersonList.get(a));
+            }
         }
 
     }
@@ -604,7 +621,7 @@ public abstract class Settlement implements Runnable {
                     Vaccinated personGotVaccinated = new Vaccinated(this.getHealthyPeople().get(j).getAge(),
                             this.getHealthyPeople().get(j).getLocation(),
                             this.getHealthyPeople().get(j).getSettlement(),
-                            Clock.now());
+                            Simulation.Clock.now());
                     this.setVaccineDoses((this.getVaccineDoses()) - 1);
                 }
             }
@@ -615,7 +632,7 @@ public abstract class Settlement implements Runnable {
                     Vaccinated personGotVaccinated = new Vaccinated(this.getHealthyPeople().get(j).getAge(),
                             this.getHealthyPeople().get(j).getLocation(),
                             this.getHealthyPeople().get(j).getSettlement(),
-                            Clock.now());
+                            Simulation.Clock.now());
                     this.setVaccineDoses((this.getVaccineDoses()) - 1);
                 }
             }
@@ -625,29 +642,36 @@ public abstract class Settlement implements Runnable {
 
     }
 
-
+    public void setMap__(Map worldmap) { this.map = worldmap; }
 
     @Override
     public void run()
     {
 
-        try {this.dataInitialization(); }
-        catch (Exception e){e.printStackTrace();}
+        this.dataInitialization();
 
-
-        while (true)
+        while(!map.getStop())
         {
-            //this.simulation1();
-            this.partOneSimoTwo();
-            //this.partTwoSimoTwo();
-            //this.tryTokill();
-            //this.partThreeSimoTwo();
-            this.partFourSimoTwo();
-            this.partFiveSimoTwo();
-            System.out.println(this.healthyPeople.size() + " Healthy people at the settlement " + this.getName());  //** מחזיר 0 -לא עובד**
-            System.out.println(this.sickPeople.size() +" Sick people at the settlement "+this.getName());          ////** מחזיר 0 -לא עובד**
+            synchronized (map)
+            {
+                while (!map.getPlay())
+                {
+                    try { map.wait(); }
+                    catch (Exception exception){ exception.printStackTrace(); }
+                }
+            }
 
+            this.simulation2();
+
+            try { map.cyclic_barrier.await(); }
+            catch (Exception exception){exception.printStackTrace();}
+
+            //System.out.println(this.healthyPeople.size() + " Healthy people at the settlement " + this.getName());
+            System.out.println(this.sickPeople.size() +" Sick people at the settlement "+this.getName());
         }
+
+
+
 
 
             //System.out.println(this.getRamzorColor() +" ramzor color of the settlement "+this.getName());

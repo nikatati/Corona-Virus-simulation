@@ -1,8 +1,6 @@
 package Virus;
 import Population.Person;
 import Population.Sick;
-import Location.Location;
-import Simulation.Clock;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,30 +43,26 @@ public class BritishVariant implements IVirus{
     public boolean tryToContagion(Person p, Person p_unknown)
     {
 
-        //check if the unknown is sick
+        ///check if the unknown is sick
         if (p_unknown instanceof Sick)
         {
-            System.out.println("The person is already sick. He cant be infected");
             return false;
         }
-        else                                       //p_unknown is not sick
+
+        if( ((Sick)(p)).getContagiousTime()<minContageTime)
         {
-            Sick s1=(Sick) p;
-
-            if(Clock.Num_of_days((int) s1.getContagiousTime())<minContageTime)
-            {
-                return false;
-            }
-
-            //calculate the probability that the unknown person infected
-            //calculate the distance
-            double distance = Math.sqrt(Math.pow(p.getLocation().getY() - p_unknown.getLocation().getY(),2)*Math.pow(p.getLocation().getX() - p_unknown.getLocation().getX(),2));
-            double p_total = Math.min(1,0.14*(Math.exp(2-0.25*distance)))*contagionProbability(p_unknown);
-
-            return p_total <= Math.random();
-
+            return false;
         }
+
+        //calculate the probability that the unknown person infected
+        // calculate the distance
+        double distance = Math.sqrt(Math.pow(p.getLocation().getY() - p_unknown.getLocation().getY(),2)*Math.pow(p.getLocation().getX() - p_unknown.getLocation().getX(),2));
+        double p_total = Math.min(1,0.14*(Math.exp(2-0.25*distance)))*contagionProbability(p_unknown);
+
+        return p_total <= Math.random();
+
     }
+
 
     public boolean tryToKill(Sick p)
     {
@@ -85,7 +79,7 @@ public class BritishVariant implements IVirus{
 
         //Calculate the time from the moment of infection to now
 
-        long t = p.getContagiousTime() - Clock.now();
+        long t = p.getContagiousTime() - Simulation.Clock.now();
 
         //Calculate the total probability to die
 

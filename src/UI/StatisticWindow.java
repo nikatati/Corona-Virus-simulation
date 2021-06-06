@@ -132,6 +132,7 @@ public class StatisticWindow extends JDialog
         getContentPane().add(bottom_panel);
 
 
+        this.setVisible(true);
         pack();
     }
     public JTable getTableFromDialog()
