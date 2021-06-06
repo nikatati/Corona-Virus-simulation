@@ -36,13 +36,13 @@ public class Kibbutz extends Settlement
         double color = 0.45 + (Math.pow(Math.pow(1.5, getRamzorColor().getFactor()) * (contagiousPercent()-0.4), 3));
 
         if (color <= 0.4)
-            return this.setRamzorColor(RamzorColor.GREEN);
-        if (color > 0.4 && color <= 0.6)
-            return this.setRamzorColor(RamzorColor.YELLOW);
-        if (color > 0.6 && color <= 0.8)
-            return this.setRamzorColor(RamzorColor.ORANGE);
-        if (color > 0.8)
-            return this.setRamzorColor(RamzorColor.RED);
+            return RamzorColor.GREEN;
+        if (color >0.4 && color<=0.6)
+            return RamzorColor.YELLOW;
+        if (color >0.6 && color <=0.8)
+            return RamzorColor.ORANGE;
+        if(color>0.8)
+            return RamzorColor.RED;
         return null;
     }
 }

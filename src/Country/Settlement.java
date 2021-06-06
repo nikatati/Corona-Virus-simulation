@@ -183,7 +183,7 @@ public abstract class Settlement implements Runnable {
         sickPeople = s.getSickPeople();
         healthyPeople = s.getHealthyPeople();
         neighbors = s.getNeighbors();
-        this.ramzorColor = s.getRamzorColor();
+        this.ramzorColor = s.calculateRamzorGrade();
         this.currentPopulation = s.getCurrentPopulation();
         this.maxPopulation = s.getMaxPopulation();
         this.vaccineDoses = s.getVaccineDoses();
@@ -195,7 +195,7 @@ public abstract class Settlement implements Runnable {
 
 
     public RamzorColor setRamzorColor(RamzorColor color ) {
-        this.ramzorColor = color;
+        this.ramzorColor = calculateRamzorGrade();
         return color;
     }
 
@@ -299,7 +299,7 @@ public abstract class Settlement implements Runnable {
 
 
     public void setColor(RamzorColor color) {
-        this.ramzorColor = color;
+        this.ramzorColor = calculateRamzorGrade();
     }
 
 
@@ -545,7 +545,7 @@ public abstract class Settlement implements Runnable {
                     }
                 }
             }
-            System.out.println( " people dead in "+ this.getName());
+            //System.out.println( " people dead in "+ this.getName());
         }
         double deadPercent = 0.01;
         if (this.getDeadPeople() >= this.getCurrentPopulation() * deadPercent)
@@ -626,7 +626,7 @@ public abstract class Settlement implements Runnable {
                             this.getHealthyPeople().get(j).getSettlement(),
                             Simulation.Clock.now());
                     this.setVaccineDoses((this.getVaccineDoses()) - 1);
-                    System.out.println( " people got vaccinated in"+ this.getName());
+                   // System.out.println( " people got vaccinated in"+ this.getName());
                 }
             }
             else
@@ -638,7 +638,7 @@ public abstract class Settlement implements Runnable {
                             this.getHealthyPeople().get(j).getSettlement(),
                             Simulation.Clock.now());
                     this.setVaccineDoses((this.getVaccineDoses()) - 1);
-                    System.out.println( " people got vaccinated in"+ this.getName());
+                    //System.out.println( " people got vaccinated in"+ this.getName());
                 }
             }
 
@@ -671,8 +671,9 @@ public abstract class Settlement implements Runnable {
             try { map.cyclic_barrier.await(); }
             catch (Exception exception){exception.printStackTrace();}
 
-            System.out.println(this.healthyPeople.size() + " Healthy people at the settlement " + this.getName());
+            //System.out.println(this.healthyPeople.size() + " Healthy people at the settlement " + this.getName());
             System.out.println(this.sickPeople.size() +" Sick people at the settlement "+this.getName());
+            //System.out.println(this.getRamzorColor() +" ramzor color of the settlement "+this.getName());
             try {
                 Thread.sleep(8000);
             } catch (InterruptedException e) {

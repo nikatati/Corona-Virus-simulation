@@ -59,7 +59,7 @@ public class StatisticsFile
                     sb.append(',');
                     sb.append(map.getSettelmentFromMapByIndex(i).getCurrentPopulation());       // writes Population
                     sb.append(',');
-                    sb.append(map.getSettelmentFromMapByIndex(i).calculateRamzorGrade());
+                    sb.append(map.getSettelmentFromMapByIndex(i).setRamzorColor(map.getSettelmentFromMapByIndex(i).calculateRamzorGrade()));
                     sb.append(',');
                     sb.append(map.getSettelmentFromMapByIndex(i).getVaccineDoses());
                     sb.append(',');
