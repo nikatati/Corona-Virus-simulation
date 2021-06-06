@@ -405,7 +405,7 @@ public abstract class Settlement implements Runnable {
     private synchronized void simulation2()
     {
         partOneSimoTwo();
-        //partTwoSimoTwo();
+        partTwoSimoTwo();
         tryTokill();
         partThreeSimoTwo();
         //partFourSimoTwo();
@@ -545,6 +545,7 @@ public abstract class Settlement implements Runnable {
                     }
                 }
             }
+            System.out.println( " people dead in "+ this.getName());
         }
         double deadPercent = 0.01;
         if (this.getDeadPeople() >= this.getCurrentPopulation() * deadPercent)
@@ -570,7 +571,9 @@ public abstract class Settlement implements Runnable {
 
                 this.getSickPeople().remove(j);
                 this.getHealthyPeople().add(As);
+
             }
+
         }
     }
 
@@ -623,6 +626,7 @@ public abstract class Settlement implements Runnable {
                             this.getHealthyPeople().get(j).getSettlement(),
                             Simulation.Clock.now());
                     this.setVaccineDoses((this.getVaccineDoses()) - 1);
+                    System.out.println( " people got vaccinated in"+ this.getName());
                 }
             }
             else
@@ -634,6 +638,7 @@ public abstract class Settlement implements Runnable {
                             this.getHealthyPeople().get(j).getSettlement(),
                             Simulation.Clock.now());
                     this.setVaccineDoses((this.getVaccineDoses()) - 1);
+                    System.out.println( " people got vaccinated in"+ this.getName());
                 }
             }
 
@@ -666,8 +671,13 @@ public abstract class Settlement implements Runnable {
             try { map.cyclic_barrier.await(); }
             catch (Exception exception){exception.printStackTrace();}
 
-            //System.out.println(this.healthyPeople.size() + " Healthy people at the settlement " + this.getName());
+            System.out.println(this.healthyPeople.size() + " Healthy people at the settlement " + this.getName());
             System.out.println(this.sickPeople.size() +" Sick people at the settlement "+this.getName());
+            try {
+                Thread.sleep(8000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
 
