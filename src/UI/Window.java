@@ -342,6 +342,7 @@ public class Window extends JFrame implements ActionListener
             {
                 int spinner_tick = (Integer) spinner.getValue();
                 Simulation.Clock.setTick_per_day(spinner_tick);
+                play_b.setEnabled(true);
             }
         });
 
