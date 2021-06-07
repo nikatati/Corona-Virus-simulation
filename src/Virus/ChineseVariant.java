@@ -43,12 +43,12 @@ public class ChineseVariant implements IVirus{
 
 
         //check if the unknown is sick
-        if (p_unknown instanceof Sick)
+       /* if (p_unknown instanceof Sick)
         {
             return false;
-        }
+        }*/
 
-        if( ((Sick)(p)).getContagiousTime()<minContageTime)
+        if( ((Sick)(p)).getContagiousLong()<minContageTime)
         {
             return false;
         }

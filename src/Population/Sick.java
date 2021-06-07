@@ -1,6 +1,7 @@
 package Population;
 import Country.Settlement;
 import Location.Point;
+import Simulation.Clock;
 import Virus.IVirus;
 
 
@@ -57,6 +58,9 @@ public class Sick extends Person    //A class that describes a sick person
     //return contagious time attribute
     public long getContagiousTime() { return contagiousTime; }
 
+    public long getContagiousLong(){
+        return Clock.Num_of_days((int)getContagiousTime());
+    }
     //method that makes the person to Convalescent
     public Person recover()
     {
