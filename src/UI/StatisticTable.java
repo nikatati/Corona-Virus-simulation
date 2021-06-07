@@ -114,7 +114,7 @@ public class StatisticTable extends JPanel implements ActionListener
                 case 2:
                     return settlement.getCurrentPopulation();
                 case 3:
-                    return settlement.calculateRamzorGrade();
+                    return settlement.setRamzorColor(settlement.calculateRamzorGrade());
                 case 4:
                     return settlement.getVaccineDoses();
                 case 5:

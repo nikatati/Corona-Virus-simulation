@@ -288,6 +288,7 @@ public class Window extends JFrame implements ActionListener
             {
                 worldMap.setPlay(true);
                 TreadStart(worldMap);
+                play_b.setEnabled(false);
 
             }
         });
