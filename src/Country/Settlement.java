@@ -5,7 +5,6 @@ import Population.Person;
 import Location.Location;
 import Location.Point;
 
-import java.security.Security;
 import java.util.*;
 
 import Location.Size;

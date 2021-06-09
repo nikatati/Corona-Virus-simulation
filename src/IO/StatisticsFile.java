@@ -15,6 +15,8 @@ public class StatisticsFile
 {
     public static String string_path =null;
     public static FileHandler fileHandler =null; //The FileHandler can either write to a specified file, or it can write to a rotating set of files.
+    public static Logger logger = Logger.getLogger("");
+
 
 
 
@@ -94,8 +96,6 @@ public class StatisticsFile
 
     public static void LogWriting(Settlement s)
     {
-        Logger logger = Logger.getLogger("");
-
         try
         {
             fileHandler = new FileHandler(string_path, true);
