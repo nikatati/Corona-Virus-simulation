@@ -126,9 +126,9 @@ class MutationWindows extends JDialog
         MutationModel m = new MutationModel(virusType);
         JTable Mtable = new JTable(m);
         String Mn[]= {"Chinese Mutation","British Mutation","SouthAfrican Mutation"};
-        RowedTableScroll RowedTS =new RowedTableScroll(Mtable,Mn);
         Mtable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);   //choose only one
         Mtable.setPreferredScrollableViewportSize(new Dimension(getPreferredSize()));
+        RowedTableScroll RowedTS =new RowedTableScroll(Mtable,Mn);
         this.add(new RowedTableScroll(Mtable,Mn));
         this.setPreferredSize( new Dimension(500,100));
         setBounds(350,150,220,320);

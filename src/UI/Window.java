@@ -132,14 +132,9 @@ public class Window extends JFrame implements ActionListener
                     worldMap = SimulationFile.LoadFile(); //load
                     frame.pack();
 
-                    //map_panel.set_Map(worldMap);
-
-                    /*for (Settlement settle : worldMap)
-                    { settle.setMap__(worldMap); }*/
-
                     for (int i=0;i<worldMap.getMapSize();i++)
                     {
-                        worldMap.getSettelmet().get(i).setMap__(worldMap);
+                        worldMap.getSettelmet().get(i).ref(worldMap);
                     }
 
                     map_panel.setMap(worldMap);
@@ -202,8 +197,6 @@ public class Window extends JFrame implements ActionListener
             public void actionPerformed(ActionEvent e)
             {
                 StatisticsFile.loadFile();
-
-
             }
         });
 
@@ -225,6 +218,7 @@ public class Window extends JFrame implements ActionListener
         file_m.add(editMutations);
         file_m.add(Blog);
         file_m.add(exit_b);
+        frame.pack();
 
     }
 
@@ -342,7 +336,9 @@ public class Window extends JFrame implements ActionListener
             {
                 int spinner_tick = (Integer) spinner.getValue();
                 Simulation.Clock.setTick_per_day(spinner_tick);
+                JOptionPane.showMessageDialog(tick_p, "Tick is set");
                 play_b.setEnabled(true);
+
             }
         });
 
