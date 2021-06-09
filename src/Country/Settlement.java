@@ -666,7 +666,7 @@ public abstract class Settlement implements Runnable {
 
     }
 
-    public void setMap__(Map worldmap) { this.map = worldmap; }
+    public void ref(Map worldmap) { this.map = worldmap; }
 
     @Override
     public void run()
