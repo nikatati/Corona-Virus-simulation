@@ -1,6 +1,7 @@
 package UI;
 import Country.Map;
 
+import Country.RamzorColor;
 import IO.SimulationFile;
 import IO.StatisticsFile;
 import Virus.IVirus;
@@ -343,6 +344,7 @@ public class Window extends JFrame implements ActionListener
                 int spinner_tick = (Integer) spinner.getValue();
                 Simulation.Clock.setTick_per_day(spinner_tick);
                 play_b.setEnabled(true);
+
             }
         });
 
@@ -355,6 +357,7 @@ public class Window extends JFrame implements ActionListener
             public void actionPerformed(ActionEvent e)
             {
                 set.setVisible(true);
+
             }
         });
 
@@ -446,6 +449,7 @@ public class Window extends JFrame implements ActionListener
         allFrame.simulationSlider();
 
 
+
     }
 
 
@@ -466,81 +470,77 @@ public class Window extends JFrame implements ActionListener
     //****************************************************************************************************************************************
     //****************************************************************************************************************************************
 
-    private class MapPanel extends JPanel
-    {
+    private class MapPanel extends JPanel {
         Map map12 = new Map();
 
-        public  MapPanel () { }
+        public MapPanel() {
+        }
 
         @Override
-        public void paintComponent(Graphics g)
-        {
+        public void paintComponent(Graphics g) {
             super.paintComponent(g);
 
-            if (worldMap == null) { return; }
+            if (worldMap == null) {
+                return;
+            }
 
             Graphics2D graf1 = (Graphics2D) g;
             graf1.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-            int x1 , y1 , x2 , y2 ;
+            int x1, y1, x2, y2;
             int size = worldMap.getMapSize();
 
 
-
             //creating a lines for the map (the settlement)
-           for (int i = 0; i < size-1 ; i++)
-            {
-                g.setColor(Color.black);
-                if (worldMap.getSettelmentFromMapByIndex(i).getNeighbors().size() > 0)
-                {
-                for (int j = 0; j < worldMap.getSettelmentFromMapByIndex(i).getNeighbors().size(); j++)
-                    {
-                        x1 = worldMap.getSettelmentFromMapByIndex(i).getLocation().getPoint().getX() ;
+            for (int i = 0; i < size - 1; i++) {
 
-                        y1 = worldMap.getSettelmentFromMapByIndex(i).getLocation().getPoint().getY() ;
+                if (worldMap.getSettelmentFromMapByIndex(i).getNeighbors().size() > 0) {
+                    for (int j = 0; j < worldMap.getSettelmentFromMapByIndex(i).getNeighbors().size(); j++) {
+                        g.setColor(Decorator(i, j));
+                        x1 = worldMap.getSettelmentFromMapByIndex(i).getLocation().getPoint().getX();
+
+                        y1 = worldMap.getSettelmentFromMapByIndex(i).getLocation().getPoint().getY();
 
                         x2 = worldMap.getSettelmentFromMapByIndex(i).getNeighbors().get(j).getLocation().getPoint().getX();
 
-                        y2 = worldMap.getSettelmentFromMapByIndex(i).getNeighbors().get(j).getLocation().getPoint().getY() ;
-
-                        g.drawLine((int) x1 , (int) y1 , (int) x2 , (int) y2 );
+                        y2 = worldMap.getSettelmentFromMapByIndex(i).getNeighbors().get(j).getLocation().getPoint().getY();
+                        ((Graphics2D) g).setStroke(new BasicStroke(2, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+                        g.drawLine((int) x1, (int) y1, (int) x2, (int) y2);
 
                     }
                 }
             }
 
             //creating a rectangle for the map (the settlement)
-            for (int k = 0; k < size ; k++)
-            {
+            for (int k = 0; k < size; k++) {
                 g.setColor(Color.BLACK);
 
                 g.drawRect((int) worldMap.getSettelmentFromMapByIndex(k).getLocation().getPoint().getX(),
-                        (int) worldMap.getSettelmentFromMapByIndex(k).getLocation().getPoint().getY() ,
+                        (int) worldMap.getSettelmentFromMapByIndex(k).getLocation().getPoint().getY(),
                         (int) worldMap.getSettelmentFromMapByIndex(k).getLocation().getSize().getWidth(),
-                        (int)worldMap.getSettelmentFromMapByIndex(k).getLocation().getSize().getHeight() );
+                        (int) worldMap.getSettelmentFromMapByIndex(k).getLocation().getSize().getHeight());
 
                 g.setColor(worldMap.getSettelmentFromMapByIndex(k).getRamzorColor().getRamzorColor());
 
                 g.fillRect((int) worldMap.getSettelmentFromMapByIndex(k).getLocation().getPoint().getX(),
-                           (int) worldMap.getSettelmentFromMapByIndex(k).getLocation().getPoint().getY(),
-                           (int) worldMap.getSettelmentFromMapByIndex(k).getLocation().getSize().getWidth(),
-                           (int) worldMap.getSettelmentFromMapByIndex(k).getLocation().getSize().getHeight());
+                        (int) worldMap.getSettelmentFromMapByIndex(k).getLocation().getPoint().getY(),
+                        (int) worldMap.getSettelmentFromMapByIndex(k).getLocation().getSize().getWidth(),
+                        (int) worldMap.getSettelmentFromMapByIndex(k).getLocation().getSize().getHeight());
 
                 g.setColor(Color.BLACK);
 
                 g.drawString(worldMap.getSettelmentFromMapByIndex(k).getName(),
-                            (int) worldMap.getSettelmentFromMapByIndex(k).getLocation().getPoint().getX()+10 ,
-                            (int) worldMap.getSettelmentFromMapByIndex(k).getLocation().getPoint().getY()+10);
+                        (int) worldMap.getSettelmentFromMapByIndex(k).getLocation().getPoint().getX() + 10,
+                        (int) worldMap.getSettelmentFromMapByIndex(k).getLocation().getPoint().getY() + 10);
 
-                g.setFont(new Font("Tahoma", Font.PLAIN , 12) );
+                g.setFont(new Font("Tahoma", Font.PLAIN, 12));
 
             }
 
         }
 
         //*************************************************************************************************************************************
-        public void setMap(Map map)
-        {
+        public void setMap(Map map) {
 
             this.map12 = map;
             this.setVisible(true);
@@ -550,20 +550,17 @@ public class Window extends JFrame implements ActionListener
             yy = 0;
 
             if (map != null)
-                for (int i = 0; i < map.getMapSize(); i++)
-                {
-                    if (map.getSettelmentFromMapByIndex(i).getLocation().getPoint().getX() + map.getSettelmentFromMapByIndex(i).getLocation().getSize().getWidth() > xx)
-                    {
+                for (int i = 0; i < map.getMapSize(); i++) {
+                    if (map.getSettelmentFromMapByIndex(i).getLocation().getPoint().getX() + map.getSettelmentFromMapByIndex(i).getLocation().getSize().getWidth() > xx) {
                         xx = map.getSettelmentFromMapByIndex(i).getLocation().getPoint().getX() + map.getSettelmentFromMapByIndex(i).getLocation().getSize().getWidth();
                     }
-                    if (map.getSettelmentFromMapByIndex(i).getLocation().getPoint().getY() + map.getSettelmentFromMapByIndex(i).getLocation().getSize().getHeight() > yy)
-                    {
+                    if (map.getSettelmentFromMapByIndex(i).getLocation().getPoint().getY() + map.getSettelmentFromMapByIndex(i).getLocation().getSize().getHeight() > yy) {
                         yy = map.getSettelmentFromMapByIndex(i).getLocation().getPoint().getY() + map.getSettelmentFromMapByIndex(i).getLocation().getSize().getHeight();
                     }
                 }
 
-            xx=xx+30;
-            yy=yy+30;
+            xx = xx + 30;
+            yy = yy + 30;
             this.revalidate();
             this.repaint();
         }
@@ -572,8 +569,45 @@ public class Window extends JFrame implements ActionListener
         @Override
         public Dimension getPreferredSize()             //הגדרת הגודל המועדף על הציור – יהיה הגודל בעת זימון pack
         {
-            return new Dimension(800,400);
+            return new Dimension(800, 400);
         }
+
+        public Color Decorator(int i, int j) {
+
+            //super.paintComponent(g1);
+            if (worldMap == null) {
+                return Color.BLACK;
+            }
+
+            // Graphics2D graf1 = (Graphics2D) g1;
+            // graf1.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            if (worldMap.getSettelmentFromMapByIndex(i).getRamzorColor() == RamzorColor.RED && worldMap.getSettelmentFromMapByIndex(j).getRamzorColor() == RamzorColor.GREEN || worldMap.getSettelmentFromMapByIndex(j).getRamzorColor() == RamzorColor.RED && worldMap.getSettelmentFromMapByIndex(i).getRamzorColor() == RamzorColor.GREEN) {
+                Color useColor = new Color(128, 128, 0); // color between red and green
+                return useColor;
+            }
+            if (worldMap.getSettelmentFromMapByIndex(i).getRamzorColor() == RamzorColor.GREEN && worldMap.getSettelmentFromMapByIndex(j).getRamzorColor() == RamzorColor.YELLOW || worldMap.getSettelmentFromMapByIndex(j).getRamzorColor() == RamzorColor.YELLOW && worldMap.getSettelmentFromMapByIndex(i).getRamzorColor() == RamzorColor.GREEN) {
+                Color useColor = new Color(128, 255, 0); // color between yellow and green
+                return useColor;
+            }
+            if (worldMap.getSettelmentFromMapByIndex(i).getRamzorColor() == RamzorColor.GREEN && worldMap.getSettelmentFromMapByIndex(j).getRamzorColor() == RamzorColor.ORANGE || worldMap.getSettelmentFromMapByIndex(j).getRamzorColor() == RamzorColor.ORANGE && worldMap.getSettelmentFromMapByIndex(i).getRamzorColor() == RamzorColor.GREEN) {
+                Color useColor = new Color(128, 192, 0); // color between orange and green
+                return useColor;
+            }
+            if (worldMap.getSettelmentFromMapByIndex(i).getRamzorColor() == RamzorColor.YELLOW && worldMap.getSettelmentFromMapByIndex(j).getRamzorColor() == RamzorColor.ORANGE || worldMap.getSettelmentFromMapByIndex(j).getRamzorColor() == RamzorColor.ORANGE && worldMap.getSettelmentFromMapByIndex(i).getRamzorColor() == RamzorColor.YELLOW) {
+                Color useColor = new Color(255, 192, 0); // color between orange and yellow
+                return useColor;
+            }
+            if (worldMap.getSettelmentFromMapByIndex(i).getRamzorColor() == RamzorColor.RED && worldMap.getSettelmentFromMapByIndex(j).getRamzorColor() == RamzorColor.ORANGE || worldMap.getSettelmentFromMapByIndex(j).getRamzorColor() == RamzorColor.ORANGE && worldMap.getSettelmentFromMapByIndex(i).getRamzorColor() == RamzorColor.RED) {
+                Color useColor = new Color(128, 83, 0); // color between orange and red
+                return useColor;
+            }
+            if (worldMap.getSettelmentFromMapByIndex(i).getRamzorColor() == RamzorColor.RED && worldMap.getSettelmentFromMapByIndex(j).getRamzorColor() == RamzorColor.YELLOW || worldMap.getSettelmentFromMapByIndex(j).getRamzorColor() == RamzorColor.YELLOW && worldMap.getSettelmentFromMapByIndex(i).getRamzorColor() == RamzorColor.RED) {
+                Color useColor = new Color(255, 128, 0); // color between yellow and red
+                return useColor;
+            }
+            return Color.BLACK;
+        }
+
 
     }
 

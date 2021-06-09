@@ -5,10 +5,8 @@ import Population.Person;
 import Location.Location;
 import Location.Point;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
+import java.security.Security;
+import java.util.*;
 
 import Location.Size;
 
@@ -409,7 +407,7 @@ public abstract class Settlement implements Runnable {
         partOneSimoTwo();
         partTwoSimoTwo();
         tryTokill();
-       // partThreeSimoTwo();
+        partThreeSimoTwo();
         partFourSimoTwo();
         partFiveSimoTwo();
         this.setRamzorColor(this.calculateRamzorGrade());
@@ -590,6 +588,8 @@ public abstract class Settlement implements Runnable {
 
                 this.getSickPeople().remove(j);
                 this.getHealthyPeople().add(As);
+                System.out.println(" person become healthy in:  " + this.getName());
+
 
             }
 
@@ -673,8 +673,8 @@ public abstract class Settlement implements Runnable {
     {
 
         this.dataInitialization();
-
-        while(!map.getStop())
+        ListIterator<Settlement> settlementListIterator=this.map.getSettelmet().listIterator();
+        while(settlementListIterator.hasNext())
         {
             synchronized (map)
             {
