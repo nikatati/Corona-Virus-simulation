@@ -44,6 +44,7 @@ public class SimulationFile
         }
         try
         {
+            Factory settleFactory=new Factory();
             File myObj = new File(file_path);
             Scanner myReader = new Scanner(myObj);
             String str = new String();
@@ -61,7 +62,7 @@ public class SimulationFile
                 }
                 else
                 {
-                    simulation_map.addSettelmentToMap(createNewSettlementByType
+                    simulation_map.addSettelmentToMap(settleFactory.factoryCreateSettlement
                             (words[0],
                              words[1],
                              new Location(new Point(Integer.parseInt(words[2]), Integer.parseInt(words[3])),

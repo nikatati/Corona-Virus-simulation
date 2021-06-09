@@ -621,7 +621,7 @@ public abstract class Settlement implements Runnable {
             if (sickANDhealthyPersonList.get(a).getSettlement().transferPerson(sickANDhealthyPersonList.get(a),
             sickANDhealthyPersonList.get(a).getSettlement().getNeighbors().get(b)) )
             {
-                //sickANDhealthyPersonList.get(a).getSettlement().getNeighbors().add(sickANDhealthyPersonList.get(a));
+                sickANDhealthyPersonList.remove(j);
             }
         }
 
