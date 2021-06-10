@@ -22,6 +22,7 @@ class MutationWindows extends JDialog
         @Override
         public int getColumnCount() { return 3; }
 
+        //CONT
         public MutationModel(ArrayList<IVirus> virusType)
         {
             virusType.add(new ChineseVariant());
