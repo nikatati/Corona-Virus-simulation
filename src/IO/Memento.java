@@ -5,15 +5,20 @@ public class Memento
     private String path;
 
     //cont
+    public Memento(){path=null;}
     public Memento(String state)
     {
         path = state;
     }
 
-    public void set(String state)
+    public void set(String logPath)
     {
-        this.path = state;
-        System.out.println("Originator: Setting state to " + state);
+        this.path = logPath;
+        System.out.println("Originator: Setting log path to " + logPath);
+    }
+
+    public String getPath() {
+        return path;
     }
 
     public Memento saveToMemento()

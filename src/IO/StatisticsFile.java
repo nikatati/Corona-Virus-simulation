@@ -16,9 +16,8 @@ public class StatisticsFile
     public static String string_path =null;
     public static FileHandler fileHandler =null; //The FileHandler can either write to a specified file, or it can write to a rotating set of files.
     public static Logger logger = Logger.getLogger("");
-
-
-
+    public static Memento First=new Memento();
+    public static Memento Second=new Memento();
 
     public static void csv(Map map)
     {
@@ -86,11 +85,17 @@ public class StatisticsFile
 
     public static void loadFile()
     {
+        if(string_path!=First.getPath())
+        {
+            First.set(string_path);
+        }
         FileDialog fileDialog = new FileDialog((Frame) null, "Please choose a file:", FileDialog.LOAD);
         fileDialog.setVisible(true);
         string_path =fileDialog.getFile();
         try { fileHandler = new FileHandler(string_path); }
         catch (SecurityException | IOException e) { e.printStackTrace(); }
+
+
     }
 
 

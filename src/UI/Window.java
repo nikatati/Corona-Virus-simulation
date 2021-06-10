@@ -190,9 +190,11 @@ public class Window extends JFrame implements ActionListener
         });
 
         //----------------------------log button----------------------------------------------------------------
-        JButton Blog = new JButton("Log file");
+        JMenu log= new JMenu("Log");
+        JButton NewLog = new JButton("New Log file");
+        JButton OldLog = new JButton("Old Log file location");
 
-        Blog.addActionListener(new ActionListener()
+        NewLog.addActionListener(new ActionListener()
         {
             @Override
             public void actionPerformed(ActionEvent e)
@@ -201,6 +203,22 @@ public class Window extends JFrame implements ActionListener
             }
         });
 
+        OldLog.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                if(StatisticsFile.First.getPath()==null)
+                {
+                    JOptionPane.showMessageDialog(frame,"There is no old path of the log file.");
+                }
+                else
+                    JOptionPane.showMessageDialog(frame,"The old path of the log file is:" + StatisticsFile.First.getPath());
+
+            }
+        });
+        log.add(NewLog);
+        log.add(OldLog);
 
         //----------------------------exit button----------------------------------------------------------------
         JButton exit_b = new JButton("Exit");
@@ -217,7 +235,7 @@ public class Window extends JFrame implements ActionListener
         file_m.add(load_b);
         file_m.add(Bstatistics);
         file_m.add(editMutations);
-        file_m.add(Blog);
+        file_m.add(log);
         file_m.add(exit_b);
         frame.pack();
 
