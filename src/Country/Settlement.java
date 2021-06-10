@@ -405,7 +405,7 @@ public abstract class Settlement implements Runnable {
     {
         partOneSimoTwo();
         partTwoSimoTwo();
-        tryTokill();
+       // tryTokill();
         partThreeSimoTwo();
         partFourSimoTwo();
         partFiveSimoTwo();
@@ -587,7 +587,7 @@ public abstract class Settlement implements Runnable {
 
                 this.getSickPeople().remove(j);
                 this.getHealthyPeople().add(As);
-                System.out.println(" person become healthy in:  " + this.getName());
+                //System.out.println(" person become healthy in:  " + this.getName());
 
 
             }
@@ -689,9 +689,9 @@ public abstract class Settlement implements Runnable {
             try { map.cyclic_barrier.await(); }
             catch (Exception exception){exception.printStackTrace();}
 
-            System.out.println(this.healthyPeople.size() + " Healthy people at the settlement " + this.getName());
-            System.out.println(this.sickPeople.size() +" Sick people at the settlement "+this.getName());
-            System.out.println(this.getRamzorColor() +" ramzor color of the settlement "+this.getName());
+          //  System.out.println(this.healthyPeople.size() + " Healthy people at the settlement " + this.getName());
+            //System.out.println(this.sickPeople.size() +" Sick people at the settlement "+this.getName());
+            //System.out.println(this.getRamzorColor() +" ramzor color of the settlement "+this.getName());
             Clock.nextTick();
             try {
                 Thread.sleep(8000);
