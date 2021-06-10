@@ -405,7 +405,7 @@ public abstract class Settlement implements Runnable {
     {
         partOneSimoTwo();
         partTwoSimoTwo();
-       // tryTokill();
+        tryTokill();
         partThreeSimoTwo();
         partFourSimoTwo();
         partFiveSimoTwo();

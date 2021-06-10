@@ -14,10 +14,22 @@ import Country.*;
 public class StatisticsFile
 {
     public static String string_path =null;
-    public static FileHandler fileHandler =null; //The FileHandler can either write to a specified file, or it can write to a rotating set of files.
+    //public static FileHandler fileHandler =null; //The FileHandler can either write to a specified file, or it can write to a rotating set of files.
     public static Logger logger = Logger.getLogger("");
     public static Memento First=new Memento();
     public static Memento Second=new Memento();
+    public static FileHandler fileHandler;
+
+    static {
+            try {
+                 if(string_path!=null)
+                     fileHandler = new FileHandler(string_path, true);
+                 } catch (IOException e)
+                    {
+                        e.printStackTrace();
+                    }
+            }
+
 
     public static void csv(Map map)
     {
@@ -103,7 +115,6 @@ public class StatisticsFile
     {
         try
         {
-            fileHandler = new FileHandler(string_path, true);
             logger.addHandler(fileHandler);
             SimpleFormatter formatter = new SimpleFormatter();//Print a brief summary of the LogRecord in a human readable format.
                                                               // The summary will typically be 1 or 2 lines.
